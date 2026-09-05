@@ -1,8 +1,16 @@
 <meta charset="utf-8">
 <meta name="robots" content="noindex, nofollow">
-<!-- Sin esta línea, el archivo abierto directo del disco muestra los
-     acentos rotos: el visor de claude.ai le agrega la suya, pero el
-     archivo suelto no la tiene y el navegador adivina mal. -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Estas dos líneas las agrega solo el visor de claude.ai, así que ahí no se
+     notaba que faltaban. En el archivo suelto —el que se publica en
+     mnbraim.github.io— sin ellas pasan dos cosas:
+
+       · sin `charset`, los acentos se ven rotos;
+       · sin `viewport`, el celular cree que la página mide 980px, la achica
+         entera y NUNCA dispara las reglas de `@media (max-width:640px)`.
+         O sea: todo el trabajo de que las tablas se apilen queda dormido.
+
+     No sacarlas. -->
 <title>Odisea Europea 2026</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">

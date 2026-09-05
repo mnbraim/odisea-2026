@@ -1,0 +1,2085 @@
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<!-- noindex: la página es para la familia, no para que la levante Google.
+     El link se comparte a mano; no queremos que aparezca en búsquedas. -->
+<!-- Sin esta línea, el archivo abierto directo del disco muestra los
+     acentos rotos: el visor de claude.ai le agrega la suya, pero el
+     archivo suelto no la tiene y el navegador adivina mal. -->
+<title>Odisea Europea 2026</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+
+<style>
+/* ─────────────────────────────  TOKENS  ───────────────────────────── */
+:root{
+  --ground:#EAEFF0;
+  --surface:#FBFDFD;
+  --surface-2:#DFE7E9;
+  --line:#BFCDD1;
+  --line-soft:#D5DFE1;
+  --ink:#0D181C;
+  --ink-2:#3A4A50;
+  --ink-3:#6A7C82;
+
+  --aurora:#006C56;
+  --aurora-ink:#004F3F;
+  --aurora-soft:#D2EAE1;
+
+  /* El dorado de la bandera alemana. Más claro que esto, el nombre del
+     país en blanco encima deja de leerse. */
+  --amber:#A8640C;
+  --amber-ink:#7A4B04;
+  --amber-soft:#FBEDC6;
+
+  --rust:#9C2F21;
+  --rust-soft:#F5DBD5;
+
+  /* Islandia el celeste de su bandera, Escocia el violeta del cardo,
+     Bélgica el rojo. Los tres tienen que aguantar texto blanco encima,
+     así que van más profundos que el color nominal. */
+  --isl:#0F72B0;
+  --isl-ink:#0A5484;
+  --isl-soft:#D6EBF8;
+
+  --scot:#6A3D9A;
+  --scot-ink:#4E2B73;
+  --scot-soft:#E8DDF6;
+
+  --belg:#C1121F;
+  --belg-ink:#8E0D17;
+  --belg-soft:#FBDCDE;
+
+  --moon-lit:#C9B98C;
+
+  --shadow:0 1px 2px rgba(13,24,28,.05), 0 10px 30px -18px rgba(13,24,28,.35);
+
+  --display:"Newsreader","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --body:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,"Helvetica Neue",Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono","Cascadia Mono",Consolas,Menlo,monospace;
+
+  --wrap:980px;
+  --measure:70ch;   /* medida de lectura: ~70 caracteres por linea */
+}
+
+/* La página va SIEMPRE EN CLARO (decisión de Mauro, 2/9/2026): la comparte
+   con la familia y quiere que todos vean lo mismo, sin depender de cómo tenga
+   cada uno el teléfono. La portada sigue siendo de noche, eso es aparte.
+
+   El diseño oscuro quedó hecho y probado; acá están sus valores, colgados de
+   una clase que nadie aplica. Para reactivarlo, reemplazar el selector
+   `.tema-oscuro-guardado` por estos dos:
+
+       @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){ … } }
+       :root[data-theme="dark"]{ … }
+*/
+.tema-oscuro-guardado{
+  --ground:#08110F;
+  --surface:#0E1A1B;
+  --surface-2:#142325;
+  --line:#25393B;
+  --line-soft:#1A2B2D;
+  --ink:#DDE9E9;
+  --ink-2:#9CB1B3;
+  --ink-3:#6C8285;
+  --aurora:#5AD8A6;
+  --aurora-ink:#8BE7C4;
+  --aurora-soft:#0F332A;
+  --amber:#F0C24A;
+  --amber-ink:#F7D68F;
+  --amber-soft:#3A2C0B;
+  --rust:#EF8A73;
+  --rust-soft:#361A15;
+  --isl:#5AB6ED;
+  --isl-ink:#9AD5F5;
+  --isl-soft:#0A2C42;
+  --scot:#B491E0;
+  --scot-ink:#D2BCF0;
+  --scot-soft:#211433;
+  --belg:#F0605C;
+  --belg-ink:#F79A93;
+  --belg-soft:#3A1210;
+  --moon-lit:#E4D6AC;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -18px rgba(0,0,0,.8);
+}
+
+/* ─────────────────────────────  BASE  ───────────────────────────── */
+*{box-sizing:border-box}
+
+/* Nada puede estirar la página a lo ancho. Se usa `clip` y no `hidden`
+   a propósito: `hidden` convertiría a <html> en un contenedor de scroll
+   y rompería el encabezado pegajoso. Las tablas siguen teniendo su propio
+   scroll horizontal, así que no se pierde nada. */
+/* Al tocar una sección del menú, la página viaja hasta ahí en vez de saltar. */
+html{overflow-x:clip;scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} }
+body{overflow-x:clip;overflow-wrap:break-word}
+:root{--out:cubic-bezier(.16,1,.3,1);--out-soft:cubic-bezier(.33,1,.68,1)}
+
+body{
+  margin:0;
+  background:var(--ground);
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:16px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+
+h1,h2,h3,h4{font-family:var(--display);font-weight:600;text-wrap:balance;margin:0;line-height:1.14;
+  font-optical-sizing:auto}
+p{margin:0}
+p,li{text-wrap:pretty}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--aurora);outline-offset:3px;border-radius:2px}
+
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 24px}
+
+.eyebrow{
+  font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-3);
+}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+/* ─────────────────────────────  NAV  ───────────────────────────── */
+.topbar{
+  position:sticky;top:0;z-index:40;
+  background:color-mix(in srgb, #050D0C 82%, transparent);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(255,255,255,.08);
+  color:#EAF4F0;
+  /* El encabezado acompaña el tramo donde estás: verde en el norte,
+     ámbar en el sur, terracota en España. Es dónde estás, sin leer nada. */
+  transition:background-color 700ms var(--out), border-color 700ms var(--out);
+}
+.topbar[data-tramo="espana"]  {background:color-mix(in srgb,#2B0F0A 86%, transparent)}
+.topbar[data-tramo="islandia"]{background:color-mix(in srgb,#07202F 86%, transparent)}
+.topbar[data-tramo="escocia"] {background:color-mix(in srgb,#1A0F2B 86%, transparent)}
+.topbar[data-tramo="alemania"]{background:color-mix(in srgb,#2A1D07 86%, transparent)}
+.topbar[data-tramo="belgica"] {background:color-mix(in srgb,#2E0C0A 86%, transparent)}
+.topbar[data-tramo="espana"]   .navlinks a[aria-current="true"]{background:#EF8A73}
+.topbar[data-tramo="islandia"] .navlinks a[aria-current="true"]{background:#5AB6ED}
+.topbar[data-tramo="escocia"]  .navlinks a[aria-current="true"]{background:#B491E0}
+.topbar[data-tramo="alemania"] .navlinks a[aria-current="true"]{background:#F0C24A}
+.topbar[data-tramo="belgica"]  .navlinks a[aria-current="true"]{background:#F0605C}
+
+/* ──────────────  AVANCE DEL VIAJE  ────────────── */
+/* Una línea arriba de todo, con los colores de los siete tramos en su
+   proporción real. Se descubre de izquierda a derecha al bajar. */
+.avance{
+  position:fixed;top:0;left:0;right:0;height:3px;z-index:45;pointer-events:none;
+  background:linear-gradient(90deg,
+    #EF8A73 0 12%,      /* Barcelona */
+    #5AB6ED 12% 44%,    /* Islandia  */
+    #B491E0 44% 60%,    /* Escocia   */
+    #F0C24A 60% 76%,    /* Alemania  */
+    #F0605C 76% 92%,    /* Bélgica   */
+    #7C9791 92% 100%);  /* la vuelta */
+  -webkit-mask-image:linear-gradient(90deg,#000 var(--p,0%), transparent var(--p,0%));
+  mask-image:linear-gradient(90deg,#000 var(--p,0%), transparent var(--p,0%));
+}
+.topbar-in{
+  max-width:var(--wrap);margin:0 auto;padding:0 24px;
+  display:flex;align-items:center;gap:20px;height:52px;
+}
+.brand-txt{font-family:var(--display);font-size:15px;font-weight:600;white-space:nowrap}
+.brand-txt span{color:#7C9791;font-family:var(--mono);font-size:11px;letter-spacing:.1em;margin-left:8px}
+.navlinks{display:flex;gap:2px;overflow-x:auto;margin-left:auto;scrollbar-width:none;-ms-overflow-style:none}
+.navlinks::-webkit-scrollbar{display:none}
+/* La lista se desliza con el dedo. Para que se note, los extremos se
+   desvanecen — y sólo del lado donde queda algo por ver. */
+.navlinks{
+  --izq:0px; --der:0px;
+  -webkit-mask-image:linear-gradient(90deg,
+    transparent 0, #000 var(--izq), #000 calc(100% - var(--der)), transparent 100%);
+  mask-image:linear-gradient(90deg,
+    transparent 0, #000 var(--izq), #000 calc(100% - var(--der)), transparent 100%);
+}
+.navlinks.hay-izq{--izq:26px}
+.navlinks.hay-der{--der:26px}
+.navlinks a{
+  font-size:12.5px;text-decoration:none;color:#9BB5AF;
+  padding:6px 10px;border-radius:999px;white-space:nowrap;
+  transition:color .18s var(--out), background .18s var(--out);
+}
+@media (hover:hover) and (pointer:fine){
+  .navlinks a:hover{color:#EAF4F0;background:rgba(255,255,255,.08)}
+}
+.navlinks a[aria-current="true"]{color:#050D0C;background:#5AD8A6;font-weight:600}
+
+/* ─────────────────────────────  HERO  ───────────────────────────── */
+/* El hero es de noche en los dos temas: el viaje se trata de mirar el cielo oscuro. */
+.hero{
+  position:relative;overflow:hidden;isolation:isolate;
+  --hero-ink:#EAF4F0; --hero-ink-2:#A9C2BC; --hero-ink-3:#7C9791;
+  background:radial-gradient(130% 105% at 50% -10%, #0E2622 0%, #071310 48%, #040A09 100%);
+  color:var(--hero-ink);
+}
+.hero-in{max-width:var(--wrap);margin:0 auto;padding:92px 24px 60px;position:relative;z-index:3}
+
+/* Estrellas fijas, con un latido muy lento. */
+.nightsky{
+  position:absolute;inset:0;z-index:1;pointer-events:none;
+  background-image:
+    radial-gradient(1.6px 1.6px at 8% 18%, rgba(255,255,255,.65), transparent),
+    radial-gradient(1.2px 1.2px at 21% 42%, rgba(255,255,255,.4), transparent),
+    radial-gradient(1.8px 1.8px at 34% 12%, rgba(255,255,255,.7), transparent),
+    radial-gradient(1.1px 1.1px at 47% 33%, rgba(255,255,255,.35), transparent),
+    radial-gradient(1.5px 1.5px at 58% 8%, rgba(255,255,255,.55), transparent),
+    radial-gradient(1.2px 1.2px at 68% 27%, rgba(255,255,255,.45), transparent),
+    radial-gradient(1.9px 1.9px at 79% 15%, rgba(255,255,255,.6), transparent),
+    radial-gradient(1.1px 1.1px at 88% 38%, rgba(255,255,255,.34), transparent),
+    radial-gradient(1.4px 1.4px at 94% 9%, rgba(255,255,255,.5), transparent),
+    radial-gradient(1.2px 1.2px at 14% 60%, rgba(255,255,255,.3), transparent),
+    radial-gradient(1.3px 1.3px at 63% 55%, rgba(255,255,255,.28), transparent),
+    radial-gradient(1.5px 1.5px at 40% 68%, rgba(255,255,255,.24), transparent);
+  animation:latido 9s ease-in-out infinite alternate;
+}
+@keyframes latido{ from{opacity:.55} to{opacity:1} }
+
+/* Las auroras: cintas de verdad, cada una a su ritmo. */
+.aurora{
+  position:absolute;left:-12%;right:-12%;top:-8%;width:124%;height:78%;
+  z-index:2;pointer-events:none;mix-blend-mode:screen;opacity:.85;
+}
+.aurora .rib{transform-origin:50% 50%}
+.aurora .r1{animation:cinta1 34s ease-in-out infinite alternate}
+.aurora .r2{animation:cinta2 27s ease-in-out infinite alternate}
+.aurora .r3{animation:cinta3 41s ease-in-out infinite alternate}
+@keyframes cinta1{ from{transform:translate3d(-3%,4px,0) scaleY(1)}   to{transform:translate3d(4%,-10px,0) scaleY(1.22)} }
+@keyframes cinta2{ from{transform:translate3d(5%,-6px,0) scaleY(1.15)} to{transform:translate3d(-4%,8px,0) scaleY(.86)} }
+@keyframes cinta3{ from{transform:translate3d(-6%,-2px,0) scaleY(.92)} to{transform:translate3d(3%,10px,0) scaleY(1.18)} }
+
+.hero .eyebrow{color:var(--hero-ink-3)}
+.hero h1{
+  font-size:clamp(44px,8vw,92px);letter-spacing:-.035em;margin:20px 0 0;
+  color:var(--hero-ink);
+}
+.hero .lede{
+  font-size:clamp(16.5px,2vw,19.5px);
+  color:var(--hero-ink-2);max-width:56ch;margin-top:24px;line-height:1.62;
+}
+
+/* Un solo número grande, y los demás datos como una línea de ficha. */
+/* El reloj de la portada. Los números usan cifras de ancho fijo para que
+   no bailen los dígitos al cambiar cada segundo. */
+.hero-count{display:flex;align-items:flex-start;gap:clamp(6px,2vw,16px);margin-top:44px}
+.hc-u{display:flex;flex-direction:column;align-items:center}
+.hero-count .n{
+  font-family:var(--display);font-weight:700;
+  font-size:clamp(38px,8.5vw,84px);line-height:.9;letter-spacing:-.04em;
+  color:#5AD8A6;font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1;
+  text-shadow:0 0 60px rgba(90,216,166,.45);
+}
+.hero-count .l{
+  font-family:var(--mono);font-size:clamp(8.5px,2vw,11px);letter-spacing:.14em;
+  text-transform:uppercase;color:var(--hero-ink-3);margin-top:8px;
+}
+.hc-sep{
+  font-family:var(--display);font-weight:700;
+  font-size:clamp(30px,6.5vw,64px);line-height:1;
+  color:#5AD8A6;opacity:.32;
+  /* Late al ritmo del reloj, para que se note que está andando. */
+  animation:pulso 1s steps(1,end) infinite;
+}
+@keyframes pulso{0%,50%{opacity:.32} 51%,100%{opacity:.09}}
+@media (prefers-reduced-motion:reduce){ .hc-sep{animation:none} }
+/* Una vez que salieron ya no hay cuenta regresiva: queda el día de viaje. */
+.hero-count.llegamos .hc-sep,
+.hero-count.llegamos .hc-u:not(:first-child){display:none}
+.hero-count.llegamos .hc-u:first-child .l{display:none}
+.hero-cuando{
+  margin-top:16px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--hero-ink-3);
+}
+.hero-facts{
+  margin-top:18px;font-size:14px;color:var(--hero-ink-3);
+  display:flex;flex-wrap:wrap;gap:6px 14px;
+}
+.hero-facts b{color:var(--hero-ink);font-weight:600;font-variant-numeric:tabular-nums}
+.hero-facts span{display:inline-flex;gap:7px}
+.hero-facts span:not(:last-child)::after{content:"\00b7";opacity:.45}
+
+.tripbar{display:flex;gap:4px;margin-top:48px}
+.tripbar a{
+  position:relative;
+  flex-grow:var(--w);flex-basis:0;text-decoration:none;display:block;
+  padding-top:12px;
+  transition:transform .28s var(--out), opacity .28s var(--out);
+}
+/* La franja de cada tramo se dibuja de izquierda a derecha al abrir:
+   el viaje desenrollándose. */
+.tripbar a::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:5px;
+  background:var(--seg);transform-origin:left;
+}
+.js .tripbar a::before{
+  transform:scaleX(0);
+  animation:trazoTramo .6s var(--out) forwards;
+  animation-delay:calc(var(--i,0) * 90ms + 250ms);
+}
+@keyframes trazoTramo{ to{transform:scaleX(1)} }
+@media (prefers-reduced-motion:reduce){
+  .js .tripbar a::before{animation:none;transform:none}
+}
+@media (hover:hover) and (pointer:fine){
+  .tripbar a:hover{transform:translateY(-3px)}
+  .tripbar a:hover .lab{color:var(--hero-ink)}
+}
+.tripbar .lab{font-size:11.5px;font-weight:600;color:var(--seg);display:block;line-height:1.3;transition:color .28s var(--out)}
+.tripbar .sub{font-family:var(--mono);font-size:10px;color:var(--hero-ink-3);display:block;letter-spacing:.04em}
+
+/* ─────────────────────────────  SECCIONES  ───────────────────────────── */
+section{padding:88px 0 12px;scroll-margin-top:64px}
+.sec-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:8px}
+.sec-head h2{font-size:clamp(26px,4vw,36px);letter-spacing:-.015em}
+.sec-note{color:var(--ink-2);max-width:var(--measure);margin-top:16px;font-size:15.5px}
+
+/* El contenido es visible por defecto. Recién cuando el JS confirma que
+   corre, la animación toma el control — así nunca se sirve una página en blanco. */
+.js .reveal{opacity:0;transition:opacity .55s var(--out)}
+.js .reveal.in{opacity:1}
+
+/* Cada día entra desde el riel, escalonado: sigue la dirección de la línea de tiempo. */
+.js .day{opacity:0;transform:translateX(-16px)}
+.js .day.vis{opacity:1;transform:none;transition:opacity .6s var(--out), transform .75s var(--out)}
+
+/* La ilustración del tramo se acerca desde el borde. */
+.js .crest{opacity:0;transform:translateX(28px) scale(1.04)}
+.js .leg-head.vis .crest{opacity:.3;transform:none;transition:opacity 1s var(--out), transform 1.1s var(--out)}
+
+/* El riel se dibuja de arriba hacia abajo a medida que el día entra en pantalla. */
+@supports (animation-timeline:view()){
+  @media (prefers-reduced-motion:no-preference){
+    .day-rail::before{
+      transform-origin:50% 0;
+      animation:trazo linear both;
+      animation-timeline:view();
+      animation-range:entry 8% cover 38%;
+    }
+    @keyframes trazo{
+      from{transform:translateX(-1px) scaleY(0)}
+      to  {transform:translateX(-1px) scaleY(1)}
+    }
+  }
+}
+
+/* ─────────────────────────────  PENDIENTES  ───────────────────────────── */
+.deadlines{display:grid;grid-template-columns:repeat(auto-fill,minmax(238px,1fr));gap:16px;margin-top:34px}
+.dl{
+  background:var(--surface);border:1px solid var(--line-soft);border-radius:6px;
+  padding:20px 22px 21px;box-shadow:var(--shadow);
+}
+/* La urgencia se lee por el color del rótulo y del fondo, no por una pestaña lateral. */
+.dl.hot {border-color:color-mix(in srgb,var(--rust) 42%,var(--line));background:color-mix(in srgb,var(--rust-soft) 55%, var(--surface))}
+.dl.warm{border-color:color-mix(in srgb,var(--amber) 38%,var(--line));background:color-mix(in srgb,var(--amber-soft) 34%, var(--surface))}
+.dl.cool{border-color:color-mix(in srgb,var(--aurora) 30%,var(--line))}
+.dl.warm .when{color:var(--amber-ink)}
+.dl.cool .when{color:var(--aurora-ink)}
+.dl .when{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);display:flex;justify-content:space-between;gap:8px}
+.dl.hot .when{color:var(--rust)}
+.dl .what{font-weight:600;font-size:15px;margin-top:10px;line-height:1.4}
+.dl .why{font-size:13.5px;color:var(--ink-2);margin-top:8px;line-height:1.62}
+
+.todo{margin-top:40px;border-top:1px solid var(--line)}
+.todo-row{display:grid;grid-template-columns:20px 1fr;gap:16px;padding:22px 2px;border-bottom:1px solid var(--line-soft);align-items:start}
+.todo-row .mark{width:18px;height:18px;border:1.5px solid var(--rust);border-radius:2px;margin-top:2px;background:var(--rust-soft)}
+.todo-row .mark.q{border-color:var(--ink-3);background:transparent}
+.todo-row h4{font-size:15.5px;font-family:var(--body);font-weight:650}
+.todo-row p{font-size:14px;color:var(--ink-2);margin-top:7px;line-height:1.65;max-width:var(--measure)}
+
+/* ────────────────────  COLOR POR TRAMO  ──────────────────── */
+/* Tres identidades: el norte oscuro, el sur de las mesas largas, y España
+   como bisagra. Se aplican a la sección entera y bajan por herencia. */
+/* Por defecto manda el verde aurora, que es el acento de la página:
+   así las secciones sin tramo (Pendientes, Reservas, Pagos, Plata) no pierden color. */
+/* Un color por país: el trazo (--legc), el fondo tenue (--legc-soft), la
+   tinta sobre ese fondo (--legc-ink) y un segundo tono (--legc-2) que cruza
+   el lavado para que no quede plano. */
+body{--legc:var(--aurora);--legc-soft:var(--aurora-soft);--legc-ink:var(--aurora-ink);--legc-2:#3E6FB0}
+
+.espana  {--legc:var(--rust);   --legc-soft:var(--rust-soft);   --legc-ink:var(--rust);       --legc-2:var(--amber)}
+.islandia{--legc:var(--isl);    --legc-soft:var(--isl-soft);    --legc-ink:var(--isl-ink);    --legc-2:var(--aurora)}
+.escocia {--legc:var(--scot);   --legc-soft:var(--scot-soft);   --legc-ink:var(--scot-ink);   --legc-2:var(--isl)}
+.alemania{--legc:var(--amber);  --legc-soft:var(--amber-soft);  --legc-ink:var(--amber-ink);  --legc-2:#FFCE00}
+.belgica {--legc:var(--belg);   --legc-soft:var(--belg-soft);   --legc-ink:var(--belg-ink);   --legc-2:var(--amber)}
+.neutro  {--legc:var(--ink-3);  --legc-soft:var(--surface-2);   --legc-ink:var(--ink-2);      --legc-2:var(--ink-3)}
+
+/* El lavado de fondo. No es un color plano: la luz se junta de un lado y
+   se apaga del otro, y los extremos se desvanecen para que un tramo se funda
+   con el siguiente en vez de cortar con una línea. */
+section.pais{position:relative;isolation:isolate}
+section.pais::before{
+  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 9%,#000 91%,transparent 100%);
+  mask-image:linear-gradient(180deg,transparent 0,#000 9%,#000 91%,transparent 100%);
+  background:
+    radial-gradient(115% 62% at var(--anclaA) -6%,
+      color-mix(in srgb, var(--legc-soft) 96%, transparent) 0%, transparent 64%),
+    radial-gradient(85% 48% at var(--anclaB) 44%,
+      color-mix(in srgb, var(--legc-2) 22%, transparent) 0%, transparent 72%),
+    linear-gradient(178deg,
+      color-mix(in srgb, var(--legc-soft) 32%, var(--ground)) 0%,
+      color-mix(in srgb, var(--legc-soft) 70%, var(--ground)) 58%,
+      color-mix(in srgb, var(--legc-soft) 24%, var(--ground)) 100%);
+}
+
+/* El ancla se espeja sección por medio, para que dos vecinas no se vean calcadas. */
+section{--anclaA:16%;--anclaB:86%}
+section:nth-of-type(even){--anclaA:84%;--anclaB:14%}
+
+/* Islandia y Escocia son los tramos de las auroras: ahí la luz respira,
+   muy despacio. En los demás el fondo queda quieto. */
+@media (prefers-reduced-motion:no-preference){
+  section.islandia::before,
+  section.escocia::before{animation:respira 48s ease-in-out infinite alternate}
+}
+@keyframes respira{
+  from{transform:translate3d(-1.5%,0,0) scale(1.04)}
+  to  {transform:translate3d(1.5%,-8px,0) scale(1.09)}
+}
+
+/* Grano fino sobre todo: le saca el plástico al color plano. */
+body::after{
+  content:"";position:fixed;inset:0;z-index:70;pointer-events:none;opacity:.055;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+
+/* ─────────────────────────────  TRAMO / DÍAS  ───────────────────────────── */
+.leg{margin-top:68px}
+.wrap > .leg:first-child{margin-top:0}  /* el que abre sección ya tiene el aire del section */
+/* La cabecera de tramo es un bloque de color pleno, con la ilustración
+   del lugar recortada adentro. El color manda: es lo que separa un tramo del otro. */
+.leg-head{
+  position:relative;overflow:hidden;isolation:isolate;
+  display:flex;align-items:flex-end;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  min-height:172px;padding:24px 28px 22px;border-radius:6px;
+  background:var(--legc);
+  color:var(--ground);
+}
+.leg-head h3{
+  font-size:clamp(26px,4.2vw,38px);letter-spacing:-.025em;
+  color:var(--ground);position:relative;z-index:2;
+}
+.leg-head .meta{
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;
+  margin-left:auto;text-transform:uppercase;
+  color:var(--ground);opacity:.9;position:relative;z-index:2;
+}
+/* La bandera del país, al lado del nombre. El borde tenue la despega del
+   bloque de color cuando la bandera tiene blanco en el borde. */
+/* La bandera arriba y el nombre debajo: la identidad del país en bloque. */
+.leg-id{
+  display:flex;flex-direction:column;align-items:flex-start;gap:12px;
+  position:relative;z-index:2;
+}
+.bandera{
+  display:block;flex:none;width:40px;height:27px;border-radius:2px;
+  box-shadow:0 0 0 1px rgba(255,255,255,.35), 0 2px 6px rgba(0,0,0,.28);
+}
+@media (max-width:640px){
+  .leg-id{gap:10px}
+  .bandera{width:32px;height:21px}
+}
+
+/* La ilustración vive al fondo, a la derecha, recortada por el bloque. */
+.crest{
+  position:absolute;right:18px;top:12px;bottom:12px;z-index:1;
+  height:calc(100% - 24px);width:auto;max-width:58%;
+  color:var(--ground);opacity:.3;pointer-events:none;
+}
+@media (max-width:640px){ .crest{right:6px;opacity:.19} }
+.leg-intro{color:var(--ink-2);font-size:15px;margin-top:20px;max-width:var(--measure);line-height:1.65}
+
+.day{display:grid;grid-template-columns:82px 22px 1fr;gap:0 16px;position:relative;padding:32px 0 34px}
+.day + .day{border-top:1px solid var(--line-soft)}
+.day-date{padding-top:2px}
+.day-date .dnum{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--legc);text-transform:uppercase;opacity:.9}
+.day-date .dd{font-family:var(--mono);font-size:19px;font-variant-numeric:tabular-nums;letter-spacing:-.02em;display:block;line-height:1.2;margin-top:3px;color:var(--legc-ink)}
+.day-date .dw{font-size:11.5px;color:var(--ink-3);text-transform:capitalize;display:block}
+
+.day-rail{position:relative}
+.day-rail::before{content:"";position:absolute;left:50%;top:0;bottom:-34px;width:2px;background:color-mix(in srgb,var(--legc) 26%, var(--line));transform:translateX(-1px)}
+.day:last-child .day-rail::before{bottom:auto;height:12px}
+.day-rail .node{
+  position:absolute;left:50%;top:7px;width:9px;height:9px;border-radius:50%;
+  transform:translateX(-50%);background:var(--ground);border:2px solid var(--legc);
+  transition:transform .32s var(--out), box-shadow .32s var(--out);
+}
+@media (hover:hover) and (pointer:fine){
+  .day:hover .node{
+    transform:translateX(-50%) scale(1.55);
+    box-shadow:0 0 0 6px color-mix(in srgb,var(--legc) 14%, transparent);
+  }
+}
+.day-rail .node.big{width:13px;height:13px;background:var(--legc)}
+
+.day-body{min-width:0}
+.day-body h4{font-size:18px;letter-spacing:-.005em}
+.day-body .plan{margin-top:13px;font-size:15px;color:var(--ink-2);line-height:1.7;max-width:var(--measure)}
+.day-body ul{margin:18px 0 0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:12px;max-width:var(--measure)}
+.day-body ul li{font-size:14.5px;color:var(--ink-2);line-height:1.65;padding-left:18px;position:relative}
+.day-body ul li::before{content:"";position:absolute;left:2px;top:.62em;width:5px;height:1px;background:var(--legc)}
+.day-body strong{color:var(--ink);font-weight:620}
+
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px}
+.chip{
+  font-family:var(--mono);font-size:11px;letter-spacing:.04em;
+  padding:3px 8px;border-radius:2px;border:1px solid var(--line);
+  color:var(--ink-2);background:var(--surface);white-space:nowrap;
+}
+.chip.fly{border-color:color-mix(in srgb,var(--legc) 45%,var(--line));color:var(--legc-ink);background:color-mix(in srgb,var(--legc-soft) 55%, var(--surface))}
+.chip.bed{border-style:dashed}
+.chip.warn{border-color:color-mix(in srgb,var(--rust) 50%,var(--line));color:var(--rust);background:color-mix(in srgb,var(--rust-soft) 45%,var(--surface))}
+.chip.car{border-color:color-mix(in srgb,var(--legc) 45%,var(--line));color:var(--legc-ink);background:transparent}
+
+.flag{
+  margin-top:18px;padding:14px 16px;border-radius:3px;max-width:var(--measure);
+  background:color-mix(in srgb,var(--rust-soft) 50%, var(--surface));
+  border:1px solid color-mix(in srgb,var(--rust) 32%, var(--line));
+  font-size:13.5px;color:var(--ink-2);line-height:1.65;
+}
+.flag b{color:var(--rust);font-weight:650}
+.flag.ok{background:color-mix(in srgb,var(--legc-soft) 45%, var(--surface));border-color:color-mix(in srgb,var(--legc) 30%,var(--line))}
+.flag.ok b{color:var(--legc-ink)}
+
+/* badges de rubro */
+.bdg{
+  display:inline-block;font-family:var(--mono);font-size:9.5px;letter-spacing:.09em;
+  text-transform:uppercase;padding:3px 9px;border-radius:999px;border:1px solid var(--line);
+  color:var(--ink-2);background:var(--surface);white-space:nowrap;line-height:1.35;
+}
+.bdg.vuelo{border-color:color-mix(in srgb,var(--aurora) 55%,var(--line));color:var(--aurora-ink);background:color-mix(in srgb,var(--aurora-soft) 65%,var(--surface))}
+.bdg.tren{border-color:color-mix(in srgb,var(--aurora) 50%,var(--line));color:var(--aurora-ink);background:transparent}
+.bdg.auton{border-color:color-mix(in srgb,var(--amber) 55%,var(--line));color:var(--amber-ink);background:transparent}
+.bdg.hotel{border-color:var(--line);color:var(--ink-2);background:var(--surface-2)}
+.bdg.traslado{border-color:color-mix(in srgb,var(--amber) 55%,var(--line));color:var(--amber-ink);background:color-mix(in srgb,var(--amber-soft) 55%,var(--surface))}
+.bdg.tramite{border-color:color-mix(in srgb,var(--rust) 50%,var(--line));color:var(--rust);background:color-mix(in srgb,var(--rust-soft) 40%,var(--surface))}
+.bdg.exp{border-style:dashed;border-color:color-mix(in srgb,var(--amber) 45%,var(--line));color:var(--amber-ink);background:transparent}
+td.rub{white-space:nowrap;padding-right:6px}
+
+/* caja de decisión dentro de un día */
+.dec{
+  margin-top:22px;border:1px solid var(--line);border-radius:4px;
+  background:var(--surface);box-shadow:var(--shadow);overflow:hidden;
+}
+.dec-head{
+  padding:11px 15px;background:var(--surface-2);border-bottom:1px solid var(--line-soft);
+  display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;
+}
+.dec-head b{font-size:14.5px;font-weight:700}
+.dec-head span{font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);margin-left:auto}
+.dec-body{padding:19px}
+.dec-body p{font-size:14px;color:var(--ink-2);line-height:1.65;max-width:var(--measure)}
+.dec-body .tablewrap{margin-top:0}
+.dec-body table{min-width:380px;font-size:13.5px}
+.dec-body table th, .dec-body table td{padding:11px 14px}
+
+.moon{display:flex;align-items:center;gap:7px;margin-top:16px}
+.moon svg{display:block;flex:none}
+.moon .mtxt{font-family:var(--mono);font-size:11px;color:var(--ink-3);letter-spacing:.04em}
+/* agenda de horas del dia - solo en la version del organizador */
+.agenda{margin-top:22px}
+.agenda-head{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--ink-3);margin-bottom:9px;display:flex;gap:8px;flex-wrap:wrap;align-items:baseline;
+}
+.agenda-head em{font-style:normal;color:var(--legc-ink);opacity:.85}
+.agenda .tablewrap{margin-top:0}
+.agenda table{min-width:340px;font-size:13.5px}
+.agenda th,.agenda td{padding:10px 14px}
+.agenda td.n{width:1%;white-space:nowrap;color:var(--ink-2)}
+.agenda td.n.fijo{color:var(--legc-ink);font-weight:700}
+.agenda td.sinhora{color:var(--ink-3);opacity:.45;font-family:var(--mono)}
+.agenda .luz{
+  font-family:var(--mono);font-size:11px;color:var(--ink-3);
+  letter-spacing:.04em;margin-top:10px;
+}
+@media print{.agenda{break-inside:avoid}}
+
+/* ─────────────────────────────  PANELES  ───────────────────────────── */
+.pais .panel{border-top:3px solid var(--legc)}
+.panel{
+  margin-top:46px;background:var(--surface);border:1px solid var(--line-soft);
+  border-radius:4px;padding:32px 30px 34px;box-shadow:var(--shadow);
+}
+.panel h3{font-size:22px;letter-spacing:-.01em}
+.panel .psub{font-size:14px;color:var(--ink-3);margin-top:10px;max-width:var(--measure);line-height:1.65}
+.panel-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:32px 36px;margin-top:28px}
+.subhead{font-family:var(--body);font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.panel-grid p, .panel-grid li{font-size:14.5px;color:var(--ink-2);line-height:1.68}
+.panel-grid ul{margin:13px 0 0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:12px}
+.panel-grid ul li{padding-left:17px;position:relative}
+.panel-grid ul li::before{content:"";position:absolute;left:1px;top:.62em;width:6px;height:1px;background:var(--ink-3)}
+.panel-grid ul li b, .panel-grid p b{color:var(--ink);font-weight:650}
+
+.tablewrap{overflow-x:auto;margin-top:24px;border:1px solid var(--line-soft);border-radius:3px}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:14px}
+th,td{text-align:left;padding:13px 16px;border-bottom:1px solid var(--line-soft);vertical-align:top;line-height:1.6}
+thead th{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);background:var(--surface-2);font-weight:500;white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+td.n{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+td.code{font-family:var(--mono);font-weight:600;letter-spacing:.02em;white-space:nowrap}
+tbody tr.tot td{background:var(--surface-2);font-weight:700;color:var(--ink)}
+
+.bars{display:flex;flex-direction:column;gap:22px;margin-top:28px}
+.bar-row{display:grid;grid-template-columns:1fr auto;gap:6px 16px;align-items:baseline}
+.bar-row .bl{font-size:14.5px}
+.bar-row .bv{font-family:var(--mono);font-size:14px;font-variant-numeric:tabular-nums}
+.bar-track{grid-column:1/-1;height:7px;background:var(--surface-2);border-radius:999px;overflow:hidden}
+.bar-fill{height:100%;width:var(--p);background:var(--bc);border-radius:999px}
+
+.privacy{
+  margin-top:26px;padding:14px 16px;border-radius:3px;
+  border:1px dashed var(--line);background:var(--surface-2);
+  font-size:13px;color:var(--ink-2);line-height:1.55;
+}
+
+footer{margin-top:100px;border-top:1px solid var(--line);padding:36px 0 72px;color:var(--ink-3);font-size:13px;line-height:1.65}
+footer .wrap{display:flex;gap:20px;flex-wrap:wrap;justify-content:space-between}
+
+@media (max-width:640px){
+  section{padding:60px 0 10px}
+  .leg{margin-top:48px}
+  .day{padding:26px 0 28px;grid-template-columns:60px 18px 1fr;gap:0 12px}
+  .hero-in{padding:56px 20px 40px}
+  .wrap,.topbar-in{padding:0 20px}
+  .day-date .dd{font-size:16px}
+  .stat{flex-basis:50%;border-right:0;padding-right:12px}
+  /* El nombre se va: son 175px que la lista de secciones necesita.
+     El logo alcanza como marca, y el título está en la portada. */
+  .brand-txt{display:none}
+  .navlinks{margin-left:14px}
+  .topbar-in{gap:0;padding:0 16px}
+  .chip{white-space:normal}
+  .panel{padding:24px 20px 26px}
+  .tripbar .lab{font-size:10px}
+  .tripbar .sub{display:none}
+}
+
+
+/* ────────────────────  EL LOGO DEL VIAJE  ──────────────────── */
+/* La jarra con la aurora saliendo. Va incrustado en el archivo, sin fondo,
+   y se usa chico en tres lugares: la barra, la ventana de bienvenida y el pie. */
+.logo{
+  display:block;flex:none;
+  aspect-ratio:161/320;
+  background:url("data:image/png;base64,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") center/contain no-repeat;
+}
+.brand{display:flex;align-items:center;gap:12px}
+.brand .logo{height:32px}
+
+.cd-logo{height:66px;margin:0 auto 16px}
+
+.footer-mark{display:flex;align-items:center;gap:13px;margin-bottom:6px}
+.footer-mark .logo{height:38px;opacity:.85}
+.footer-mark span{
+  font-family:var(--display);font-size:14.5px;font-weight:600;color:var(--ink-2);
+}
+
+/* Marcas para generar la versión familiar. No pintan nada: sólo señalan
+   qué es de organización. El generador borra .solo-org y muestra .solo-fam.
+   El !important es necesario: hay reglas de display (.hero-facts span, por
+   ejemplo) que si no le ganan a [hidden] y el texto se filtra. */
+[hidden]{display:none !important}
+
+
+/* ────────────────────  QUE ENTRE EN EL CELULAR  ────────────────────
+   Decisión de Mauro (5/9/2026): nada de barra horizontal, todo tiene que
+   caber en la pantalla del teléfono. Dos medidas:
+
+   1. Las tablas pierden el ancho mínimo. Las de dos columnas —las 26 agendas—
+      entran solas con eso.
+   2. Las de tres o más columnas se apilan: cada fila pasa a ser una fichita y
+      cada dato lleva arriba el nombre de su columna, que sale del `data-l`
+      que el generador dejó puesto. Sin eso, una tabla de cuatro columnas con
+      importes queda ilegible en 375px. */
+@media (max-width:640px){
+  .tablewrap{overflow-x:visible}
+  table,.agenda table,.dec-body table{min-width:0}
+  /* Los encabezados dejan de ir en una sola línea: una tabla de dos columnas
+     con títulos largos se estiraba a 519px y volvía la barra horizontal. */
+  thead th{white-space:normal}
+  /* La grilla de los paneles pedía 300px de mínimo cuando hay 293 disponibles. */
+  .panel-grid{grid-template-columns:1fr}
+
+  /* La agenda respira un poco menos, para ganar ancho de texto. */
+  .agenda th,.agenda td{padding:9px 10px}
+  .agenda td.n{width:auto}
+
+  .tablewrap:has(> table.apilable){border:0;border-radius:0}
+  table.apilable thead{display:none}
+  table.apilable,
+  table.apilable tbody,
+  table.apilable tr,
+  table.apilable td{display:block;width:auto}
+  table.apilable tr{
+    border:1px solid var(--line-soft);border-radius:4px;
+    padding:11px 13px;margin-bottom:10px;background:var(--surface);
+  }
+  table.apilable tr:last-child{margin-bottom:0}
+  table.apilable td{border:0;padding:4px 0;white-space:normal}
+  table.apilable td[data-l]::before{
+    content:attr(data-l);display:block;
+    font-family:var(--mono);font-size:9.5px;letter-spacing:.09em;
+    text-transform:uppercase;color:var(--ink-3);margin-bottom:1px;
+  }
+  /* La primera columna de las tablas comparativas no tiene encabezado:
+     es el nombre de la fila, y va como título de la fichita. */
+  table.apilable td.fila-titulo{
+    font-weight:700;color:var(--ink);
+    border-bottom:1px solid var(--line-soft);
+    padding-bottom:7px;margin-bottom:4px;
+  }
+  table.apilable tr.tot td{background:transparent}
+  table.apilable tr.tot{background:var(--surface-2)}
+}
+
+/* ────────────────────  IMPRESIÓN  ──────────────────── */
+@media print{
+  /* Nada puede quedar escondido detrás de una animación que no llegó a dispararse. */
+  .js .reveal,.js .day,.js .leg-head{opacity:1 !important;transform:none !important}
+  .js .crest{opacity:.25 !important;transform:none !important}
+  .cd-ov,.topbar,.nightsky,.aurora{display:none !important}
+  .hero{background:none;color:var(--ink)}
+  .hero h1,.hero .lede,.hero .eyebrow,.hero-facts,.hero-facts b,.tripbar .sub{color:var(--ink)}
+  .hero-count .n{color:var(--aurora);text-shadow:none}
+  .hc-sep{display:none}
+  section{background:none !important;padding:24px 0 0}
+  section::before{display:none !important}
+  body::after{display:none !important}
+  .day{break-inside:avoid;padding:16px 0}
+  .leg,.panel{break-inside:avoid}
+  .leg-head{break-after:avoid}
+  body{font-size:11pt}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
+  .js .reveal,.js .day{opacity:1;transform:none}
+  .js .crest{opacity:.3;transform:none}
+  .nightsky{animation:none;opacity:.8}
+  .aurora .rib{animation:none}
+}
+
+/* ─────────────────  VENTANA DE BIENVENIDA  ───────────────── */
+.cd-ov{
+  --cd-out:cubic-bezier(.23,1,.32,1);
+  position:fixed;inset:0;z-index:100;
+  display:flex;align-items:center;justify-content:center;padding:20px;
+  background:color-mix(in srgb, var(--ground) 66%, transparent);
+  backdrop-filter:blur(14px) saturate(1.15);
+  -webkit-backdrop-filter:blur(14px) saturate(1.15);
+  /* Sale más rápido de lo que entra: al cerrar, el sistema responde. */
+  opacity:0;transition:opacity 160ms var(--cd-out);
+}
+.cd-ov[hidden]{display:none}
+.cd-ov.on{opacity:1;transition:opacity 260ms var(--cd-out)}
+.cd{
+  position:relative;overflow:hidden;
+  width:min(500px,100%);max-height:calc(100dvh - 40px);overflow-y:auto;
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:20px;
+  box-shadow:0 40px 90px -35px rgba(0,0,0,.6), var(--shadow);
+  padding:38px 32px 26px;text-align:center;
+  transform:translateY(14px) scale(.97);opacity:0;
+  transition:transform 160ms var(--cd-out), opacity 160ms var(--cd-out);
+}
+.cd:focus{outline:none}
+.cd-ov.on .cd{
+  transform:none;opacity:1;
+  transition:transform 340ms var(--cd-out), opacity 260ms var(--cd-out);
+}
+
+/* El contenido entra escalonado, de arriba hacia abajo. */
+.cd-ov.on .cd-stagger{animation:cdRise 380ms var(--cd-out) both}
+.cd-ov.on .cd-stagger:nth-child(2){animation-delay:50ms}
+.cd-ov.on .cd-stagger:nth-child(3){animation-delay:100ms}
+@keyframes cdRise{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+
+.cd-glow{
+  position:absolute;inset:-70% -25% auto -25%;height:320px;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(60% 100% at 22% 60%, color-mix(in srgb,var(--aurora) 40%, transparent) 0%, transparent 70%),
+    radial-gradient(45% 100% at 56% 42%, color-mix(in srgb,var(--aurora) 26%, transparent) 0%, transparent 72%),
+    radial-gradient(52% 100% at 84% 62%, color-mix(in srgb,#3E6FB0 30%, transparent) 0%, transparent 74%);
+  filter:blur(44px);opacity:.55;
+  animation:drift 26s ease-in-out infinite alternate;
+}
+.cd-in{position:relative;z-index:2}
+
+.cd-x{
+  position:absolute;top:12px;right:14px;z-index:3;
+  width:30px;height:30px;line-height:1;
+  border:1px solid transparent;border-radius:999px;background:transparent;
+  color:var(--ink-3);font-size:19px;cursor:pointer;
+  transition:background 160ms ease, color 160ms ease, border-color 160ms ease, transform 120ms var(--cd-out);
+}
+@media (hover:hover) and (pointer:fine){
+  .cd-x:hover{background:var(--surface-2);color:var(--ink);border-color:var(--line-soft)}
+}
+.cd-x:active{transform:scale(.92)}
+
+.cd-num{
+  font-family:var(--display);font-weight:600;
+  font-size:clamp(66px,17vw,104px);line-height:.92;
+  letter-spacing:-.03em;color:var(--aurora);
+  font-variant-numeric:tabular-nums;
+  margin:14px 0 6px;
+  text-shadow:0 0 42px color-mix(in srgb,var(--aurora) 28%, transparent);
+}
+.cd-num.short{font-size:clamp(40px,10vw,60px)}
+.cd-unit{font-size:15px;color:var(--ink-2);letter-spacing:.01em}
+.cd-when{
+  font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-3);margin-top:8px;
+}
+
+.cd-wait{
+  font-family:var(--display);font-size:19px;line-height:1.4;font-style:italic;
+  color:var(--ink);margin:0;text-wrap:balance;
+}
+
+.cd-wait .rom{font-style:normal}
+.cd-pais{
+  margin-top:12px;
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--accent, var(--ink-3));
+}
+.cd-pais:empty{display:none}
+
+.cd-frase{
+  margin-top:24px;
+  border:1px solid var(--line-soft);border-radius:16px;
+  background:var(--tint, var(--surface-2));
+  padding:22px 22px 18px;
+}
+
+.cd-go{
+  margin-top:22px;width:100%;
+  padding:12px 20px;border:0;border-radius:999px;cursor:pointer;
+  background:var(--aurora);color:var(--surface);
+  font-family:var(--body);font-size:14.5px;font-weight:600;letter-spacing:.01em;
+  transition:transform 140ms var(--cd-out), filter 160ms ease;
+}
+@media (hover:hover) and (pointer:fine){
+  .cd-go:hover{filter:brightness(1.08)}
+}
+.cd-go:active{transform:scale(.975)}
+.cd-hint{
+  margin-top:10px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-3);opacity:.7;
+}
+body.cd-open{overflow:hidden}
+
+@media (max-width:480px){
+  .cd{padding:32px 22px 22px;border-radius:18px}
+  .cd-wait{font-size:17.5px}
+}
+@media (prefers-reduced-motion:reduce){
+  /* Se conserva el fundido, que ayuda a entender qué pasó; se saca el movimiento. */
+  .cd-ov,.cd,.cd-ov.on,.cd-ov.on .cd{transition:opacity 200ms ease}
+  .cd,.cd-ov.on .cd{transform:none}
+  .cd-glow{animation:none}
+  .cd-ov.on .cd-stagger{animation:none}
+}
+</style>
+
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="bEspana" viewBox="0 0 30 20">
+    <rect width="30" height="20" fill="#AA151B"/>
+    <rect y="5" width="30" height="10" fill="#F1BF00"/>
+  </symbol>
+  <symbol id="bIslandia" viewBox="0 0 30 20">
+    <rect width="30" height="20" fill="#02529C"/>
+    <rect x="6" width="6" height="20" fill="#fff"/>
+    <rect y="7" width="30" height="6" fill="#fff"/>
+    <rect x="7.75" width="2.5" height="20" fill="#DC1E35"/>
+    <rect y="8.75" width="30" height="2.5" fill="#DC1E35"/>
+  </symbol>
+  <symbol id="bEscocia" viewBox="0 0 30 20">
+    <rect width="30" height="20" fill="#005EB8"/>
+    <path d="M0 0 30 20M30 0 0 20" stroke="#fff" stroke-width="4.2"/>
+  </symbol>
+  <symbol id="bAlemania" viewBox="0 0 30 20">
+    <rect width="30" height="20" fill="#FFCE00"/>
+    <rect width="30" height="13.34" fill="#DD0000"/>
+    <rect width="30" height="6.67" fill="#111"/>
+  </symbol>
+  <symbol id="bBelgica" viewBox="0 0 30 20">
+    <rect width="30" height="20" fill="#EF3340"/>
+    <rect width="20" height="20" fill="#FDDA24"/>
+    <rect width="10" height="20" fill="#111"/>
+  </symbol>
+  <symbol id="bChile" viewBox="0 0 30 20">
+    <rect width="30" height="20" fill="#fff"/>
+    <rect y="10" width="30" height="10" fill="#D52B1E"/>
+    <rect width="10" height="10" fill="#0039A6"/>
+    <path d="M5 1.6 6.15 5.14 9.87 5.14 6.86 7.32 8.01 10.86 5 8.67 1.99 10.86 3.14 7.32 0.13 5.14 3.85 5.14Z" fill="#fff"/>
+  </symbol>
+</svg>
+
+<div class="avance" id="avance" aria-hidden="true"></div>
+<header class="topbar" id="barraSup">
+  <div class="topbar-in">
+    <div class="brand">
+      <span class="logo"></span>
+      <span class="brand-txt">Odisea Europea <span>2026</span></span>
+    </div>
+    <nav class="navlinks" aria-label="Secciones">
+      
+      <a href="#barcelona">Barcelona</a>
+      <a href="#islandia">Islandia</a>
+      <a href="#edimburgo">Edimburgo</a>
+      <a href="#munich">Múnich</a>
+      
+      <a href="#belgica">Bélgica</a>
+      
+      
+      
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="nightsky" aria-hidden="true"></div>
+  <svg class="aurora" viewBox="0 0 1200 420" preserveAspectRatio="none" aria-hidden="true">
+    <defs>
+      <linearGradient id="auA" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#2BE0A8" stop-opacity="0"/>
+        <stop offset=".3" stop-color="#2BE0A8" stop-opacity=".85"/>
+        <stop offset=".68" stop-color="#4FD8E8" stop-opacity=".5"/>
+        <stop offset="1" stop-color="#4FD8E8" stop-opacity="0"/>
+      </linearGradient>
+      <linearGradient id="auB" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#3E6FB0" stop-opacity="0"/>
+        <stop offset=".42" stop-color="#54B8E0" stop-opacity=".55"/>
+        <stop offset="1" stop-color="#2BE0A8" stop-opacity="0"/>
+      </linearGradient>
+      <linearGradient id="auC" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#9BE8C4" stop-opacity="0"/>
+        <stop offset=".55" stop-color="#9BE8C4" stop-opacity=".4"/>
+        <stop offset="1" stop-color="#9BE8C4" stop-opacity="0"/>
+      </linearGradient>
+      <filter id="auSoft" x="-25%" y="-60%" width="150%" height="220%">
+        <feGaussianBlur stdDeviation="24"/>
+      </filter>
+    </defs>
+    <g filter="url(#auSoft)" fill="none" stroke-linecap="round">
+      <path class="rib r1" d="M-120 168C140 62 360 236 620 138S1060 58 1320 152"
+            stroke="url(#auA)" stroke-width="60"/>
+      <path class="rib r2" d="M-120 244C180 148 400 296 660 208S1080 138 1320 226"
+            stroke="url(#auB)" stroke-width="44"/>
+      <path class="rib r3" d="M-120 104C160 26 420 168 700 82S1120 42 1320 112"
+            stroke="url(#auC)" stroke-width="28"/>
+    </g>
+  </svg>
+  <div class="hero-in">
+    <div class="eyebrow">16 de septiembre — 10 de octubre de 2026 · Mauro y Melisa</div>
+    <h1>Odisea Europea 2026</h1>
+    
+    <p class="lede llano">Un viaje partido en dos mitades limpias: primero el norte oscuro — Islandia justo cuando el día y la noche duran lo mismo, Escocia en otoño — y después las mesas largas de Múnich y las abadías de Bélgica. Barcelona hace de bisagra en las dos puntas.</p>
+
+    <div class="hero-count" id="reloj">
+      <div class="hc-u"><span class="n" id="cDias">—</span><span class="l">días</span></div>
+      <div class="hc-sep" aria-hidden="true">:</div>
+      <div class="hc-u"><span class="n" id="cHoras">—</span><span class="l">horas</span></div>
+      <div class="hc-sep" aria-hidden="true">:</div>
+      <div class="hc-u"><span class="n" id="cMin">—</span><span class="l">min</span></div>
+      <div class="hc-sep" aria-hidden="true">:</div>
+      <div class="hc-u"><span class="n" id="cSeg">—</span><span class="l">seg</span></div>
+    </div>
+    <p class="hero-cuando" id="relojPie">para salir</p>
+    <p class="hero-facts">
+      <span><b>24</b> días de viaje</span>
+      <span><b>5</b> países</span>
+      
+      
+      <span class="solo-fam"><b>2</b> personas</span>
+    </p>
+
+    <div class="tripbar" aria-label="Tramos del viaje">
+      <a href="#barcelona" style="--i:0;--w:3;--seg:#EF8A73"><span class="lab">Barcelona</span><span class="sub">17–19 sep</span></a>
+      <a href="#islandia" style="--i:1;--w:8;--seg:#5AB6ED"><span class="lab">Islandia</span><span class="sub">19–27 sep</span></a>
+      <a href="#edimburgo" style="--i:2;--w:4;--seg:#B491E0"><span class="lab">Edimburgo</span><span class="sub">27 sep–1 oct</span></a>
+      <a href="#munich" style="--i:3;--w:3;--seg:#F0C24A"><span class="lab">Múnich</span><span class="sub">1–4 oct</span></a>
+      <a style="--i:4;--w:1;--seg:#F0C24A"></a>
+      <a href="#belgica" style="--i:5;--w:4;--seg:#F0605C"><span class="lab">Bélgica</span><span class="sub">5–9 oct</span></a>
+      <a href="#vuelta" style="--i:6;--w:2;--seg:#7C9791"><span class="lab">Vuelta</span><span class="sub">9–10 oct</span></a>
+    </div>
+  </div>
+</div>
+
+<main>
+
+<!-- ══════════════════════════  PENDIENTES  ══════════════════════════ -->
+
+
+<!-- ══════════════════════════  BARCELONA  ══════════════════════════ -->
+<section id="barcelona" class="reveal pais espana">
+  <div class="wrap">
+    <div class="leg">
+      <div class="leg-head">
+        <svg class="crest" viewBox="0 0 260 130" fill="none" aria-hidden="true">
+          <g fill="currentColor">
+            <path d="M74 130 L80 58 L86 44 L92 58 L98 130Z"/>
+            <path d="M104 130 L110 40 L116 24 L122 40 L128 130Z"/>
+            <path d="M134 130 L140 30 L146 12 L152 30 L158 130Z"/>
+            <path d="M164 130 L170 44 L176 28 L182 44 L188 130Z"/>
+            <path d="M194 130 L200 64 L206 50 L212 64 L218 130Z"/>
+          </g>
+          <g fill="currentColor" opacity=".85">
+            <circle cx="86" cy="38" r="4"/><circle cx="116" cy="18" r="4"/>
+            <circle cx="146" cy="6" r="4.5"/><circle cx="176" cy="22" r="4"/>
+            <circle cx="206" cy="44" r="4"/>
+          </g>
+          <path d="M62 130h176" stroke="currentColor" stroke-width="3" opacity=".6"/>
+        </svg>
+        <div class="leg-id">
+          <svg class="bandera" viewBox="0 0 30 20" role="img" aria-label="Bandera de España"><use href="#bEspana"/></svg>
+          <h3>Barcelona</h3>
+        </div>
+        <span class="meta">Días 0–3 · 1 noche</span>
+      </div>
+      <p class="leg-intro">Barcelona no es destino acá: es la sala de espera del viaje y, tres semanas después, la sala de embarque de la vuelta. El único objetivo del 18 es llegar entero a Islandia.</p>
+
+      <div class="day">
+        <div class="day-date"><span class="dnum">víspera</span><span class="dd">16/09</span><span class="dw">miércoles</span></div>
+        <div class="day-rail"><span class="node"></span></div>
+        <div class="day-body">
+          <h4>Punta Arenas → Santiago</h4>
+          
+          <p class="plan llano">El avión de Latam sale a las 18:30 y llega a las 22:00. Esa noche duermen al lado del aeropuerto, para no jugarse el vuelo de la mañana siguiente.</p>
+          
+          <div class="chips"><span class="chip fly solo-fam">LATAM · PUQ→SCL · 18:30–22:00</span></div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-date"><span class="dnum">día 1</span><span class="dd">17/09</span><span class="dw">jueves</span></div>
+        <div class="day-rail"><span class="node big"></span></div>
+        <div class="day-body">
+          <h4>Santiago → Barcelona</h4>
+          
+          <p class="plan llano">El vuelo largo del viaje. Sale a las 11:20 y llega a Barcelona a las 6 de la mañana del día siguiente. Se duerme en el avión.</p>
+          
+          <div class="chips solo-fam"><span class="chip fly">LEVEL · SCL→BCN · 11:20 → 06:00 (+1)</span></div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-date"><span class="dnum">día 2</span><span class="dd">18/09</span><span class="dw">viernes</span></div>
+        <div class="day-rail"><span class="node"></span></div>
+        <div class="day-body">
+          <h4>Día de descanso</h4>
+          
+          <p class="plan llano">Llegan a las 6 de la mañana, pero a la habitación recién pueden entrar al mediodía. Lo que conviene es dejar las valijas, desayunar sin apuro y pasar el día caminando, tranquilos.</p>
+          
+          <ul class="solo-fam">
+            
+            <li class="llano">Duermen en el casco antiguo (Ciutat Vella), al lado de la plaza principal. Los dos barrios más lindos para caminar, el Gótico y el Born, quedan a pocas cuadras.</li>
+            
+            <li class="llano">El mercado de la Boquería abre temprano. Es un buen lugar para arrancar el día, cuando todavía están medio dormidos.</li>
+            
+            <li class="llano">Si duermen la siesta, que sea corta y temprano. Viajando hacia el este el cuerpo tarda varios días en acomodarse al horario nuevo.</li>
+            <li>Cena temprano y a la cama: al día siguiente hay avión a media tarde.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════  ISLANDIA  ══════════════════════════ -->
+<section id="islandia" class="reveal pais islandia">
+  <div class="wrap">
+    <div class="leg">
+      <div class="leg-head">
+        <svg class="crest" viewBox="0 0 260 130" fill="none" aria-hidden="true">
+          <g stroke="currentColor" stroke-linecap="round" fill="none">
+            <path d="M6 30C46 8 88 40 130 20s84-16 124 8" stroke-width="4" opacity=".5"/>
+            <path d="M2 50C44 28 86 58 128 38s86-12 130 12" stroke-width="2.5" opacity=".3"/>
+          </g>
+          <path d="M10 122C58 116 92 92 122 48c9-13 19-17 27-8 12 13 18 33 30 52l8 30Z" fill="currentColor"/>
+          <path d="M150 122c14-26 26-38 40-40 16-2 28 12 40 40Z" fill="currentColor" opacity=".55"/>
+          <g stroke="currentColor" stroke-width="2.5" stroke-linecap="round" opacity=".45">
+            <path d="M4 124h64M92 124h52M172 124h84"/>
+          </g>
+        </svg>
+        <div class="leg-id">
+          <svg class="bandera" viewBox="0 0 30 20" role="img" aria-label="Bandera de Islandia"><use href="#bIslandia"/></svg>
+          <h3>Islandia</h3>
+        </div>
+        <span class="meta">Días 3–11 · 8 noches</span>
+      </div>
+      
+      <p class="leg-intro llano">El corazón del viaje. Se quedan ocho noches en Islandia, y ese número no es casualidad: con tantas noches seguidas ver las auroras deja de ser cuestión de suerte. Más de 8 de cada 10 viajeros que se quedan una semana o más terminan viéndolas.</p>
+
+      <div class="day">
+        <div class="day-date"><span class="dnum">día 3</span><span class="dd">19/09</span><span class="dw">sábado</span></div>
+        <div class="day-rail"><span class="node big"></span></div>
+        <div class="day-body">
+          <h4>Barcelona → Reikiavik</h4>
+          
+          <p class="plan llano">Mañana libre en Barcelona, vuelo a media tarde y llegada a Reikiavik con luz todavía. <strong>El auto lo retiran recién el 21</strong>, así que del aeropuerto al centro tienen que ir por su cuenta: son 45 minutos en un micro que se llama <strong>Flybus</strong>, y conviene sacar el pasaje por internet antes, no en la ventanilla.</p>
+          
+          <ul class="solo-fam">
+            
+            <li class="llano">Primera noche: si el cielo está despejado, el <strong>faro de Grótta</strong> queda a quince minutos del centro. Mira al norte, no tiene nada que tape la vista y casi no hay luces alrededor. Es el lugar más fácil de todo el viaje para ver auroras.</li>
+            
+            <li class="llano">La luna todavía se esconde temprano. Cuando se va, el cielo queda bien oscuro y las auroras se ven mucho mejor. Estas primeras noches son las mejores de toda Islandia.</li>
+          </ul>
+          <div class="moon">
+            <svg width="17" height="17" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="none" stroke="currentColor" stroke-opacity=".35"/><path d="M10,1 A9,9 0 0 1 10,19 A0.9,9 0 0 1 10,1 Z" fill="var(--moon-lit)"/></svg>
+            
+            <span class="mtxt llano">luna al 55% · las mejores noches del tramo</span>
+          </div>
+          <div class="chips"><span class="chip fly solo-fam">ICELANDAIR FI597 · BCN 15:45 → KEF 18:20 · T2</span></div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-date"><span class="dnum">día 4</span><span class="dd">20/09</span><span class="dw">domingo</span></div>
+        <div class="day-rail"><span class="node"></span></div>
+        <div class="day-body">
+          <h4>Reikiavik a pie</h4>
+          
+          <p class="plan llano">Único día entero en la ciudad, y todavía sin auto. Conviene que todo quede a distancia de caminata o de una combi.</p>
+          
+          <ul class="solo-fam">
+            
+            <li class="llano">La <strong>iglesia grande de la ciudad</strong> (Hallgrímskirkja) — se sube a la torre y desde arriba se ven todos los techos de colores. Es la mejor foto de día de Reikiavik.</li>
+            
+            <li class="llano">La escultura del <strong>barco vikingo</strong> (Sun Voyager) y el teatro de vidrio (<strong>Harpa</strong>), los dos sobre la costanera. La vuelta, por la calle de los negocios.</li>
+            
+            <li class="llano">Una piscina termal municipal (Sundhöllin o Laugardalslaug) es la costumbre local de verdad, y sale una fracción de lo que sale la Blue Lagoon. Si prefieren el lujo, la <strong>Sky Lagoon</strong> los pasa a buscar por el centro.</li>
+            
+            <li class="llano">Si llueve: el museo <strong>Perlan</strong> tiene una sala tipo planetario dedicada a las auroras. Sirve para entender qué hay que mirar las noches siguientes.</li>
+          </ul>
+          <div class="moon">
+            <svg width="17" height="17" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="none" stroke="currentColor" stroke-opacity=".35"/><path d="M10,1 A9,9 0 0 1 10,19 A2.7,9 0 0 1 10,1 Z" fill="var(--moon-lit)"/></svg>
+            
+            <span class="mtxt llano">luna al 65%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-date"><span class="dnum">día 5</span><span class="dd">21/09</span><span class="dw">lunes</span></div>
+        <div class="day-rail"><span class="node big"></span></div>
+        <div class="day-body">
+          <h4>Termas de Hvammsvík → Snæfellsnes</h4>
+          
+          <p class="plan llano">Acá arranca la parte del viaje en auto. Lo retiran a las <strong>08:30 en Reikiavik</strong>: es una camioneta 4x4, automática. Entre los papeles y acomodar las valijas, salen a la ruta cerca de las 09:00.</p>
+          
+          <div class="solo-fam">
+            
+            <div class="flag ok llano"><b>La punta oeste pasó al martes.</b> Con las termas adentro, los dos lugares de la punta no entraban sin estirar el día a diez horas y media. El martes estaba casi libre, así que se reparten: los dos días quedan parejos y no se pierden nada.</div>
+          </div>
+          <div class="moon">
+            <svg width="17" height="17" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="none" stroke="currentColor" stroke-opacity=".35"/><path d="M10,1 A9,9 0 0 1 10,19 A4.5,9 0 0 1 10,1 Z" fill="var(--moon-lit)"/></svg>
+            
+            <span class="mtxt llano">luna al 75% · ya empieza a molestar</span>
+          </div>
+          <div class="chips"><span class="chip car solo-fam">GO CAR RENTAL · retiro 08:30 Reykjavik</span></div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-date"><span class="dnum">día 6</span><span class="dd">22/09</span><span class="dw">martes</span></div>
+        <div class="day-rail"><span class="node"></span></div>
+        <div class="day-body">
+          <h4>La punta de la península y Kirkjufell</h4>
+          
+          <p class="plan llano">Las dos noches duermen en el mismo pueblo, Grundarfjörður, así que este día salen y vuelven al mismo lugar. Son unas 8 horas en total saliendo a las 09:00, y casi todo el manejo es a la mañana.</p>
+          
+          <ul class="solo-fam">
+            
+            <li class="llano"><strong>De Arnarstapi a Hellnar</strong> — una caminata de 2,5 km por el borde del mar, entre arcos de piedra y acantilados llenos de pájaros. Es la mejor caminata corta del tramo; conviene hacerla a la mañana.</li>
+            
+            <li class="llano">La <strong>playa de piedritas negras</strong> (Djúpalónssandur) — está en la punta de la península y todavía tiene los fierros oxidados de un barco pesquero inglés que naufragó ahí.</li>
+            
+            <li class="llano">El <strong>cerro con forma de pirámide</strong> (Kirkjufell) y su cascada (Kirkjufellsfoss) — es la postal más conocida de Islandia, y queda a cinco minutos de donde duermen. De día para ubicarse, de noche para la foto.</li>
+            <li><strong>Stykkishólmur</strong> — puerto de casitas de colores, buena parada para comer pescado si sobra tarde. Es lo primero que se recorta si el día viene lento.</li>
+          </ul>
+          <div class="moon">
+            <svg width="17" height="17" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="none" stroke="currentColor" stroke-opacity=".35"/><path d="M10,1 A9,9 0 0 1 10,19 A5.9,9 0 0 1 10,1 Z" fill="var(--moon-lit)"/></svg>
+            
+            <span class="mtxt llano">luna al 83%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-date"><span class="dnum">día 7</span><span class="dd">23/09</span><span class="dw">miércoles</span></div>
+        <div class="day-rail"><span class="node big"></span></div>
+        <div class="day-body">
+          
+          <h4 class="llano">Viaje a Vík por la costa sur <span style="color:var(--aurora);font-family:var(--mono);font-size:12px;letter-spacing:.08em">· EQUINOCCIO</span></h4>
+          
+          <p class="plan llano">330 km y unas 4 horas y cuarto de manejo. Las tres cascadas del día están sobre la ruta misma, así que no hay que desviarse. Saliendo a las 9:00 llegan a Vík cerca de las <strong>15:30</strong>, con toda la tarde por delante. Es el día del equinoccio: la noche y el día duran lo mismo, y de acá en más las noches se hacen más largas, que es justo lo que conviene para las auroras.</p>
+          
+          <ul class="solo-fam">
+            <li><strong>Seljalandsfoss</strong> — se camina por detrás de la cortina de agua. Lleven impermeable, no paraguas.</li>
+            
+            <li class="llano"><strong>Gljúfrabúi</strong> — otra cascada, a 500 metros de la anterior y casi siempre sin gente. Está escondida adentro de una grieta y para entrar hay que pisar el arroyo.</li>
+            
+            <li class="llano"><strong>Skógafoss</strong> — una pared de agua de 60 metros que cae de frente. Hay una escalera para subir al mirador de arriba.</li>
+          </ul>
+          <div class="solo-fam">
+            
+            <div class="flag ok llano"><b>Día aligerado a propósito.</b> Sólheimasandur y Dyrhólaey pasaron al jueves, que es un día en que no se mueven de Vík. Esta es la noche con más chances de auroras fuertes de todo el viaje: conviene llegar temprano y descansados, y no a las siete de la tarde después de once horas de ruta.</div>
+          </div>
+          <div class="moon">
+            <svg width="17" height="17" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="none" stroke="currentColor" stroke-opacity=".35"/><path d="M10,1 A9,9 0 0 1 10,19 A7.2,9 0 0 1 10,1 Z" fill="var(--moon-lit)"/></svg>
+            
+            <span class="mtxt llano">luna al 90% · pero es la noche con más chances de auroras fuertes del viaje</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-date"><span class="dnum">día 8</span><span class="dd">24/09</span><span class="dw">jueves</span></div>
+        <div class="day-rail"><span class="node"></span></div>
+        <div class="day-body">
+          <h4>Vík · el día completo sin manejar</h4>
+          
+          <p class="plan llano">Este día no cambian de alojamiento y todo queda a menos de 30 minutos. En total manejan apenas una hora y media, repartida en tres viajes cortos.</p>
+          
+          <ul class="solo-fam">
+            
+            <li class="llano"><strong>Sólheimasandur</strong> — los restos de un avión que cayó hace años, tirados en una playa de arena negra. Son 4 km caminando de ida y otros 4 de vuelta; también hay una combi que cobra y los acerca, si prefieren ahorrarse las dos horas y media. Conviene ir a la mañana.</li>
+            <li><strong>Dyrhólaey</strong> — el arco de roca sobre el mar y el faro. Si hay viento fuerte lo cierran, así que tener el día entero cerca es una ventaja.</li>
+            
+            <li class="llano">La <strong>playa negra</strong> (Reynisfjara) — arena negra, una pared de columnas de piedra que parece un órgano de iglesia, y unas agujas de roca saliendo del mar. Mejor a la tarde, con buena luz. Queda justo donde duermen.</li>
+          </ul>
+          <div class="solo-fam">
+            
+            <div class="flag llano"><b>Cuidado en serio:</b> en esa playa hay olas que de golpe entran mucho más arriba de lo que uno espera, y se han llevado gente. No le den la espalda al mar y no se acerquen a la orilla para sacar la foto.</div>
+          </div>
+          <div class="moon">
+            <svg width="17" height="17" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="none" stroke="currentColor" stroke-opacity=".35"/><path d="M10,1 A9,9 0 0 1 10,19 A8.3,9 0 0 1 10,1 Z" fill="var(--moon-lit)"/></svg>
+            
+            <span class="mtxt llano">luna al 96%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-date"><span class="dnum">día 9</span><span class="dd">25/09</span><span class="dw">viernes</span></div>
+        <div class="day-rail"><span class="node"></span></div>
+        <div class="day-body">
+          <h4>El día grande: Jökulsárlón</h4>
+          
+          <p class="plan llano">Es el único hueco para llegar hasta la laguna glaciar, y vale el esfuerzo: son 2 horas y cuarto de ida desde Vík, y con las paradas se va el día entero.</p>
+          
+          <ul class="solo-fam">
+            <li><strong>Fjaðrárgljúfur</strong> — cañón serpenteante con sendero por el borde, a 1 h de Vík y justo sobre la ruta. No es desvío: es la primera parada del camino.</li>
+            
+            <li class="llano">La <strong>laguna glaciar</strong> (Jökulsárlón) — icebergs que se desprenden del glaciar Vatnajökull y flotan despacio hacia el mar. Si el clima acompaña, hay paseos en gomón.</li>
+            
+            <li class="llano">La <strong>playa de los diamantes</strong> — cruzando la ruta: los bloques de hielo quedan varados sobre la arena negra y brillan con el sol. Ver auroras desde acá es de lo mejor que tiene la isla.</li>
+            
+            <li class="llano"><strong>Svartifoss</strong>, en el camino de vuelta, si les sobra luz: una cascada rodeada de columnas de piedra negra.</li>
+          </ul>
+
+          
+          <div class="moon">
+            <svg width="17" height="17" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="none" stroke="currentColor" stroke-opacity=".35"/><path d="M10,1 A9,9 0 0 1 10,19 A8.8,9 0 0 1 10,1 Z" fill="var(--moon-lit)"/></svg>
+            
+            <span class="mtxt llano">luna al 99%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-date"><span class="dnum">día 10</span><span class="dd">26/09</span><span class="dw">sábado</span></div>
+        <div class="day-rail"><span class="node"></span></div>
+        <div class="day-body">
+          <h4>Círculo Dorado y cierre en aguas termales</h4>
+          
+          <p class="plan llano">El día más largo de Islandia: unas 9 horas y media saliendo a las 09:00. Hacen dos paradas de la ruta más famosa del país, el Círculo Dorado, y las termas como final del recorrido.</p>
+          
+          <ul class="solo-fam">
+            <li><strong>1 · Gullfoss</strong> — la cascada de dos saltos que cae dentro de un cañón. <em>Gull</em> es "oro" en islandés: de ahí el nombre de toda la ruta. Con viento del norte, empapa.</li>
+            
+            <li class="llano"><strong>2 · Geysir</strong> — a 10 minutos. Es el chorro de agua hirviendo que le dio el nombre a todos los géiseres del mundo. Ese ya casi no salta, pero justo al lado el <strong>Strokkur</strong> tira agua a 15 o 20 metros de alto cada 5 o 10 minutos, sin fallar.</li>
+            
+            <li class="llano"><strong>3 · Termas</strong> — todavía están decidiendo a cuál de las dos van.</li>
+          </ul>
+          <div class="solo-fam">
+            
+            <div class="flag llano"><b>Þingvellir queda afuera.</b> Es el tercer punto del Círculo Dorado: ahí se ve la grieta por donde se separan dos placas de la Tierra, y es el lugar donde los vikingos hacían sus asambleas allá por el año 930. Pero es el que menos impresiona a simple vista y el que más tiempo lleva: 50 minutos de manejo más una hora de visita. Sacándolo entran las termas sin estirar el día a más de once horas.</div>
+          </div>
+
+          
+          <div class="solo-fam">
+            <div class="flag ok"><b>Esa noche no pierden auroras.</b> Es luna llena, la peor del viaje. Meterse en agua caliente es exactamente lo que hay que hacer con esa noche.</div>
+          </div>
+          <div class="moon">
+            <svg width="17" height="17" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="none" stroke="currentColor" stroke-opacity=".35"/><path d="M10,1 A9,9 0 0 1 10,19 A9,9 0 0 1 10,1 Z" fill="var(--moon-lit)"/></svg>
+            
+            <span class="mtxt llano">luna llena · el cielo queda muy claro, sólo se ven las auroras más fuertes</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════  EDIMBURGO  ══════════════════════════ -->
+<section id="edimburgo" class="reveal pais escocia">
+  <div class="wrap">
+    <div class="leg">
+      <div class="leg-head">
+        <svg class="crest" viewBox="0 0 260 130" fill="none" aria-hidden="true">
+          <path d="M0 130c46-4 74-20 104-38 32-19 82-24 156-19v57Z" fill="currentColor" opacity=".42"/>
+          <g fill="currentColor">
+            <path d="M116 74h20v-14h8v14h20v42h-48Z"/>
+            <path d="M172 60h14v-12h7v12h15v56h-36Z"/>
+            <path d="M154 44h6l7-14 7 14h6v18h-26Z" opacity=".9"/>
+            <rect x="204" y="82" width="30" height="34"/>
+            <path d="M204 82h30l-4-10h-22Z"/>
+          </g>
+          <g stroke="currentColor" stroke-width="2.5" opacity=".55">
+            <path d="M112 116h130"/>
+          </g>
+        </svg>
+        <div class="leg-id">
+          <svg class="bandera" viewBox="0 0 30 20" role="img" aria-label="Bandera de Escocia"><use href="#bEscocia"/></svg>
+          <h3>Edimburgo</h3>
+        </div>
+        <span class="meta">Días 11–15 · 4 noches</span>
+      </div>
+      
+      <p class="leg-intro llano">Cuatro noches en pleno casco antiguo: casi todo se hace caminando desde la puerta. Fines de septiembre es la mejor época para ir. El festival grande de la ciudad ya pasó, los precios bajaron y Edimburgo vuelve a su tamaño normal.</p>
+
+      <div class="day">
+        <div class="day-date"><span class="dnum">día 11</span><span class="dd">27/09</span><span class="dw">domingo</span></div>
+        <div class="day-rail"><span class="node big"></span></div>
+        <div class="day-body">
+          <h4>Islandia → Escocia</h4>
+          <p class="plan">La mañana más apretada del viaje: devolución del auto a las <strong>08:30</strong> y vuelo a las <strong>10:00</strong>. Llegan a Edimburgo pasado el mediodía, con media tarde para reconocer el terreno.</p>
+          
+          <ul class="solo-fam">
+            
+            <li class="llano">Subir por la calle principal del casco antiguo, la <strong>Royal Mile</strong>, hasta el castillo. Y bajar por <strong>Victoria Street</strong>, la curva de fachadas de colores.</li>
+            
+            <li class="llano">El cerro <strong>Calton Hill</strong> al atardecer: quince minutos de subida y la mejor vista de toda la ciudad, con el mar de fondo.</li>
+            
+            <li class="llano">Cenan en la plaza del <strong>Grassmarket</strong>, llena de bares viejos, justo abajo del peñón donde está el castillo.</li>
+          </ul>
+          <div class="chips"><span class="chip fly solo-fam">ICELANDAIR FI434 · KEF 10:00 → EDI 13:20</span></div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-date"><span class="dnum">día 12</span><span class="dd">28/09</span><span class="dw">lunes</span></div>
+        <div class="day-rail"><span class="node"></span></div>
+        <div class="day-body">
+          <h4>Castillo, Royal Mile y Arthur's Seat</h4>
+          <p class="plan">El día clásico, y todo en línea recta cuesta abajo.</p>
+          
+          <ul class="solo-fam">
+            
+            <li class="llano"><strong>Castillo de Edimburgo</strong> — la entrada se saca por internet, con horario, y conviene el primer turno de la mañana. Adentro están las joyas de la corona y la Piedra del Destino, sobre la que coronaban a los reyes de Escocia. Y el cañonazo de la una.</li>
+            
+            <li class="llano">Bajar la <strong>Royal Mile</strong> entera hasta el palacio de Holyrood, metiéndose en los pasillitos que salen a los costados: ahí es donde está lo lindo.</li>
+            <li><strong>Arthur's Seat</strong> — un volcán extinto en el medio de la ciudad; una hora de subida y la vista de 360°. Con viento, la ruta de Salisbury Crags alcanza.</li>
+            
+            <li class="llano">De noche, un bar con música en vivo: el Sandy Bell's para escuchar música escocesa, o el Captain's Bar si ese está lleno.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-date"><span class="dnum">día 13</span><span class="dd">29/09</span><span class="dw">martes</span></div>
+        <div class="day-rail"><span class="node big"></span></div>
+        <div class="day-body">
+          <h4>Highlands</h4>
+          <p class="plan">Día completo fuera de la ciudad, y el que más cambia según cómo lo hagan. En un solo día se llega hasta Glencoe y Lago Ness, pero son doce horas de puerta a puerta.</p>
+          
+          <ul class="solo-fam">
+            <li><strong>Glencoe</strong> — el valle glaciar entre paredes negras. Es el paisaje que uno tiene en la cabeza cuando dice "Highlands".</li>
+            
+            <li class="llano">El <strong>puente de Glenfinnan</strong> — el puente de arcos que sale en las películas de Harry Potter. Conviene averiguar antes si el tren a vapor sigue pasando a fines de septiembre, porque la temporada termina más o menos ahí.</li>
+            <li><strong>Lago Ness y Urquhart Castle</strong> — la ruina sobre el lago vale más que el monstruo.</li>
+            
+            <li class="llano">El <strong>lago Lomond</strong> y las montañas de Trossachs quedan mucho más cerca, si prefieren un día menos pesado.</li>
+          </ul>
+          
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-date"><span class="dnum">día 14</span><span class="dd">30/09</span><span class="dw">miércoles</span></div>
+        <div class="day-rail"><span class="node"></span></div>
+        <div class="day-body">
+          <h4>La Edimburgo tranquila · whisky</h4>
+          <p class="plan">Último día, y el mejor para la ciudad que no está en las postales.</p>
+          
+          <ul class="solo-fam">
+            
+            <li class="llano"><strong>Dean Village</strong> y el camino que va siguiendo el arroyo — un antiguo pueblito de molinos que quedó metido adentro de la ciudad, a veinte minutos del centro.</li>
+            
+            <li class="llano">El <strong>Museo Nacional de Escocia</strong> — es gratis, es enorme, y tiene una terraza en el último piso que casi nadie encuentra.</li>
+            <li><strong>Stockbridge</strong> para almorzar, y <strong>Leith</strong> junto al puerto para cenar.</li>
+            
+            <li class="llano">El día del whisky: la destilería <strong>Holyrood</strong> hace whisky y gin dentro de la misma ciudad y se puede visitar. La otra opción es <strong>Johnnie Walker</strong>, más grande y más show, con una terraza que mira al castillo.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════  MÚNICH  ══════════════════════════ -->
+<section id="munich" class="reveal pais alemania">
+  <div class="wrap">
+    <div class="leg">
+      <div class="leg-head">
+        <svg class="crest" viewBox="0 0 260 130" fill="none" aria-hidden="true">
+          <path d="M96 126V70l52-30 52 30v56Z" fill="currentColor"/>
+          <path d="M88 72l60-36 60 36-8 10-52-30-52 30Z" fill="currentColor" opacity=".75"/>
+          <path d="M148 34V16" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+          <path d="M150 16l24 7-24 8Z" fill="currentColor"/>
+          <g fill="currentColor" opacity=".45">
+            <rect x="128" y="94" width="16" height="32"/>
+            <rect x="156" y="94" width="16" height="32"/>
+          </g>
+          <g fill="currentColor">
+            <path d="M28 66h40v46a10 10 0 0 1-10 10H38a10 10 0 0 1-10-10Z"/>
+            <path d="M68 76h10a12 12 0 0 1 0 24h-10Z" opacity=".8"/>
+            <path d="M28 66c0-12 10-14 12-8 4-8 14-8 16 0 4-6 12-4 12 8Z" opacity=".85"/>
+          </g>
+          <path d="M20 126h224" stroke="currentColor" stroke-width="3" opacity=".55"/>
+        </svg>
+        <div class="leg-id">
+          <svg class="bandera" viewBox="0 0 30 20" role="img" aria-label="Bandera de Alemania"><use href="#bAlemania"/></svg>
+          <h3>Múnich · Oktoberfest</h3>
+        </div>
+        <span class="meta">Días 15–18 · 3 noches</span>
+      </div>
+      
+      <p class="leg-intro llano">Esta es la edición número 191 del Oktoberfest y va del 19 de septiembre al 4 de octubre, así que les toca justo el cierre. Pero hay un detalle que cambia todo: el tren sale el 4 a las <strong>12:45</strong>. Así que, en la práctica, tienen <strong>tres tardes</strong> de fiesta — el 1, el 2 y el 3 — y nada más.</p>
+
+      <div class="day">
+        <div class="day-date"><span class="dnum">día 15</span><span class="dd">1/10</span><span class="dw">jueves</span></div>
+        <div class="day-rail"><span class="node big"></span></div>
+        <div class="day-body">
+          <h4>Edimburgo → Múnich · primera noche de Wiesn</h4>
+          
+          <p class="plan llano">Llegan a las 13:45 a la Terminal 2. En tren urbano son 45 minutos hasta el centro, así que a las 16:00 ya pueden estar adentro de una de las carpas de la fiesta.</p>
+          
+          <ul class="solo-fam">
+            
+            <li class="llano">El jueves es día de semana, y la ley obliga a las carpas a dejar una de cada cuatro mesas sin reservar. Es el día más fácil de los tres para entrar.</li>
+            
+            <li class="llano">Para este día hay paquetes con lugar asegurado en el <strong>turno de la noche</strong>, en dos carpas: una da dos jarras y un vale de consumo, y la otra dos jarras, medio pollo y un vale. El horario les calza justo con la llegada — es la opción más cómoda del viaje.</li>
+            
+            <li class="llano">El predio donde se hace la fiesta tiene su propia estación de subte, y duermen justo del lado correcto.</li>
+          </ul>
+          <div class="chips"><span class="chip fly solo-fam">LUFTHANSA LH2691 · EDI 10:30 → MUC 13:45</span></div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-date"><span class="dnum">día 16</span><span class="dd">2/10</span><span class="dw">viernes</span></div>
+        <div class="day-rail"><span class="node"></span></div>
+        <div class="day-body">
+          <h4>Wiesn, día completo</h4>
+          
+          <p class="plan llano">Viernes: todavía vale la regla de una de cada cuatro mesas sin reservar. Pero después de las 17:00 la carpa se llena y cierran las puertas hasta que salga gente.</p>
+          
+          <ul class="solo-fam">
+            
+            <li class="llano">Hay paquete para la carpa <strong>Paulaner, al mediodía</strong> — dos jarras y medio pollo por persona, y entran sin hacer cola.</li>
+            
+            <li class="llano">Si van sin reserva, tienen que estar adentro antes de las 12:00. Después de las 15:00 ya no se consigue lugar.</li>
+            
+            <li class="llano">Afuera de las carpas también vale la pena caminar el parque: los juegos, los puestos de esos corazones de pan dulce con letras, y el mirador que hay adentro de la estatua gigante de la Bavaria.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-date"><span class="dnum">día 17</span><span class="dd">3/10</span><span class="dw">sábado</span></div>
+        <div class="day-rail"><span class="node"></span></div>
+        <div class="day-body">
+          <h4>El día más difícil del festival</h4>
+          
+          <p class="plan llano">Sábado <em>y</em>, encima, Día de la Unidad Alemana, que es feriado nacional. Es la peor combinación posible: no hay ningún paquete con lugar asegurado para esta fecha, y las carpas cierran las puertas temprano. Y es el último día entero que tienen.</p>
+          
+          <ul class="solo-fam">
+            
+            <li class="llano">Lo bueno: los sábados, hasta las 15:00, la ley obliga a dejar libre casi la mitad de los lugares. La cola de las 10:00 de la mañana es la que entra.</li>
+            
+            <li class="llano">El plan B es tan bueno como el A: la <strong>Oide Wiesn</strong>, que es el sector antiguo, al sur del predio. La entrada es barata, y gratis después de las 21:00. Tiene calesitas de antes de la guerra y una carpa grande, la <strong>Tradition</strong>, que es la única que no exige gastar un mínimo para reservar.</li>
+            
+            <li class="llano">Los jardines de afuera de todas las carpas son libres siempre: nadie los puede reservar.</li>
+          </ul>
+          
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-date"><span class="dnum">día 18</span><span class="dd">4/10</span><span class="dw">domingo</span></div>
+        <div class="day-rail"><span class="node big"></span></div>
+        <div class="day-body">
+          <h4>Mañana corta y tren <span class="tapadera">al norte</span></h4>
+          
+          <p class="plan llano">El tren sale de la estación central de Múnich a las <strong>12:45</strong>. Entre armar las valijas y llegar a la estación, la mañana da apenas para un desayuno bávaro y una vuelta rápida.</p>
+          
+          <div class="chips solo-fam"><span class="chip fly">ICE 626 · München 12:45 · 1ª clase</span></div>
+        </div>
+      </div>
+    </div>
+
+    
+  </div>
+</section>
+
+<!-- ══════════════════════════  BÉLGICA  ══════════════════════════ -->
+<section id="belgica" class="reveal pais belgica">
+  <div class="wrap">
+    <div class="leg">
+      <div class="leg-head">
+        <svg class="crest" viewBox="0 0 260 130" fill="none" aria-hidden="true">
+          <g fill="currentColor">
+            <path d="M120 130V44h34v86Z"/>
+            <path d="M118 44h38l-6-14h-26Z"/>
+            <path d="M126 30h22l-11-16Z"/>
+            <path d="M170 130V80h8v-8h10v8h8v50Z" opacity=".8"/>
+            <path d="M206 130V92h8v-8h10v8h8v38Z" opacity=".6"/>
+            <path d="M66 130V88h6v-6h8v6h6v6h6v6h6v30Z" opacity=".6"/>
+            <path d="M98 130V78h6v-6h8v6h6v6h6v46Z" opacity=".8"/>
+          </g>
+          <g stroke="currentColor" stroke-width="2" opacity=".4">
+            <path d="M126 66h22M126 86h22M126 106h22"/>
+          </g>
+          <path d="M52 130h180" stroke="currentColor" stroke-width="3" opacity=".55"/>
+        </svg>
+        <div class="leg-id">
+          <svg class="bandera" viewBox="0 0 30 20" role="img" aria-label="Bandera de Bélgica"><use href="#bBelgica"/></svg>
+          <h3>Bélgica</h3>
+        </div>
+        <span class="meta">Días 19–23 · 4 noches</span>
+      </div>
+      
+      <p class="leg-intro llano">El cierre del viaje cervecero, y justo lo contrario de Múnich: en vez de mesas de diez personas y una sola clase de cerveza, acá hay bares chiquitos con cartas de trescientas cervezas distintas, y trapenses hechas por monjes. Todo se mueve en tren, con viajes de media hora.</p>
+
+      <div class="day">
+        <div class="day-date"><span class="dnum">día 19</span><span class="dd">5/10</span><span class="dw">lunes</span></div>
+        <div class="day-rail"><span class="node big"></span></div>
+        <div class="day-body">
+          <h4><span class="tapadera">Llegada a Gante</span></h4>
+          
+          <p class="plan llano"><span class="tapadera">Llegan</span> a Gante a las <strong>14:49</strong>, cambiando de tren en Bruselas. Les queda media tarde y toda la noche en la ciudad, así que conviene aprovecharla bien.</p>
+          
+          <ul class="solo-fam">
+            
+            <li class="llano"><strong>Graslei y Korenlei</strong> — dos muelles antiguos, uno frente al otro, sobre el río. Al atardecer es el mejor rincón de esta zona de Bélgica, y les cae justo en el horario.</li>
+            
+            <li class="llano"><strong>Catedral de San Bavón</strong> — ahí está el famoso cuadro de los hermanos Van Eyck, <em>La Adoración del Cordero Místico</em>, recién restaurado y con un visor de realidad aumentada. Fíjense antes a qué hora cierra, que en octubre cierra temprano.</li>
+            
+            <li class="llano"><strong>Gravensteen</strong> — un castillo con foso, en el medio de la ciudad. La audioguía es una comedia, a propósito.</li>
+            
+            <li class="llano">Cerveza: en el <strong>Dulle Griet</strong>, para servirles la cerveza más grande les piden un zapato en garantía, y se los devuelven cuando entregan el vaso. Y la cervecería <strong>Gruut</strong> hace la cerveza con hierbas en lugar de lúpulo, como se hacía hace quinientos años.</li>
+          </ul>
+          <div class="chips"><span class="chip fly solo-fam"><span class="tapadera">TREN · llegada a </span>Gante 14:49 · 1ª clase</span></div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-date"><span class="dnum">día 20</span><span class="dd">6/10</span><span class="dw">martes</span></div>
+        <div class="day-rail"><span class="node"></span></div>
+        <div class="day-body">
+          <h4>Gante → Brujas</h4>
+          
+          <p class="plan llano">Traslado corto: veinticinco minutos de tren y al mediodía ya están en Brujas, con toda la tarde por delante. El paseo en bici quedó para mañana a la mañana, así que hoy es para la ciudad. Y les toca el atardecer, que es cuando Brujas está más linda.</p>
+          
+          <ul class="solo-fam">
+            
+            <li class="llano"><strong>La plaza Markt y su torre</strong>, el Belfort — son 366 escalones hasta arriba, con las campanas sonando encima de ustedes.</li>
+            <li><strong>Rozenhoedkaai</strong> — el recodo del canal que sale en todas las fotos. A esta hora la luz le pega de costado y es cuando mejor está.</li>
+            
+            <li class="llano"><strong>Brujas de noche</strong> — cuando se van los micros de turistas, la ciudad es otra cosa: los canales quedan quietos y las calles, vacías. Les tocan dos noches seguidas.</li>
+          </ul>
+          <div class="chips"><span class="chip fly solo-fam">TREN Gante → Brujas · ~25 min · se compra en la estación</span></div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-date"><span class="dnum">día 21</span><span class="dd">7/10</span><span class="dw">miércoles</span></div>
+        <div class="day-rail"><span class="node"></span></div>
+        <div class="day-body">
+          <h4>Damme en bici · y la Brujas tranquila</h4>
+          
+          <p class="plan llano">Duermen sobre el canal, en el punto exacto de la postal. El día se parte en dos: a la mañana salen al campo, siete kilómetros en bici por el borde del canal hasta el pueblo de Damme. Y a la tarde, la Brujas de los museos.</p>
+          
+          <ul class="solo-fam">
+            
+            <li class="llano"><strong>El canal hasta Damme</strong> — son siete kilómetros todos llanos por el borde del canal, con álamos a los dos lados, algunos de más de cien años. Ese canal lo mandó hacer Napoleón en 1810 para mover sus tropas, y nunca lo terminó. Salen bordeando las murallas de Brujas, pasando por delante de los molinos de viento.</li>
+            
+            <li class="llano"><strong>Damme</strong> — era el puerto de Brujas, hasta que el mar se fue llenando de arena y las dos quedaron tierra adentro. Quedó un pueblo del siglo XV con su ayuntamiento antiguo. Y es el pueblo de los libros de la región: hay librerías de usado por todos lados.</li>
+            
+            <li class="llano"><strong>La vuelta, por la otra orilla</strong> — el canal tiene camino de los dos lados, así que vuelven por enfrente y no repiten el mismo paisaje.</li>
+            
+            <li class="llano"><strong>Begijnhof y Minnewater</strong> — un patio antiguo rodeado de casitas blancas, donde vivían mujeres religiosas, y al lado el lago de los cisnes. Es la parte silenciosa de la ciudad.</li>
+            
+            <li class="llano"><strong>Museo Groeninge</strong> — los pintores flamencos antiguos, Van Eyck y Memling, en una sala chica y perfecta. Y en la Iglesia de Nuestra Señora está la <em>Madonna</em> de Miguel Ángel: es la única escultura suya que salió de Italia mientras él vivía.</li>
+            
+            <li class="llano">Cerveza: la fábrica <strong>De Halve Maan</strong> manda la cerveza por un caño de tres kilómetros que pasa por debajo de la ciudad, hasta donde la embotellan. Y el bar <strong>'t Brugs Beertje</strong> tiene más de trescientas cervezas distintas y unos dueños que de verdad los aconsejan.</li>
+          </ul>
+          <div class="chips solo-fam"><span class="chip fly">BICI · Brujas → Damme → Brujas · 17 km llanos</span></div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-date"><span class="dnum">día 22</span><span class="dd">8/10</span><span class="dw">jueves</span></div>
+        <div class="day-rail"><span class="node big"></span></div>
+        <div class="day-body">
+          <h4>Bruselas</h4>
+          
+          <p class="plan llano">Una hora de tren desde Brujas. Los trenes de acá no se reservan: el pasaje se compra en la estación el mismo día. Es la última parada de verdad del viaje.</p>
+          
+          <ul class="solo-fam">
+            
+            <li class="llano"><strong>La Grand-Place</strong> — la plaza principal, rodeada de casas antiguas con adornos dorados. De noche, iluminada, es cuando mejor se ve.</li>
+            
+            <li class="llano">Las <strong>Galerías Reales Saint-Hubert</strong>, que fueron la primera galería comercial techada de Europa. Y el <strong>Mont des Arts</strong>, por la vista.</li>
+            
+            <li class="llano"><strong>Cantillon</strong> — la última fábrica de cerveza que queda dentro de Bruselas, y todavía la hace a la manera antigua: la deja fermentar sola, con las levaduras que andan en el aire. Se recorre por cuenta propia, entre las barricas, y termina con una degustación. Para un viaje que se armó alrededor de la cerveza, es el punto más alto de todos.</li>
+            
+            <li class="llano">El <strong>Delirium Café</strong>, si quieren ver la carta de cervezas más larga del mundo. Y las papas fritas de algún puesto de barrio, que son bastante mejores que las del centro.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="leg neutro" id="vuelta">
+      <div class="leg-head">
+        <svg class="crest" viewBox="0 0 260 130" fill="none" aria-hidden="true">
+          <path d="M14 106C64 40 158 22 244 44" stroke="currentColor" stroke-width="3"
+                stroke-linecap="round" stroke-dasharray="2 12" opacity=".55"/>
+          <g fill="currentColor" transform="translate(96 42) rotate(18)">
+            <path d="M0 30l70-8 22-14 10 4-14 14 26 6-6 12-38 2-24 20-10-2 8-20-38 2Z"/>
+          </g>
+          <circle cx="14" cy="106" r="6" fill="currentColor" opacity=".8"/>
+          <circle cx="244" cy="44" r="6" fill="currentColor" opacity=".8"/>
+        </svg>
+        <div class="leg-id">
+          <svg class="bandera" viewBox="0 0 30 20" role="img" aria-label="Bandera de Chile"><use href="#bChile"/></svg>
+          <h3>La vuelta</h3>
+        </div>
+        <span class="meta">Días 23–24</span>
+      </div>
+
+      <div class="day">
+        <div class="day-date"><span class="dnum">día 23</span><span class="dd">9/10</span><span class="dw">viernes</span></div>
+        <div class="day-rail"><span class="node"></span></div>
+        <div class="day-body">
+          <h4>Bruselas → Barcelona</h4>
+          <p class="plan">Mañana libre en Bruselas y vuelo a la tarde.</p>
+          
+          <div class="chips solo-fam"><span class="chip fly">BRU → BCN · 18:30–20:30</span></div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-date"><span class="dnum">día 24</span><span class="dd">10/10</span><span class="dw">sábado</span></div>
+        <div class="day-rail"><span class="node big"></span></div>
+        <div class="day-body">
+          <h4>Barcelona → Santiago → Punta Arenas</h4>
+          
+          <p class="plan llano">El vuelo sale de Barcelona a las 00:05 y llega a Santiago a las 09:35. De ahí toman el de Latam a Punta Arenas, al que la aerolínea le cambió el horario en agosto: ahora sale <strong>12:07</strong> y aterriza a las <strong>16:35</strong>. Veinticuatro días después.</p>
+          
+          <div class="chips solo-fam"><span class="chip fly">LEVEL · BCN→SCL · 00:05–09:35</span><span class="chip fly">LATAM LA85 · SCL→PUQ · 12:07–16:35</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════  RESERVAS  ══════════════════════════ -->
+
+
+<!-- ══════════════════════════  PAGOS  ══════════════════════════ -->
+
+
+<!-- ══════════════════════════  PLATA  ══════════════════════════ -->
+
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <div class="footer-mark">
+        <span class="logo"></span>
+        <span>Odisea Europea 2026</span>
+      </div>
+      El itinerario día por día del viaje de Mauro y Melisa por Islandia, Escocia, Alemania y Bélgica.<br></div>
+    <div class="num">Actualizado al 17/08/2026</div>
+  </div>
+</footer>
+
+<!-- ══════════════════════  VENTANA DE BIENVENIDA  ══════════════════════ -->
+<div class="cd-ov" id="cdOv" role="dialog" aria-modal="true" aria-labelledby="cdNum" hidden>
+  <div class="cd" id="cdBox" tabindex="-1">
+    <div class="cd-glow" aria-hidden="true"></div>
+    <button class="cd-x" id="cdX" aria-label="Cerrar">&times;</button>
+    <div class="cd-in">
+      <div class="cd-stagger">
+        <span class="logo cd-logo"></span>
+        <div class="eyebrow" id="cdEyebrow">Odisea Europea · 2026</div>
+        <div class="cd-num" id="cdNum">—</div>
+        <div class="cd-unit" id="cdUnit"></div>
+        <div class="cd-when" id="cdWhen"></div>
+      </div>
+      <div class="cd-stagger">
+        <div class="cd-frase" id="cdFrase">
+          <p class="cd-wait" id="cdWait"></p>
+          <div class="cd-pais" id="cdPais"></div>
+        </div>
+      </div>
+      <div class="cd-stagger">
+        <button class="cd-go" id="cdGo">Vamos</button>
+        <div class="cd-hint">Esc para cerrar</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  document.documentElement.classList.add('js');
+
+
+  // ── El reloj de la portada ──
+  // Mediodía del 16/09/2026 en Chile. En esa fecha rige el horario de verano
+  // (UTC−3), así que el instante es el mismo para todo el mundo: 15:00 UTC.
+  var PARTIDA = Date.UTC(2026, 8, 16, 15, 0, 0);
+  var REGRESO_V = Date.UTC(2026, 9, 10, 23, 59, 0);
+
+  var uD = document.getElementById('cDias'),  uH = document.getElementById('cHoras'),
+      uM = document.getElementById('cMin'),   uS = document.getElementById('cSeg'),
+      pie = document.getElementById('relojPie'), reloj = document.getElementById('reloj');
+
+  function dosCifras(n){ return (n < 10 ? '0' : '') + n; }
+
+  function latir(){
+    if (!uD) return;
+    var falta = PARTIDA - Date.now();
+
+    if (falta > 0) {
+      var seg = Math.floor(falta / 1000);
+      uD.textContent = Math.floor(seg / 86400);
+      uH.textContent = dosCifras(Math.floor(seg / 3600) % 24);
+      uM.textContent = dosCifras(Math.floor(seg / 60) % 60);
+      uS.textContent = dosCifras(seg % 60);
+      return true;
+    }
+
+    // Ya salieron: el reloj deja lugar a dónde están.
+    if (reloj) reloj.classList.add('llegamos');
+    var dia = Math.floor((Date.now() - PARTIDA) / 86400000) + 1;
+    if (Date.now() <= REGRESO_V) {
+      uD.textContent = dia;
+      if (pie) pie.textContent = 'd\u00eda ' + dia + ' de 24 · est\u00e1n de viaje';
+    } else {
+      uD.textContent = '24';
+      if (pie) pie.textContent = 'd\u00edas que ya vivieron';
+    }
+    return false;
+  }
+
+  if (latir()) {
+    setInterval(latir, 1000);
+    if (pie) pie.textContent = 'para salir · 16 de septiembre, mediod\u00eda';
+  }
+
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var secs = document.querySelectorAll('.reveal');
+  if (reduce) {
+    secs.forEach(function(s){ s.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { rootMargin: '0px 0px -12% 0px' });
+    secs.forEach(function(s){ io.observe(s); });
+  }
+
+  // Días e ilustraciones entran escalonados, en el orden en que aparecen.
+  function mostrarTodo(){
+    document.querySelectorAll('.reveal:not(.in)').forEach(function(e){ e.classList.add('in'); });
+    document.querySelectorAll('.day:not(.vis), .leg-head:not(.vis)').forEach(function(e){ e.classList.add('vis'); });
+  }
+  // Si algo impide que el observador dispare —imprimir, una pestaña que nunca
+  // se miró, un navegador viejo— el contenido aparece igual. Nunca se esconde.
+  window.addEventListener('beforeprint', mostrarTodo);
+  setTimeout(mostrarTodo, 12000);
+
+  if (reduce || !('IntersectionObserver' in window)) {
+    mostrarTodo();
+  } else {
+    var io2 = new IntersectionObserver(function(entries){
+      var i = 0;
+      entries.forEach(function(e){
+        if (!e.isIntersecting) return;
+        e.target.style.transitionDelay = (i++ * 70) + 'ms';
+        e.target.classList.add('vis');
+        io2.unobserve(e.target);
+      });
+    }, { rootMargin: '0px 0px -6% 0px' });
+    document.querySelectorAll('.day, .leg-head').forEach(function(el){ io2.observe(el); });
+  }
+
+  // La barra de secciones avisa por dónde sigue.
+  var barra = document.querySelector('.navlinks');
+  if (barra) {
+    var bordes = function(){
+      var resto = barra.scrollWidth - barra.clientWidth;
+      barra.classList.toggle('hay-izq', barra.scrollLeft > 4);
+      barra.classList.toggle('hay-der', resto > 4 && barra.scrollLeft < resto - 4);
+    };
+    barra.addEventListener('scroll', bordes, { passive: true });
+    window.addEventListener('resize', bordes);
+    // Y de nuevo al terminar de cargar: si las tipografías llegan tarde,
+    // los anchos cambian y el desvanecido quedaría del lado equivocado.
+    window.addEventListener('load', bordes);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(bordes);
+    bordes();
+  }
+
+  var links = Array.prototype.slice.call(document.querySelectorAll('.navlinks a'));
+  var targets = links.map(function(a){ return document.querySelector(a.getAttribute('href')); }).filter(Boolean);
+  var barraSup = document.getElementById('barraSup');
+  var avance   = document.getElementById('avance');
+  var heroEl   = document.querySelector('.hero');
+  var auroraEl = document.querySelector('.aurora');
+  var cieloEl  = document.querySelector('.nightsky');
+  var suave    = !reduce;
+
+  var PAISES = ['espana', 'islandia', 'escocia', 'alemania', 'belgica'];
+  function tramoDe(sec){
+    if (!sec) return '';
+    for (var i = 0; i < PAISES.length; i++) {
+      if (sec.classList.contains(PAISES[i])) return PAISES[i];
+    }
+    return '';
+  }
+
+  function spy(){
+    var y = window.scrollY + 90, current = null;
+    targets.forEach(function(t){ if (t.offsetTop <= y) current = t.id; });
+
+    // El color del encabezado sigue al tramo.
+    if (barraSup) {
+      var t = tramoDe(current ? document.getElementById(current) : null);
+      if (barraSup.dataset.tramo !== t) barraSup.dataset.tramo = t;
+    }
+
+    // El avance del viaje.
+    if (avance) {
+      var alto = document.documentElement.scrollHeight - window.innerHeight;
+      var pct = alto > 0 ? Math.min(100, Math.max(0, window.scrollY / alto * 100)) : 0;
+      avance.style.setProperty('--p', pct.toFixed(2) + '%');
+    }
+
+    // Profundidad: el cielo y las auroras bajan m\u00e1s lento que el texto.
+    if (suave && heroEl && window.scrollY < heroEl.offsetHeight) {
+      var d = window.scrollY;
+      if (auroraEl) auroraEl.style.transform = 'translate3d(0,' + (d * 0.30).toFixed(1) + 'px,0)';
+      if (cieloEl)  cieloEl.style.transform  = 'translate3d(0,' + (d * 0.14).toFixed(1) + 'px,0)';
+    }
+    links.forEach(function(a){
+      if (a.getAttribute('href') === '#' + current) {
+        if (a.getAttribute('aria-current') !== 'true' && barra) {
+          // Al cambiar de sección, su botón se trae a la vista solo.
+          var r = a.getBoundingClientRect(), rb = barra.getBoundingClientRect();
+          if (r.left < rb.left || r.right > rb.right) {
+            barra.scrollTo({ left: a.offsetLeft - rb.width / 2 + r.width / 2, behavior: 'smooth' });
+          }
+        }
+        a.setAttribute('aria-current','true');
+      }
+      else { a.removeAttribute('aria-current'); }
+    });
+  }
+  var ticking = false;
+  window.addEventListener('scroll', function(){
+    if (!ticking) { window.requestAnimationFrame(function(){ spy(); ticking = false; }); ticking = true; }
+  }, { passive: true });
+  spy();
+})();
+</script>
+
+<script>
+/* ─────────────────  VENTANA DE BIENVENIDA · CUENTA REGRESIVA  ─────────────── */
+(function(){
+  var SALIDA  = new Date(2026, 8, 16);   // 16/09/2026
+  var REGRESO = new Date(2026, 9, 10);   // 10/10/2026
+
+  /* Cada frase está anclada a un país, y el país le da el color al recuadro.
+     Chile queda afuera a propósito: ahí sólo hacen escala. */
+  var FRASES = [
+    { pais:'Islandia', t:'aurora',
+      p:'Los islandeses dicen <span class="rom">þetta reddast</span>: al final se arregla. No es optimismo — es una manera de habitar la espera.' },
+    { pais:'Islandia', t:'aurora',
+      p:'A las auroras les decían las almas de los que se fueron, bailando. En unos días van a poder preguntarles.' },
+    { pais:'Islandia', t:'aurora',
+      p:'En el equinoccio el día y la noche duran lo mismo, y desde ahí gana la oscuridad. En cualquier otro lugar sería una mala noticia.' },
+    { pais:'Islandia', t:'aurora',
+      p:'Las sagas se escribieron en invierno, cuando no quedaba otra cosa que hacer más que contar. Esperar también es un oficio.' },
+    { pais:'Islandia', t:'aurora',
+      p:'Allá todavía se desvía una ruta con tal de no molestar la piedra donde vive alguien que nadie vio nunca.' },
+    { pais:'Islandia', t:'aurora',
+      p:'Un chico islandés lee sin traducción algo escrito en el año 1200. Hay lugares donde mil años no alcanzan para mover una palabra.' },
+
+    { pais:'Escocia', t:'aurora',
+      p:'<span class="rom">Uisge beatha</span>, agua de vida: de ahí salió la palabra whisky. Y al agua de vida nadie la apura — duerme doce años en un barril.' },
+    { pais:'Escocia', t:'aurora',
+      p:'Los escoceses tienen una palabra, <span class="rom">dreich</span>, para el día gris que no promete nada. Ponerle nombre ya es una forma de aguantarlo.' },
+    { pais:'Escocia', t:'aurora',
+      p:'<span class="rom">Glen</span>, <span class="rom">loch</span>, <span class="rom">ben</span>: valle, lago, monte. Nombres de una sílaba, como si el paisaje no tuviera ganas de explicarse.' },
+
+    { pais:'Alemania', t:'amber',
+      p:'Los alemanes le dicen <span class="rom">Vorfreude</span> a la alegría de antes, la de estar esperando algo bueno. Sostienen que a veces es mejor que la cosa misma.' },
+    { pais:'Alemania', t:'amber',
+      p:'<span class="rom">Gemütlichkeit</span> no se traduce: es el calor de estar entre gente, sin apuro y sin motivo. Es exactamente lo que se va a buscar a una mesa larga.' },
+
+    { pais:'Bélgica', t:'amber',
+      p:'En Bruselas hay una cervecería que no elige su levadura: abre las ventanas y deja que el aire de la ciudad haga el trabajo. Después espera tres años.' },
+    { pais:'Bélgica', t:'amber',
+      p:'Brujas quedó detenida porque su río se llenó de arena y el comercio se fue a otro lado. La ciudad más linda de Flandes es una ciudad a la que le fue mal.' },
+    { pais:'Bélgica', t:'amber',
+      p:'El carillón de Brujas viene sonando cada quince minutos desde hace seiscientos años. Una ciudad entera dedicada a contar el tiempo.' },
+    { pais:'Bélgica', t:'amber',
+      p:'Los hermanos Van Eyck tardaron años en el Cordero Místico. Nadie se acuerda de cuánto tardaron; se acuerdan de lo que hicieron.' },
+
+    { pais:'España', t:'rust',
+      p:'La Sagrada Familia lleva más de ciento cuarenta años en obra. Decía Gaudí que su cliente no tenía apuro.' },
+    { pais:'España', t:'rust',
+      p:'El Mediterráneo fue, durante siglos, el mundo entero. Desde acá el norte era el borde del mapa — y para allá van.' },
+    { pais:'España', t:'rust',
+      p:'Barcelona no es el destino: es la bisagra. Hay lugares cuyo oficio es ser el umbral de otro.' }
+  ];
+
+  /* Dónde están cada día, para que durante el viaje la frase sea del país donde amanecen. */
+  var TRAMOS = [
+    { d0:'2026-09-17', d1:'2026-09-18', pais:'España'  },
+    { d0:'2026-09-19', d1:'2026-09-26', pais:'Islandia' },
+    { d0:'2026-09-27', d1:'2026-09-30', pais:'Escocia'  },
+    { d0:'2026-10-01', d1:'2026-10-04', pais:'Alemania' },
+    { d0:'2026-10-05', d1:'2026-10-08', pais:'Bélgica' },
+    { d0:'2026-10-09', d1:'2026-10-10', pais:'España'  }
+  ];
+
+  // El recuadro toma el color del país de la frase.
+  var TINTES = {
+    'Islandia': { tint:'var(--isl-soft)',   accent:'var(--isl-ink)'   },
+    'Escocia':  { tint:'var(--scot-soft)',  accent:'var(--scot-ink)'  },
+    'Alemania': { tint:'var(--amber-soft)', accent:'var(--amber-ink)' },
+    'B\u00e9lgica':  { tint:'var(--belg-soft)',  accent:'var(--belg-ink)'  },
+    'Espa\u00f1a':   { tint:'var(--rust-soft)',   accent:'var(--rust)'      }
+  };
+
+
+  var ov = document.getElementById('cdOv');
+  if (!ov) return;
+
+  function hoy(){ var n = new Date(); return new Date(n.getFullYear(), n.getMonth(), n.getDate()); }
+  function dias(a, b){ return Math.round((b - a) / 86400000); }
+  function alAzar(a){ return a[Math.floor(Math.random() * a.length)]; }
+  function fechaDe(s){ var p = s.split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); }
+  function q(id){ return document.getElementById(id); }
+
+  function frasePais(pais){
+    var f = FRASES.filter(function(x){ return x.pais === pais; });
+    return f.length ? alAzar(f) : alAzar(FRASES);
+  }
+  function paisDelDia(h){
+    for (var i = 0; i < TRAMOS.length; i++) {
+      if (h >= fechaDe(TRAMOS[i].d0) && h <= fechaDe(TRAMOS[i].d1)) return TRAMOS[i].pais;
+    }
+    return null;
+  }
+
+  var h = hoy();
+  var faltan = dias(h, SALIDA);
+
+  var num = q('cdNum'), unit = q('cdUnit'), when = q('cdWhen');
+  var wait = q('cdWait'), pais = q('cdPais');
+  var frase;
+
+  // ── El número grande y su leyenda ──
+  if (faltan > 0) {
+    num.textContent = faltan;
+    unit.textContent = faltan === 1 ? 'día para salir' : 'días para salir';
+    when.textContent = 'Salen el 16 de septiembre de 2026';
+    frase = alAzar(FRASES);
+
+  } else if (faltan === 0) {
+    num.textContent = 'Hoy';
+    num.className = 'cd-num short';
+    unit.textContent = 'se termina la espera';
+    when.textContent = 'Punta Arenas → Santiago · 18:30';
+    frase = alAzar(FRASES);
+
+  } else if (h <= REGRESO) {
+    num.textContent = dias(SALIDA, h) + 1;
+    unit.textContent = 'día de viaje, de 24';
+    when.textContent = 'Están adentro del viaje';
+    var donde = paisDelDia(h);
+    frase = donde ? frasePais(donde) : alAzar(FRASES);
+
+  } else {
+    num.textContent = '24';
+    unit.textContent = 'días que ya vivieron';
+    when.textContent = 'Septiembre — octubre de 2026';
+    frase = alAzar(FRASES);
+  }
+
+  // ── La frase, con el color de su país ──
+  var tinte = TINTES[frase.pais] || { tint:'var(--surface-2)', accent:'var(--ink-3)' };
+  var caja = q('cdFrase');
+  caja.style.setProperty('--tint', tinte.tint);
+  caja.style.setProperty('--accent', tinte.accent);
+  wait.innerHTML = frase.p;
+  pais.textContent = frase.pais;
+
+  // ── Abrir y cerrar ──
+  var abierto = false;
+  function abrir(){
+    ov.hidden = false;
+    document.body.classList.add('cd-open');
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){ ov.classList.add('on'); });
+    });
+    abierto = true;
+    // El foco va al diálogo, no al botón: entra al modal sin dejar el anillo puesto.
+    setTimeout(function(){ var b = q('cdBox'); if (b) b.focus(); }, 360);
+  }
+  function cerrar(){
+    if (!abierto) return;
+    abierto = false;
+    ov.classList.remove('on');
+    document.body.classList.remove('cd-open');
+    setTimeout(function(){ ov.hidden = true; }, 200);
+  }
+
+  q('cdX').addEventListener('click', cerrar);
+  q('cdGo').addEventListener('click', cerrar);
+  ov.addEventListener('click', function(e){ if (e.target === ov) cerrar(); });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') cerrar(); });
+
+  setTimeout(abrir, 250);
+})();
+</script>

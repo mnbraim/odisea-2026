@@ -864,7 +864,7 @@ footer .wrap{display:flex;gap:20px;flex-wrap:wrap;justify-content:space-between}
 }
 
 .cd-go{
-  margin-top:22px;width:100%;
+  flex:1 1 auto;
   padding:12px 20px;border:0;border-radius:999px;cursor:pointer;
   background:var(--aurora);color:var(--surface);
   font-family:var(--body);font-size:14.5px;font-weight:600;letter-spacing:.01em;
@@ -874,6 +874,23 @@ footer .wrap{display:flex;gap:20px;flex-wrap:wrap;justify-content:space-between}
   .cd-go:hover{filter:brightness(1.08)}
 }
 .cd-go:active{transform:scale(.975)}
+
+/* Los dos botones van lado a lado. El de "Lo que falta" es solo-org: el
+   generador lo borra, y ahi el contenedor queda con un solo boton, que se
+   estira igual. */
+.cd-acciones{display:flex;gap:10px;align-items:stretch;margin-top:22px}
+.cd-falta{
+  display:flex;align-items:center;justify-content:center;white-space:nowrap;
+  padding:12px 18px;border:1px solid var(--line);border-radius:999px;
+  background:var(--surface-2);color:var(--ink-2);text-decoration:none;
+  font-family:var(--body);font-size:14.5px;font-weight:600;letter-spacing:.01em;
+  transition:transform 140ms var(--cd-out), background 160ms ease, color 160ms ease, border-color 160ms ease;
+}
+@media (hover:hover) and (pointer:fine){
+  .cd-falta:hover{background:var(--surface);color:var(--ink);border-color:var(--line-soft)}
+}
+.cd-falta:active{transform:scale(.975)}
+@media (max-width:420px){ .cd-acciones{flex-direction:column} }
 .cd-hint{
   margin-top:10px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;
   text-transform:uppercase;color:var(--ink-3);opacity:.7;
@@ -890,6 +907,101 @@ body.cd-open{overflow:hidden}
   .cd,.cd-ov.on .cd{transform:none}
   .cd-glow{animation:none}
   .cd-ov.on .cd-stagger{animation:none}
+}
+
+/* ─────────────────────────  FICHA DEL DÍA  ─────────────────────────── */
+/* La agenda es para el vistazo; la ficha es para leer el día con tiempo.
+   Vive dentro del día como un bloque más: sin JS, sin CSS o al imprimir se
+   lee ahí donde está. Recién cuando el JS confirma que corre se la lleva a
+   pantalla completa — nunca al revés. Si estuviera oculta esperando que el JS
+   la muestre, un fallo del JS la borraría de la página. */
+.ficha{margin-top:22px;padding-top:20px;border-top:1px solid var(--line-soft)}
+.js .ficha{display:none}
+.js .ficha.on{
+  display:block;position:fixed;inset:0;z-index:90;
+  margin:0;padding:0;border-top:0;
+  background:var(--ground);overflow-y:auto;-webkit-overflow-scrolling:touch;
+  /* Sin fundido a proposito. Cualquier animacion que arranque en opacity 0
+     deja una ventana en la que la ficha ya tapa la pantalla pero todavia no
+     se ve, y si ese cuadro no llega nunca -pestana en segundo plano, motor
+     sin pintar, animaciones apagadas- queda un rectangulo vacio encima de
+     todo y sin salida visible. Aparecer de una no cuesta nada. */
+}
+body.ficha-abierta{overflow:hidden}
+
+/* El botón es pura interacción: sin JS no hace nada, y no se muestra. */
+.ver-ficha{display:none}
+.js .ver-ficha{
+  display:inline-flex;align-items:center;gap:9px;margin-top:18px;cursor:pointer;
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;
+  color:#fff;background:var(--legc);
+  border:0;border-radius:999px;padding:13px 22px;box-shadow:var(--shadow);
+  transition:filter .18s var(--out), transform .18s var(--out);
+}
+.js .ver-ficha:hover{filter:brightness(1.12)}
+.js .ver-ficha:active{transform:scale(.975)}
+
+.ficha-barra{display:flex;align-items:center;padding:11px 20px;background:var(--legc);color:#fff}
+.js .ficha.on .ficha-barra{position:sticky;top:0;z-index:2}
+.ficha .volver{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;
+  cursor:pointer;background:transparent;color:#fff;
+  border:1px solid rgba(255,255,255,.5);border-radius:999px;padding:8px 15px;
+  transition:background .18s var(--out);
+}
+.ficha .volver:hover{background:rgba(255,255,255,.16)}
+.ficha-dia{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--legc-ink);margin-bottom:8px;
+}
+.ficha-cuerpo{max-width:var(--wrap);margin:0 auto;padding:30px 20px 70px}
+.ficha-tit{font-family:var(--display);font-size:27px;letter-spacing:-.01em;color:var(--ink)}
+.ficha-lede{margin-top:10px;font-size:15px;color:var(--ink-2);line-height:1.7;max-width:var(--measure)}
+.ficha-luz{
+  font-family:var(--mono);font-size:11px;color:var(--ink-3);
+  letter-spacing:.04em;margin-top:14px;
+}
+.ficha .volver-pie{margin-top:34px;width:100%;justify-content:center;
+  background:var(--legc);border-color:var(--legc);padding:13px 15px}
+
+.paradas{list-style:none;margin:26px 0 0;padding:0}
+.paradas li::before{content:none}
+.parada{
+  display:grid;grid-template-columns:78px 1fr;gap:0 18px;
+  padding:20px 0;border-top:1px solid var(--line-soft);
+}
+.p-hora{font-family:var(--mono);font-size:12.5px;font-weight:700;color:var(--legc-ink);padding-top:3px}
+.p-cuerpo{min-width:0}
+.p-nom{font-family:var(--display);font-size:19px;color:var(--ink);letter-spacing:-.005em}
+.p-que{margin-top:8px;font-size:14.5px;color:var(--ink-2);line-height:1.68;max-width:var(--measure)}
+.p-dato{
+  margin-top:7px;font-size:13px;color:var(--ink-2);line-height:1.6;max-width:var(--measure);
+}
+.p-dato b{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--ink-3);font-weight:400;margin-right:7px;
+}
+.p-ojo{
+  margin-top:10px;font-size:13.5px;line-height:1.6;max-width:var(--measure);
+  color:var(--legc-ink);background:var(--legc-soft);
+  padding:9px 13px;border-radius:4px;
+}
+@media (max-width:640px){
+  /* Es la puerta al dia entero: a ancho completo no hay que apuntarle. */
+  .js .ver-ficha{width:100%;justify-content:center}
+  .parada{grid-template-columns:1fr;gap:6px}
+  .p-hora{padding-top:0}
+  .ficha-cuerpo{padding:24px 20px 56px}
+  .ficha-tit{font-size:23px}
+}
+@media print{
+  /* Al imprimir vuelve a ser un bloque del día: sin barra y sin botones. */
+  .ficha{break-inside:auto}
+  .ficha-barra,.ficha .volver,.ver-ficha{display:none !important}
+  .parada{break-inside:avoid}
+}
+@media (prefers-reduced-motion:reduce){
+  .js .ver-ficha:active{transform:none}
 }
 </style>
 
@@ -936,13 +1048,13 @@ body.cd-open{overflow:hidden}
       <span class="brand-txt">Odisea Europea <span>2026</span></span>
     </div>
     <nav class="navlinks" aria-label="Secciones">
-      
       <a href="#barcelona">Barcelona</a>
       <a href="#islandia">Islandia</a>
       <a href="#edimburgo">Edimburgo</a>
       <a href="#munich">Múnich</a>
       
       <a href="#belgica">Bélgica</a>
+      
       
       
       
@@ -1020,9 +1132,6 @@ body.cd-open{overflow:hidden}
 </div>
 
 <main>
-
-<!-- ══════════════════════════  PENDIENTES  ══════════════════════════ -->
-
 
 <!-- ══════════════════════════  BARCELONA  ══════════════════════════ -->
 <section id="barcelona" class="reveal pais espana">
@@ -1155,16 +1264,18 @@ body.cd-open{overflow:hidden}
           <h4>Reikiavik a pie</h4>
           
           <p class="plan llano">Único día entero en la ciudad, y todavía sin auto. Conviene que todo quede a distancia de caminata o de una combi.</p>
+
+          
           
           <ul class="solo-fam">
             
-            <li class="llano">La <strong>iglesia grande de la ciudad</strong> (Hallgrímskirkja) — se sube a la torre y desde arriba se ven todos los techos de colores. Es la mejor foto de día de Reikiavik.</li>
+            <li class="llano">La <strong>iglesia grande de la ciudad</strong> (Hallgrímskirkja) — se sube a la torre y desde arriba se ven todos los techos de colores. Es la mejor foto de día de Reikiavik. Un detalle: el domingo hay misa a las 11 y la iglesia vuelve a abrir a las <strong>12:30</strong>, así que se visita después del mediodía.</li>
             
             <li class="llano">La escultura del <strong>barco vikingo</strong> (Sun Voyager) y el teatro de vidrio (<strong>Harpa</strong>), los dos sobre la costanera. La vuelta, por la calle de los negocios.</li>
             
-            <li class="llano">Una piscina termal municipal (Sundhöllin o Laugardalslaug) es la costumbre local de verdad, y sale una fracción de lo que sale la Blue Lagoon. Si prefieren el lujo, la <strong>Sky Lagoon</strong> los pasa a buscar por el centro.</li>
+            <li class="llano">El <strong>mercado de pulgas</strong> (Kolaportið), en el edificio de la vieja aduana. Abre <strong>sólo los fines de semana</strong>, de 11 a 17, y este día es domingo — o sea que lo agarran abierto. Hay antigüedades, ropa, artesanías y un puesto de comida islandesa.</li>
             
-            <li class="llano">Si llueve: el museo <strong>Perlan</strong> tiene una sala tipo planetario dedicada a las auroras. Sirve para entender qué hay que mirar las noches siguientes.</li>
+            <li class="llano">La tarde es para <strong>Perlan</strong>, un museo arriba de una colina. Tiene una sala redonda tipo planetario, <strong>Áróra</strong>, dedicada por entero a las auroras, una cueva de hielo de verdad por adentro y una sala de volcanes. Cae justo antes de las mejores noches del viaje, así que ayuda a saber qué mirar.</li>
                       <li><strong>Para probar</strong> — el <strong>skyr</strong> (se dice "skiur"): parece yogur pero es un queso muy suave y sin grasa, que los islandeses comen desde hace mil años; viene con fruta y se toma a cualquier hora. Y los <strong>pylsur</strong> ("pilsur"), los panchos de acá: son de cordero y se piden "con todo" — cebolla frita, cebolla cruda y dos salsas. Hay un puesto en el puerto al que va todo el mundo.</li>
 </ul>
           <div class="moon">
@@ -1183,6 +1294,10 @@ body.cd-open{overflow:hidden}
           
           <p class="plan llano">Acá arranca la parte del viaje en auto. Lo retiran a las <strong>08:30 en Reikiavik</strong>: es una camioneta 4x4, automática. Entre los papeles y acomodar las valijas, salen a la ruta cerca de las 09:00.</p>
           
+          <div class="solo-fam">
+            
+            <div class="flag ok llano"><b>La punta oeste pasó al martes.</b> Con las termas adentro, los dos lugares de la punta no entraban sin estirar el día a diez horas y media. El martes estaba casi libre, así que se reparten: los dos días quedan parejos y no se pierden nada.</div>
+          </div>
           <div class="moon">
             <svg width="17" height="17" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="none" stroke="currentColor" stroke-opacity=".35"/><path d="M10,1 A9,9 0 0 1 10,19 A4.5,9 0 0 1 10,1 Z" fill="var(--moon-lit)"/></svg>
             
@@ -1233,6 +1348,10 @@ body.cd-open{overflow:hidden}
             
             <li class="llano"><strong>Skógafoss</strong> — una pared de agua de 60 metros que cae de frente. Hay una escalera para subir al mirador de arriba.</li>
           </ul>
+          <div class="solo-fam">
+            
+            <div class="flag ok llano"><b>Día aligerado a propósito.</b> Sólheimasandur y Dyrhólaey pasaron al jueves, que es un día en que no se mueven de Vík. Esta es la noche con más chances de auroras fuertes de todo el viaje: conviene llegar temprano y descansados, y no a las siete de la tarde después de once horas de ruta.</div>
+          </div>
           <div class="moon">
             <svg width="17" height="17" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="none" stroke="currentColor" stroke-opacity=".35"/><path d="M10,1 A9,9 0 0 1 10,19 A7.2,9 0 0 1 10,1 Z" fill="var(--moon-lit)"/></svg>
             
@@ -1256,6 +1375,10 @@ body.cd-open{overflow:hidden}
             
             <li class="llano">La <strong>playa negra</strong> (Reynisfjara) — arena negra, una pared de columnas de piedra que parece un órgano de iglesia, y unas agujas de roca saliendo del mar. Mejor a la tarde, con buena luz. Queda justo donde duermen.</li>
           </ul>
+          <div class="solo-fam">
+            
+            <div class="flag llano"><b>Cuidado en serio:</b> en esa playa hay olas que de golpe entran mucho más arriba de lo que uno espera, y se han llevado gente. No le den la espalda al mar y no se acerquen a la orilla para sacar la foto.</div>
+          </div>
           <div class="moon">
             <svg width="17" height="17" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="none" stroke="currentColor" stroke-opacity=".35"/><path d="M10,1 A9,9 0 0 1 10,19 A8.3,9 0 0 1 10,1 Z" fill="var(--moon-lit)"/></svg>
             
@@ -1307,7 +1430,14 @@ body.cd-open{overflow:hidden}
             <li class="llano"><strong>3 · Termas</strong> — todavía están decidiendo a cuál de las dos van.</li>
           </ul>
 
+          <div class="solo-fam">
+            
+            <div class="flag llano"><b>Þingvellir queda afuera.</b> Es el tercer punto del Círculo Dorado: ahí se ve la grieta por donde se separan dos placas de la Tierra, y es el lugar donde los vikingos hacían sus asambleas allá por el año 930. Pero es el que menos impresiona a simple vista y el que más tiempo lleva: 50 minutos de manejo más una hora de visita. Sacándolo entran las termas sin estirar el día a más de once horas.</div>
+          </div>
           
+          <div class="solo-fam">
+            <div class="flag ok"><b>Esa noche no pierden auroras.</b> Es luna llena, la peor del viaje. Meterse en agua caliente es exactamente lo que hay que hacer con esa noche.</div>
+          </div>
           <div class="moon">
             <svg width="17" height="17" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="none" stroke="currentColor" stroke-opacity=".35"/><path d="M10,1 A9,9 0 0 1 10,19 A9,9 0 0 1 10,1 Z" fill="var(--moon-lit)"/></svg>
             
@@ -1455,23 +1585,25 @@ body.cd-open{overflow:hidden}
         <span class="meta">Días 15–18 · 3 noches</span>
       </div>
       
-      <p class="leg-intro llano">Esta es la edición número 191 del Oktoberfest y va del 19 de septiembre al 4 de octubre, así que les toca justo el cierre. Pero hay un detalle que cambia todo: el tren sale el 4 a las <strong>12:45</strong>. Así que, en la práctica, tienen <strong>tres tardes</strong> de fiesta — el 1, el 2 y el 3 — y nada más.</p>
+      <p class="leg-intro llano">Esta es la edición número 191 del Oktoberfest y va del 19 de septiembre al 4 de octubre, así que les toca justo el cierre. El tren sale el 4 a las <strong>12:45</strong>, y el jueves llegan recién a media tarde. Así que la fiesta se juega el <strong>viernes, el sábado y la mañana del domingo</strong>. El jueves queda para conocer la ciudad, que es el único hueco que hay en los cuatro días.</p>
 
       <div class="day">
         <div class="day-date"><span class="dnum">día 15</span><span class="dd">1/10</span><span class="dw">jueves</span></div>
         <div class="day-rail"><span class="node big"></span></div>
         <div class="day-body">
-          <h4>Edimburgo → Múnich · primera noche de Wiesn</h4>
+          <h4>Edimburgo → Múnich · la ciudad y el Glockenbach</h4>
           
-          <p class="plan llano">Llegan a las 13:45 a la Terminal 2. En tren urbano son 45 minutos hasta el centro, así que a las 16:00 ya pueden estar adentro de una de las carpas de la fiesta.</p>
+          <p class="plan llano">Llegan a las 13:45 a la Terminal 2 y están en el hotel a las 15:20. La tarde alcanza justo para lo único que no entra en ningún otro día: comprar la ropa típica bávara y conocer el centro viejo. La fiesta arranca mañana.</p>
           
           <ul class="solo-fam">
             
-            <li class="llano">El jueves es día de semana, y la ley obliga a las carpas a dejar una de cada cuatro mesas sin reservar. Es el día más fácil de los tres para entrar.</li>
+            <li class="llano">La tarde es para conocer la ciudad, que es el único rato libre de los cuatro días: el mercado central, la plaza principal con la iglesia de las dos cúpulas, y la torre de la iglesia vieja de San Pedro — 300 escalones, y desde arriba se ve Múnich entera y los Alpes al fondo si el día está claro.</li>
             
-            <li class="llano">Para este día hay paquetes con lugar asegurado en el <strong>turno de la noche</strong>, en dos carpas: una da dos jarras y un vale de consumo, y la otra dos jarras, medio pollo y un vale. El horario les calza justo con la llegada — es la opción más cómoda del viaje.</li>
+            <li class="llano">El sol se pone a las 18:53, así que suben a la torre justo con la última luz del día.</li>
             
-            <li class="llano">El predio donde se hace la fiesta tiene su propia estación de subte, y duermen justo del lado correcto.</li>
+            <li class="llano">La noche es en el <strong>Glockenbach</strong>, el barrio de bares de Múnich: cuadras enteras de bares chicos y restaurantes alrededor de una plaza. Se camina todo, y duermen a quince minutos de ahí.</li>
+            
+            <li class="llano">También es el día de comprar la <strong>ropa típica</strong> — el vestido bávaro y el pantalón de cuero. No es un disfraz: durante la fiesta la gente anda así por toda la ciudad, y ayuda de verdad para que te hagan un lugar en la mesa.</li>
           </ul>
           <div class="chips"><span class="chip fly solo-fam">LUFTHANSA LH2691 · EDI 10:30 → MUC 13:45</span></div>
         </div>
@@ -1481,17 +1613,17 @@ body.cd-open{overflow:hidden}
         <div class="day-date"><span class="dnum">día 16</span><span class="dd">2/10</span><span class="dw">viernes</span></div>
         <div class="day-rail"><span class="node"></span></div>
         <div class="day-body">
-          <h4>Wiesn, día completo</h4>
+          <h4>Augustiner a la mañana, la Wiesn con los cuatro</h4>
           
-          <p class="plan llano">Viernes: todavía vale la regla de una de cada cuatro mesas sin reservar. Pero después de las 17:00 la carpa se llena y cierran las puertas hasta que salga gente.</p>
+          <p class="plan llano">El mejor momento de toda la semana para entrar sin reserva es un viernes, de 10:00 a 15:00. A las 16:00 se suman dos personas más en el hotel, y la tarde es para recorrer la fiesta entre los cuatro.</p>
           
           <ul class="solo-fam">
             
-            <li class="llano">Hay paquete para la carpa <strong>Paulaner, al mediodía</strong> — dos jarras y medio pollo por persona, y entran sin hacer cola.</li>
+            <li class="llano">La carpa de la mañana es la <strong>Augustiner</strong>: es la única que sirve la cerveza sacada de barriles de madera, y es la que eligen los que viven en Múnich. Hasta las 18:00 la ley obliga a todas las carpas a tocar sólo música de banda y bajito, así que la mañana es la parte tranquila y tradicional del día.</li>
             
-            <li class="llano">Si van sin reserva, tienen que estar adentro antes de las 12:00. Después de las 15:00 ya no se consigue lugar.</li>
+            <li class="llano">Al mediodía se pasan por la <strong>Oide Wiesn</strong>, que es el sector antiguo, al sur: la entrada es barata, hay bailes típicos, gente haciendo sonar látigos y calesitas de antes de la guerra. Es la parte más bávara de todo el predio y casi ningún turista la hace.</li>
             
-            <li class="llano">Afuera de las carpas también vale la pena caminar el parque: los juegos, los puestos de esos corazones de pan dulce con letras, y el mirador que hay adentro de la estatua gigante de la Bavaria.</li>
+            <li class="llano">A las 16:00 se suman dos personas más, y la tarde es caminar la fiesta entre los cuatro: los juegos, los puestos de esos corazones de pan dulce con letras, el <em>Toboggan</em> — una cinta que sube gente y por la que nadie llega parado — y la rueda gigante, que los viernes anda hasta medianoche.</li>
                       <li><strong>Para probar</strong> — las <strong>Weisswurst</strong> ("vais-vurst"), las salchichas blancas de Baviera: se comen sólo antes del mediodía, se les saca la piel y van con mostaza dulce y un <strong>Brezn</strong> ("bretsn"), ese pan salado con forma de nudo. Es el desayuno de por acá.</li>
 </ul>
         </div>
@@ -1503,11 +1635,11 @@ body.cd-open{overflow:hidden}
         <div class="day-body">
           <h4>El día más difícil del festival</h4>
           
-          <p class="plan llano">Sábado <em>y</em>, encima, Día de la Unidad Alemana, que es feriado nacional. Es la peor combinación posible: no hay ningún paquete con lugar asegurado para esta fecha, y las carpas cierran las puertas temprano. Y es el último día entero que tienen.</p>
+          <p class="plan llano">Sábado <em>y</em>, encima, Día de la Unidad Alemana, que es feriado nacional. Es la peor combinación posible: no hay ningún paquete con lugar asegurado, y las carpas cierran las puertas temprano. Pero abren a las <strong>09:00</strong>, y ahí está la jugada: no hacen cola todo el día, hacen dos horas de cola y catorce adentro.</p>
           
           <ul class="solo-fam">
             
-            <li class="llano">Lo bueno: los sábados, hasta las 15:00, la ley obliga a dejar libre casi la mitad de los lugares. La cola de las 10:00 de la mañana es la que entra.</li>
+            <li class="llano">Lo bueno: los sábados, hasta las 15:00, la ley obliga a dejar libre casi la mitad de los lugares. Y como es feriado, las carpas abren a las 09:00: la cola de las 07:00 de la mañana es la que entra, y la que después se sienta donde quiere.</li>
             
             <li class="llano">El plan B es tan bueno como el A: la <strong>Oide Wiesn</strong>, que es el sector antiguo, al sur del predio. La entrada es barata, y gratis después de las 21:00. Tiene calesitas de antes de la guerra y una carpa grande, la <strong>Tradition</strong>, que es la única que no exige gastar un mínimo para reservar.</li>
             
@@ -1523,14 +1655,13 @@ body.cd-open{overflow:hidden}
         <div class="day-body">
           <h4>Mañana corta y tren <span class="tapadera">al norte</span></h4>
           
-          <p class="plan llano">El tren sale de la estación central de Múnich a las <strong>12:45</strong>. Entre armar las valijas y llegar a la estación, la mañana da apenas para un desayuno bávaro y una vuelta rápida.</p>
+          <p class="plan llano">El tren sale de la estación central de Múnich a las <strong>12:45</strong>. Los domingos la fiesta abre a las 09:00 y queda a ocho minutos del hotel: la mañana da justo para una última vuelta antes de agarrar las valijas.</p>
           
           <div class="chips solo-fam"><span class="chip fly">ICE 626 · München 12:45 · 1ª clase</span></div>
         </div>
       </div>
     </div>
 
-    
   </div>
 </section>
 
@@ -1698,6 +1829,9 @@ body.cd-open{overflow:hidden}
   </div>
 </section>
 
+<!-- ══════════════════════════  PENDIENTES  ══════════════════════════ -->
+
+
 <!-- ══════════════════════════  RESERVAS  ══════════════════════════ -->
 
 
@@ -1741,7 +1875,10 @@ body.cd-open{overflow:hidden}
         </div>
       </div>
       <div class="cd-stagger">
-        <button class="cd-go" id="cdGo">Vamos</button>
+        <div class="cd-acciones">
+          <button class="cd-go" id="cdGo">Vamos</button>
+          
+        </div>
         <div class="cd-hint">Esc para cerrar</div>
       </div>
     </div>
@@ -2070,9 +2207,81 @@ body.cd-open{overflow:hidden}
 
   q('cdX').addEventListener('click', cerrar);
   q('cdGo').addEventListener('click', cerrar);
+  // El atajo a "Lo que falta". En la version familiar ese boton no existe.
+  var irFalta = q('cdFalta');
+  if (irFalta) irFalta.addEventListener('click', cerrar);
   ov.addEventListener('click', function(e){ if (e.target === ov) cerrar(); });
   document.addEventListener('keydown', function(e){ if (e.key === 'Escape') cerrar(); });
 
   setTimeout(abrir, 250);
+})();
+
+/* ─── La ficha del día ───────────────────────────────────────────────
+   Reusa de la ventana de bienvenida la clase `.on`, el scroll trabado atrás y
+   el cierre con Escape. No reusa el fundido: acá la ficha ocupa la pantalla
+   entera, y una que quedara en opacity 0 sería un rectángulo vacío tapando
+   todo, sin salida visible. Aparece de una.
+
+   Dos cosas propias:
+
+   · La ficha se muda al <body> al abrirse y vuelve a su lugar al cerrarse.
+     Es `position:fixed`, y un ancestro con `transform` la anclaría a ese
+     ancestro en vez de a la pantalla — `.day` tiene transform mientras entra.
+     Mudarla saca el problema de raíz.
+
+   · `history.pushState` al abrir: así el botón "atrás" del celular también
+     vuelve al itinerario, que es el gesto que uno hace sin pensar. */
+(function(){
+  'use strict';
+  var abierta = null, ancla = null, siguiente = null, desde = 0, empujado = false;
+
+  function abrir(f){
+    if (abierta) return;
+    desde = window.pageYOffset;
+    ancla = f.parentNode; siguiente = f.nextSibling;
+    document.body.appendChild(f);
+    f.classList.add('on');
+    document.body.classList.add('ficha-abierta');
+    abierta = f;
+    // preventScroll: enfocar el boton hace que el navegador lo "traiga a la
+    // vista" y la ficha arranca scrolleada 40px, con la fecha tapada.
+    var v = f.querySelector('.volver');
+    if (v) { try { v.focus({ preventScroll: true }); } catch (e) { v.focus(); } }
+    f.scrollTop = 0;
+    try { history.pushState({ ficha: f.id }, ''); empujado = true; }
+    catch (e) { empujado = false; }
+  }
+
+  function cerrar(porHistoria){
+    var f = abierta;
+    if (!f) return;
+    abierta = null;
+    document.body.classList.remove('ficha-abierta');
+    f.classList.remove('on');
+    if (ancla) ancla.insertBefore(f, siguiente);
+    window.scrollTo(0, desde);
+    if (empujado && !porHistoria) { empujado = false; try { history.back(); } catch (e) {} }
+    else { empujado = false; }
+  }
+
+  var botones = document.querySelectorAll('.ver-ficha[data-ficha]');
+  for (var i = 0; i < botones.length; i++) {
+    (function(b){
+      b.addEventListener('click', function(){
+        var f = document.getElementById(b.getAttribute('data-ficha'));
+        if (f) abrir(f);
+      });
+    })(botones[i]);
+  }
+
+  var volver = document.querySelectorAll('.ficha .volver');
+  for (var j = 0; j < volver.length; j++) {
+    volver[j].addEventListener('click', function(){ cerrar(false); });
+  }
+
+  window.addEventListener('popstate', function(){ cerrar(true); });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && abierta) cerrar(false);
+  });
 })();
 </script>

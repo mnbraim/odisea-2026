@@ -534,7 +534,8 @@ body::after{
    icono y monoespaciada. Cambian solo el icono y el color. Los
    traslados llevan el color del pais porque son lo que no se puede
    mover; el alojamiento va neutro, que es dato de consulta. */
-.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px}
+/* Uno debajo del otro: son datos para leer, no etiquetas para barrer. */
+.chips{display:flex;flex-direction:column;align-items:flex-start;gap:6px;margin-top:18px}
 .chip{
   display:inline-flex;align-items:center;gap:6px;
   font-family:var(--mono);font-size:11px;letter-spacing:.03em;line-height:1.45;
@@ -542,14 +543,18 @@ body::after{
   color:var(--ink-2);background:var(--surface);white-space:nowrap;
 }
 .chip-ico{width:13px;height:13px;flex:none;display:block;opacity:.9}
-.chip.fly,.chip.car{
+.chip.fly,.chip.car,.chip.bus{
   border-color:color-mix(in srgb,var(--legc) 42%,var(--line));
   color:var(--legc-ink);background:color-mix(in srgb,var(--legc-soft) 50%,var(--surface));
 }
-.chip.sun{
+/* Un solo chip con los tres momentos del dia, cada uno con su icono.
+   De la noche va solo la hora en que empieza: la de terminar no le
+   sirve a nadie a las once de la noche. */
+.chip.sky{
   border-color:color-mix(in srgb,var(--amber) 40%,var(--line));
   color:var(--amber-ink);background:color-mix(in srgb,var(--amber-soft) 45%,var(--surface));
 }
+.chip.sky .chip-ico:not(:first-child){margin-left:4px}
 .chip.bed{border-color:var(--line);color:var(--ink-2);background:var(--surface-2)}
 .chip.warn{
   border-color:color-mix(in srgb,var(--rust) 48%,var(--line));
@@ -1006,6 +1011,7 @@ body.ficha-abierta{overflow:hidden}
 .p-hora{font-family:var(--mono);font-size:12.5px;font-weight:700;color:var(--legc-ink);padding-top:3px}
 .p-cuerpo{min-width:0}
 .p-nom{font-family:var(--display);font-size:19px;color:var(--ink);letter-spacing:-.005em}
+.p-nom .ico{width:15px;height:15px;vertical-align:-2px;margin-right:7px;display:inline-block}
 .p-que{margin-top:8px;font-size:14.5px;color:var(--ink-2);line-height:1.68;max-width:var(--measure)}
 .p-dato{
   margin-top:7px;font-size:13px;color:var(--ink-2);line-height:1.6;max-width:var(--measure);
@@ -1042,9 +1048,31 @@ body.ficha-abierta{overflow:hidden}
 
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
-  <symbol id="iSol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
-    <circle cx="12" cy="12" r="4.1"/>
-    <path d="M12 2.4v2.5M12 19.1v2.5M2.4 12h2.5M19.1 12h2.5M5.2 5.2l1.8 1.8M17 17l1.8 1.8M18.8 5.2 17 7M7 17l-1.8 1.8"/>
+  <symbol id="iBirra" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M6 8.5h9v12a1.5 1.5 0 0 1-1.5 1.5h-6A1.5 1.5 0 0 1 6 20.5z"/>
+    <path d="M15 11h2.4a1.6 1.6 0 0 1 1.6 1.6v3.8a1.6 1.6 0 0 1-1.6 1.6H15"/>
+    <path d="M6 8.5c0-1.7 1-2.6 2.4-2.6.1-1.5 1.2-2.4 2.6-2.4 1.1 0 2 .6 2.4 1.5 1.2-.3 2.6.5 2.6 2.1 0 .5-.1 1-.4 1.4"/>
+    <path d="M9 12v6.5M12 12v6.5"/>
+  </symbol>
+  <symbol id="iBus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="4" y="3.4" width="16" height="13.6" rx="2.6"/>
+    <path d="M4 10.4h16M7.4 20.4l-1.2 2M16.6 20.4l1.2 2M4 17h16"/>
+    <path d="M8 13.9h.01M16 13.9h.01"/>
+  </symbol>
+  <symbol id="iAmanece" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M2.5 19.5h19"/>
+    <path d="M12 4.2V2M5.6 7.1 4.1 5.6M18.4 7.1l1.5-1.5M3 14.4H1.4M22.6 14.4H21"/>
+    <path d="M6.6 15.6a5.4 5.4 0 0 1 10.8 0"/>
+    <path d="M8.8 8.6 12 5.4l3.2 3.2"/>
+  </symbol>
+  <symbol id="iAtardece" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M2.5 19.5h19"/>
+    <path d="M12 2.4v2.2M5.6 7.1 4.1 5.6M18.4 7.1l1.5-1.5M3 14.4H1.4M22.6 14.4H21"/>
+    <path d="M6.6 15.6a5.4 5.4 0 0 1 10.8 0"/>
+    <path d="M8.8 5.4 12 8.6l3.2-3.2"/>
+  </symbol>
+  <symbol id="iNoche" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M20.4 14.6A8.6 8.6 0 1 1 9.4 3.6a6.9 6.9 0 0 0 11 11z"/>
   </symbol>
   <symbol id="iCama" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
     <path d="M3 18V6"/><path d="M3 11h18v7"/><path d="M3 15h18"/>
@@ -1241,7 +1269,6 @@ body.ficha-abierta{overflow:hidden}
           <h4>Santiago → Barcelona</h4>
           
           <p class="plan llano">El vuelo largo del viaje. Sale a las 11:20 y llega a Barcelona a las 6 de la mañana del día siguiente. Se duerme en el avión.</p>
-          
           <div class="chips solo-fam"><span class="chip fly"><svg class="chip-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#iAvion"/></svg>LEVEL · SCL→BCN · 11:20 → 06:00 (+1)</span></div>
         </div>
       </div>
@@ -1301,7 +1328,7 @@ body.ficha-abierta{overflow:hidden}
         <div class="day-body">
           <h4>Barcelona → Reikiavik</h4>
           
-          <p class="plan llano">Mañana libre en Barcelona, vuelo a media tarde y llegada a Reikiavik con luz todavía. <strong>El auto lo retiran recién el 21</strong>, así que del aeropuerto al centro tienen que ir por su cuenta: son 45 minutos en un micro que se llama <strong>Flybus</strong>, y conviene sacar el pasaje por internet antes, no en la ventanilla.</p>
+          <p class="plan llano">Mañana libre en Barcelona, vuelo a media tarde y llegada a Reikiavik con luz todavía. <strong>El auto lo retiran recién el 21</strong>, así que del aeropuerto al centro tienen que ir por su cuenta: son 45 minutos en un micro que se llama <strong>Flybus</strong>. Los pasajes <strong>ya están comprados</strong>.</p>
           
           
           
@@ -1553,22 +1580,26 @@ body.ficha-abierta{overflow:hidden}
         <span class="meta">Días 11–15 · 4 noches</span>
       </div>
       
-      <p class="leg-intro llano">Cuatro noches en pleno casco antiguo: casi todo se hace caminando desde la puerta. Fines de septiembre es la mejor época para ir. El festival grande de la ciudad ya pasó, los precios bajaron y Edimburgo vuelve a su tamaño normal.</p>
+      <p class="leg-intro llano">Cuatro noches sobre el <strong>Grassmarket</strong>, la plaza que queda justo abajo del peñón donde está el castillo: casi todo se hace caminando desde la puerta. El tramo tiene tres partes que se van turnando: la ciudad vieja a pie, un día entero por las Tierras Altas y las locaciones de la serie Outlander. Y fines de septiembre es la mejor época para ir: el festival grande de la ciudad ya pasó, los precios bajaron y Edimburgo vuelve a su tamaño normal.</p>
 
       <div class="day">
         <div class="day-date"><span class="dnum">día 11</span><span class="dd">27/09</span><span class="dw">domingo</span></div>
         <div class="day-rail"><span class="node big"></span></div>
         <div class="day-body">
           <h4>Islandia → Escocia</h4>
-          <p class="plan">La mañana más apretada del viaje: devolución del auto a las <strong>08:30</strong> y vuelo a las <strong>10:00</strong>. Llegan a Edimburgo pasado el mediodía, con media tarde para reconocer el terreno.</p>
+          
+          <p class="plan llano">La mañana más apretada del viaje: entregan el auto a las <strong>08:30</strong> y el vuelo sale a las <strong>10:00</strong>. Llegan a Edimburgo pasado el mediodía, y la tarde alcanza justo para dar la primera vuelta por la ciudad vieja, que termina ya de noche con un paseo de historias de fantasmas.</p>
+          
+          
+          
           
           <ul class="solo-fam">
             
-            <li class="llano">Subir por la calle principal del casco antiguo, la <strong>Royal Mile</strong>, hasta el castillo. Y bajar por <strong>Victoria Street</strong>, la curva de fachadas de colores.</li>
+            <li class="llano">Primera vuelta tranquila por la ciudad vieja: suben por <strong>Victoria Street</strong>, que es una calle en curva llena de frentes de colores, hasta la calle principal, la <strong>Royal Mile</strong>. Y siguen hasta la catedral de <strong>St Giles</strong>.</li>
             
-            <li class="llano">El cerro <strong>Calton Hill</strong> al atardecer: quince minutos de subida y la mejor vista de toda la ciudad, con el mar de fondo.</li>
+            <li class="llano">A las 18:30 hacen un paseo a pie de <strong>historias de fantasmas</strong>: dos horas por los callejones de la ciudad vieja. Empieza con luz y termina de noche.</li>
             
-            <li class="llano">Cenan en la plaza del <strong>Grassmarket</strong>, llena de bares viejos, justo abajo del peñón donde está el castillo.</li>
+            <li class="llano">Para cerrar, el <strong>White Hart Inn</strong>, el bar más viejo de la ciudad: abrió en 1516 y está en la misma plaza donde duermen.</li>
           </ul>
           <div class="chips"><span class="chip fly solo-fam"><svg class="chip-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#iAvion"/></svg>ICELANDAIR FI434 · KEF 10:00 → EDI 13:20</span></div>
         </div>
@@ -1578,19 +1609,22 @@ body.ficha-abierta{overflow:hidden}
         <div class="day-date"><span class="dnum">día 12</span><span class="dd">28/09</span><span class="dw">lunes</span></div>
         <div class="day-rail"><span class="node"></span></div>
         <div class="day-body">
-          <h4>Castillo, Royal Mile y Arthur's Seat</h4>
-          <p class="plan">El día clásico, y todo en línea recta cuesta abajo.</p>
+          <h4>Castillo, Royal Mile y Calton Hill</h4>
+          
+          <p class="plan llano">El día clásico, y todo va cuesta abajo desde el castillo. La entrada de las <strong>09:30</strong> ya está comprada, con audioguía incluida, y la cena también está reservada: el día ya está armado de punta a punta.</p>
+          
+          
+          
           
           <ul class="solo-fam">
             
-            <li class="llano"><strong>Castillo de Edimburgo</strong> — la entrada se saca por internet, con horario, y conviene el primer turno de la mañana. Adentro están las joyas de la corona y la Piedra del Destino, sobre la que coronaban a los reyes de Escocia. Y el cañonazo de la una.</li>
+            <li class="llano"><strong>Castillo de Edimburgo</strong> a las 09:30, con audioguía. Adentro están las joyas de la corona, la Piedra del Destino —sobre la que coronaban a los reyes de Escocia—, una capilla del año 1130 y el cañonazo que disparan todos los días a la una.</li>
             
-            <li class="llano">Bajar la <strong>Royal Mile</strong> entera hasta el palacio de Holyrood, metiéndose en los pasillitos que salen a los costados: ahí es donde está lo lindo.</li>
-            <li><strong>Arthur's Seat</strong> — un volcán extinto en el medio de la ciudad; una hora de subida y la vista de 360°. Con viento, la ruta de Salisbury Crags alcanza.</li>
+            <li class="llano">Bajar la <strong>Royal Mile</strong> entera hasta el palacio de Holyrood, metiéndose en los pasillitos que salen a los costados: ahí es donde está lo lindo. Uno de ellos, <strong>Bakehouse Close</strong>, es la imprenta que sale en la serie Outlander.</li>
             
-            <li class="llano">De noche, un bar con música en vivo: el Sandy Bell's para escuchar música escocesa, o el Captain's Bar si ese está lleno.</li>
-                      <li><strong>Para probar</strong> — el <strong>haggis</strong> ("haguis"), el plato nacional escocés: un embutido grande de avena, cebolla y carne de cordero, bien condimentado. Se sirve con puré de papa y de nabo, que allá llaman <em>neeps and tatties</em>. Es más rico de lo que suena.</li>
-</ul>
+            <li class="llano">El cerro <strong>Calton Hill</strong> al final de la tarde: quince minutos de subida, una copia del Partenón que se quedó a medio hacer, y la mejor vista de toda la ciudad con el mar de fondo.</li>
+            <li><strong>Para probar</strong> — el <strong>haggis</strong> ("haguis"), el plato nacional escocés: un embutido grande de avena, cebolla y carne de cordero, bien condimentado. Se sirve con puré de papa y de nabo, que allá llaman <em>neeps and tatties</em>. Es más rico de lo que suena.</li>
+          </ul>
         </div>
       </div>
 
@@ -1598,18 +1632,25 @@ body.ficha-abierta{overflow:hidden}
         <div class="day-date"><span class="dnum">día 13</span><span class="dd">29/09</span><span class="dw">martes</span></div>
         <div class="day-rail"><span class="node big"></span></div>
         <div class="day-body">
-          <h4>Highlands</h4>
-          <p class="plan">Día completo fuera de la ciudad, y el que más cambia según cómo lo hagan. En un solo día se llega hasta Glencoe y Lago Ness, pero son doce horas de puerta a puerta.</p>
+          <h4>Highlands · Glencoe, Lago Ness e Inverness</h4>
+          
+          <p class="plan llano">El día más grande de Escocia, y no tienen que manejar: es un <strong>tour privado en castellano</strong>, para ellos dos solos, y ya está reservado y pagado. Salen a las 07:15 y vuelven a las 20:15 — trece horas y 585 kilómetros. A la noche no hay nada más programado, a propósito.</p>
+          
+          
+          
           
           <ul class="solo-fam">
-            <li><strong>Glencoe</strong> — el valle glaciar entre paredes negras. Es el paisaje que uno tiene en la cabeza cuando dice "Highlands".</li>
             
-            <li class="llano">El <strong>puente de Glenfinnan</strong> — el puente de arcos que sale en las películas de Harry Potter. Conviene averiguar antes si el tren a vapor sigue pasando a fines de septiembre, porque la temporada termina más o menos ahí.</li>
-            <li><strong>Lago Ness y Urquhart Castle</strong> — la ruina sobre el lago vale más que el monstruo.</li>
+            <li class="llano">El día entero es una <strong>excursión privada en castellano</strong>, sólo para ellos dos, con un guía que además maneja. Salen a las 07:15 y vuelven a las 20:15.</li>
             
-            <li class="llano">El <strong>lago Lomond</strong> y las montañas de Trossachs quedan mucho más cerca, si prefieren un día menos pesado.</li>
+            <li class="llano">Primera parada: las <strong>vaquitas peludas</strong> de las Tierras Altas, esas de pelo largo y cuernos anchos que salen en todas las fotos de Escocia. Ahí mismo desayunan.</li>
+            
+            <li class="llano"><strong>Glencoe</strong> — un valle enorme entre paredes de montaña negras, con tres paradas para bajarse a mirar. Es el paisaje que uno se imagina cuando le dicen "Tierras Altas de Escocia".</li>
+            
+            <li class="llano">El <strong>Lago Ness</strong>, el del monstruo, visto desde un pueblito que se llama <strong>Fort Augustus</strong>. Ahí pueden subirse a un barco que da una vuelta por el lago, si tienen ganas.</li>
+            
+            <li class="llano"><strong>Inverness</strong>, que es la ciudad más importante de las Tierras Altas, y <strong>Pitlochry</strong>, un pueblito de casas antiguas, ya volviendo.</li>
           </ul>
-          
         </div>
       </div>
 
@@ -1617,17 +1658,22 @@ body.ficha-abierta{overflow:hidden}
         <div class="day-date"><span class="dnum">día 14</span><span class="dd">30/09</span><span class="dw">miércoles</span></div>
         <div class="day-rail"><span class="node"></span></div>
         <div class="day-body">
-          <h4>La Edimburgo tranquila · whisky</h4>
-          <p class="plan">Último día, y el mejor para la ciudad que no está en las postales.</p>
+          <h4>Lallybroch, Dean Village y Stockbridge</h4>
+          
+          <p class="plan llano">Último día en Escocia, y es tranquilo a propósito: una salida corta a la mañana para ver la casa que en <strong>Outlander</strong> es Lallybroch, y la tarde entera en la Edimburgo que no sale en las postales.</p>
+          
+          
+          
           
           <ul class="solo-fam">
             
+            <li class="llano"><strong>Midhope Castle</strong>, que en la serie <strong>Outlander</strong> es Lallybroch, la casa de la familia Fraser. Van y vuelven en taxi, se ve por afuera nomás, y son unos treinta minutos.</li>
+            
             <li class="llano"><strong>Dean Village</strong> y el camino que va siguiendo el arroyo — un antiguo pueblito de molinos que quedó metido adentro de la ciudad, a veinte minutos del centro.</li>
             
-            <li class="llano">El <strong>Museo Nacional de Escocia</strong> — es gratis, es enorme, y tiene una terraza en el último piso que casi nadie encuentra.</li>
-            <li><strong>Stockbridge</strong> para almorzar, y <strong>Leith</strong> junto al puerto para cenar.</li>
+            <li class="llano"><strong>Stockbridge</strong> para almorzar y para pasar la tarde: librerías de libros usados, anticuarios y bares de esquina. Es la única tarde del viaje sin nada anotado.</li>
             
-            <li class="llano">El día del whisky: la destilería <strong>Holyrood</strong> hace whisky y gin dentro de la misma ciudad y se puede visitar. La otra opción es <strong>Johnnie Walker</strong>, más grande y más show, con una terraza que mira al castillo.</li>
+            <li class="llano">A la noche, la <strong>cena de despedida</strong> de Escocia en el Scran &amp; Scallie, que es la taberna de un cocinero escocés muy premiado.</li>
           </ul>
         </div>
       </div>
@@ -1673,6 +1719,8 @@ body.ficha-abierta{overflow:hidden}
           
           <p class="plan llano">Llegan a las 13:45 a la Terminal 2 y están en el hotel a las 15:20. La tarde alcanza justo para lo único que no entra en ningún otro día: comprar la ropa típica bávara y conocer el centro viejo. La fiesta arranca mañana.</p>
           
+          
+          
           <ul class="solo-fam">
             
             <li class="llano">La tarde es para conocer la ciudad, que es el único rato libre de los cuatro días: el mercado central, la plaza principal con la iglesia de las dos cúpulas, y la torre de la iglesia vieja de San Pedro — 300 escalones, y desde arriba se ve Múnich entera y los Alpes al fondo si el día está claro.</li>
@@ -1697,6 +1745,8 @@ body.ficha-abierta{overflow:hidden}
           
           <p class="plan llano">El mejor momento de toda la semana para entrar sin reserva es un viernes, de 10:00 a 15:00. A las 16:00 se suman dos personas más en el hotel, y la tarde es para recorrer la fiesta entre los cuatro.</p>
           
+          
+          
           <ul class="solo-fam">
             
             <li class="llano">La carpa de la mañana es la <strong>Augustiner</strong>: es la única que sirve la cerveza sacada de barriles de madera, y es la que eligen los que viven en Múnich. Hasta las 18:00 la ley obliga a todas las carpas a tocar sólo música de banda y bajito, así que la mañana es la parte tranquila y tradicional del día.</li>
@@ -1717,6 +1767,8 @@ body.ficha-abierta{overflow:hidden}
           
           <p class="plan llano">Sábado <em>y</em>, encima, Día de la Unidad Alemana, que es feriado nacional. Es la peor combinación posible: no hay ningún paquete con lugar asegurado, y las carpas cierran las puertas temprano. Pero abren a las <strong>09:00</strong>, y ahí está la jugada: no hacen cola todo el día, hacen dos horas de cola y catorce adentro.</p>
           
+          
+          
           <ul class="solo-fam">
             
             <li class="llano">Lo bueno: los sábados, hasta las 15:00, la ley obliga a dejar libre casi la mitad de los lugares. Y como es feriado, las carpas abren a las 09:00: la cola de las 07:00 de la mañana es la que entra, y la que después se sienta donde quiere.</li>
@@ -1735,7 +1787,6 @@ body.ficha-abierta{overflow:hidden}
           <h4>Mañana corta y tren <span class="tapadera">al norte</span></h4>
           
           <p class="plan llano">El tren sale de la estación central de Múnich a las <strong>12:45</strong>. Los domingos la fiesta abre a las 09:00 y queda a ocho minutos del hotel: la mañana da justo para una última vuelta antes de agarrar las valijas.</p>
-          
           <div class="chips solo-fam"><span class="chip fly"><svg class="chip-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#iTren"/></svg>ICE 626 · München 12:45 · 1ª clase</span></div>
         </div>
       </div>
@@ -1888,7 +1939,6 @@ body.ficha-abierta{overflow:hidden}
         <div class="day-body">
           <h4>Bruselas → Barcelona</h4>
           <p class="plan">Mañana libre en Bruselas y vuelo a la tarde.</p>
-          
           <div class="chips solo-fam"><span class="chip fly"><svg class="chip-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#iAvion"/></svg>BRU → BCN · 18:30–20:30</span></div>
         </div>
       </div>
@@ -1900,7 +1950,6 @@ body.ficha-abierta{overflow:hidden}
           <h4>Barcelona → Santiago → Punta Arenas</h4>
           
           <p class="plan llano">El vuelo sale de Barcelona a las 00:05 y llega a Santiago a las 09:35. De ahí toman el de Latam a Punta Arenas, al que la aerolínea le cambió el horario en agosto: ahora sale <strong>12:07</strong> y aterriza a las <strong>16:35</strong>. Veinticuatro días después.</p>
-          
           <div class="chips solo-fam"><span class="chip fly"><svg class="chip-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#iAvion"/></svg>LEVEL · BCN→SCL · 00:05–09:35</span><span class="chip fly"><svg class="chip-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#iAvion"/></svg>LATAM LA85 · SCL→PUQ · 12:07–16:35</span></div>
         </div>
       </div>
@@ -1930,7 +1979,7 @@ body.ficha-abierta{overflow:hidden}
         <span>Odisea Europea 2026</span>
       </div>
       El itinerario día por día del viaje de Mauro y Melisa por Islandia, Escocia, Alemania y Bélgica.<br></div>
-    <div class="num">Actualizado al 17/08/2026</div>
+    <div class="num">Actualizado al 6/09/2026</div>
   </div>
 </footer>
 

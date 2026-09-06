@@ -529,16 +529,34 @@ body::after{
 .day-body ul li::before{content:"";position:absolute;left:2px;top:.62em;width:5px;height:1px;background:var(--legc)}
 .day-body strong{color:var(--ink);font-weight:620}
 
+/* ── los cuatro datos del dia se ven igual ─────────────────────────
+   Luz, alojamiento, traslados y avisos comparten forma: pildora con
+   icono y monoespaciada. Cambian solo el icono y el color. Los
+   traslados llevan el color del pais porque son lo que no se puede
+   mover; el alojamiento va neutro, que es dato de consulta. */
 .chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px}
 .chip{
-  font-family:var(--mono);font-size:11px;letter-spacing:.04em;
-  padding:3px 8px;border-radius:2px;border:1px solid var(--line);
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.03em;line-height:1.45;
+  padding:5px 11px;border-radius:999px;border:1px solid var(--line);
   color:var(--ink-2);background:var(--surface);white-space:nowrap;
 }
-.chip.fly{border-color:color-mix(in srgb,var(--legc) 45%,var(--line));color:var(--legc-ink);background:color-mix(in srgb,var(--legc-soft) 55%, var(--surface))}
-.chip.bed{border-style:dashed}
-.chip.warn{border-color:color-mix(in srgb,var(--rust) 50%,var(--line));color:var(--rust);background:color-mix(in srgb,var(--rust-soft) 45%,var(--surface))}
-.chip.car{border-color:color-mix(in srgb,var(--legc) 45%,var(--line));color:var(--legc-ink);background:transparent}
+.chip-ico{width:13px;height:13px;flex:none;display:block;opacity:.9}
+.chip.fly,.chip.car{
+  border-color:color-mix(in srgb,var(--legc) 42%,var(--line));
+  color:var(--legc-ink);background:color-mix(in srgb,var(--legc-soft) 50%,var(--surface));
+}
+.chip.sun{
+  border-color:color-mix(in srgb,var(--amber) 40%,var(--line));
+  color:var(--amber-ink);background:color-mix(in srgb,var(--amber-soft) 45%,var(--surface));
+}
+.chip.bed{border-color:var(--line);color:var(--ink-2);background:var(--surface-2)}
+.chip.warn{
+  border-color:color-mix(in srgb,var(--rust) 48%,var(--line));
+  color:var(--rust);background:color-mix(in srgb,var(--rust-soft) 42%,var(--surface));
+}
+@media (max-width:640px){ .chip{white-space:normal} }
+@media print{ .chips{break-inside:avoid} }
 
 .flag{
   margin-top:18px;padding:14px 16px;border-radius:3px;max-width:var(--measure);
@@ -1018,10 +1036,38 @@ body.ficha-abierta{overflow:hidden}
 @media (prefers-reduced-motion:reduce){
   .js .ver-ficha:active{transform:none}
 }
+
+
 </style>
 
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="iSol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
+    <circle cx="12" cy="12" r="4.1"/>
+    <path d="M12 2.4v2.5M12 19.1v2.5M2.4 12h2.5M19.1 12h2.5M5.2 5.2l1.8 1.8M17 17l1.8 1.8M18.8 5.2 17 7M7 17l-1.8 1.8"/>
+  </symbol>
+  <symbol id="iCama" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M3 18V6"/><path d="M3 11h18v7"/><path d="M3 15h18"/>
+    <path d="M7.5 11V9h4a2.5 2.5 0 0 1 2.5 2.5"/>
+  </symbol>
+  <symbol id="iAvion" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M10.6 2.9a1.5 1.5 0 0 1 2.8 0l.2 6.3 7.9 4.4v2.1l-7.9-2.2.2 4.2 2.5 1.8v1.5L12 20.3l-4.3.7v-1.5l2.5-1.8.2-4.2-7.9 2.2v-2.1l7.9-4.4z"/>
+  </symbol>
+  <symbol id="iTren" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="5" y="3.4" width="14" height="13.2" rx="3.4"/>
+    <path d="M5 10.4h14M8.4 20.6 6.2 22.6M15.6 20.6l2.2 2M9.2 13.9h.01M14.8 13.9h.01"/>
+  </symbol>
+  <symbol id="iAuto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M3.2 13 5 7.9a2 2 0 0 1 1.9-1.4h10.2A2 2 0 0 1 19 7.9L20.8 13v4.4a.9.9 0 0 1-.9.9h-1.5a.9.9 0 0 1-.9-.9v-1H6.5v1a.9.9 0 0 1-.9.9H4.1a.9.9 0 0 1-.9-.9z"/>
+    <path d="M3.4 13h17.2M7.3 15.6h.01M16.7 15.6h.01"/>
+  </symbol>
+  <symbol id="iBici" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="5.7" cy="16.6" r="3.6"/><circle cx="18.3" cy="16.6" r="3.6"/>
+    <path d="M5.7 16.6 9.7 7.9h3.1l3.3 8.7M9 7.9h4.6M14.4 8.2l2.3 4.6"/>
+  </symbol>
+  <symbol id="iAviso" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 3.4 22.2 20.6H1.8z"/><path d="M12 9.6v4.3M12 17.2h.01"/>
+  </symbol>
   <symbol id="bEspana" viewBox="0 0 30 20">
     <rect width="30" height="20" fill="#AA151B"/>
     <rect y="5" width="30" height="10" fill="#F1BF00"/>
@@ -1184,7 +1230,7 @@ body.ficha-abierta{overflow:hidden}
           
           <p class="plan llano">El avión de Latam sale a las 18:30 y llega a las 22:00. Esa noche duermen al lado del aeropuerto, para no jugarse el vuelo de la mañana siguiente.</p>
           
-          <div class="chips"><span class="chip fly solo-fam">LATAM · PUQ→SCL · 18:30–22:00</span></div>
+          <div class="chips"><span class="chip fly solo-fam"><svg class="chip-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#iAvion"/></svg>LATAM · PUQ→SCL · 18:30–22:00</span></div>
         </div>
       </div>
 
@@ -1196,7 +1242,7 @@ body.ficha-abierta{overflow:hidden}
           
           <p class="plan llano">El vuelo largo del viaje. Sale a las 11:20 y llega a Barcelona a las 6 de la mañana del día siguiente. Se duerme en el avión.</p>
           
-          <div class="chips solo-fam"><span class="chip fly">LEVEL · SCL→BCN · 11:20 → 06:00 (+1)</span></div>
+          <div class="chips solo-fam"><span class="chip fly"><svg class="chip-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#iAvion"/></svg>LEVEL · SCL→BCN · 11:20 → 06:00 (+1)</span></div>
         </div>
       </div>
 
@@ -1260,7 +1306,6 @@ body.ficha-abierta{overflow:hidden}
           
           
           
-          
           <ul class="solo-fam">
             
             <li class="llano">Primera noche: si el cielo está despejado, el <strong>faro de Grótta</strong> queda a quince minutos del centro. Mira al norte, no tiene nada que tape la vista y casi no hay luces alrededor. Es el lugar más fácil de todo el viaje para ver auroras.</li>
@@ -1272,7 +1317,7 @@ body.ficha-abierta{overflow:hidden}
             
             <span class="mtxt llano">luna al 55% · las mejores noches del tramo</span>
           </div>
-          <div class="chips"><span class="chip fly solo-fam">ICELANDAIR FI597 · BCN 15:45 → KEF 18:20 · T2</span></div>
+          <div class="chips"><span class="chip fly solo-fam"><svg class="chip-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#iAvion"/></svg>ICELANDAIR FI597 · BCN 15:45 → KEF 18:20 · T2</span></div>
         </div>
       </div>
 
@@ -1284,7 +1329,6 @@ body.ficha-abierta{overflow:hidden}
           
           <p class="plan llano">Único día entero en la ciudad, y todavía sin auto. Conviene que todo quede a distancia de caminata o de una combi.</p>
 
-          
           
           
           
@@ -1318,7 +1362,6 @@ body.ficha-abierta{overflow:hidden}
           
           
           
-          
           <div class="solo-fam">
             
             <div class="flag ok llano"><b>La punta oeste pasó al martes.</b> Con las termas adentro, los dos lugares de la punta no entraban sin estirar el día a diez horas y media. El martes estaba casi libre, así que se reparten: los dos días quedan parejos y no se pierden nada.</div>
@@ -1328,7 +1371,7 @@ body.ficha-abierta{overflow:hidden}
             
             <span class="mtxt llano">luna al 75% · ya empieza a molestar</span>
           </div>
-          <div class="chips"><span class="chip car solo-fam">GO CAR RENTAL · retiro 08:30 Reykjavik</span></div>
+          <div class="chips"><span class="chip car solo-fam"><svg class="chip-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#iAuto"/></svg>GO CAR RENTAL · retiro 08:30 Reykjavik</span></div>
         </div>
       </div>
 
@@ -1339,7 +1382,6 @@ body.ficha-abierta{overflow:hidden}
           <h4>La punta de la península y Kirkjufell</h4>
           
           <p class="plan llano">Las dos noches duermen en el mismo pueblo, Grundarfjörður, así que este día salen y vuelven al mismo lugar. Son unas 8 horas en total saliendo a las 09:00, y casi todo el manejo es a la mañana.</p>
-          
           
           
           
@@ -1368,7 +1410,6 @@ body.ficha-abierta{overflow:hidden}
           <h4 class="llano">Viaje a Vík por la costa sur <span style="color:var(--aurora);font-family:var(--mono);font-size:12px;letter-spacing:.08em">· EQUINOCCIO</span></h4>
           
           <p class="plan llano">330 km y unas 4 horas y cuarto de manejo. Las cuatro cascadas del día están sobre la ruta misma, así que no hay que desviarse. Saliendo a las 9:00 llegan a Vík cerca de las <strong>16:15</strong>, con toda la tarde por delante. Es el día del equinoccio: la noche y el día duran lo mismo, y de acá en más las noches se hacen más largas, que es justo lo que conviene para las auroras.</p>
-          
           
           
           
@@ -1403,7 +1444,6 @@ body.ficha-abierta{overflow:hidden}
           
           
           
-          
           <ul class="solo-fam">
             
             <li class="llano"><strong>Sólheimasandur</strong> — los restos de un avión que cayó hace años, tirados en una playa de arena negra. Son 4 km caminando de ida y otros 4 de vuelta; también hay una combi que cobra y los acerca, si prefieren ahorrarse las dos horas y media. Conviene ir a la mañana.</li>
@@ -1433,7 +1473,6 @@ body.ficha-abierta{overflow:hidden}
           
           
           
-          
           <ul class="solo-fam">
             <li><strong>Fjaðrárgljúfur</strong> — cañón serpenteante con sendero por el borde, a 1 h de Vík y justo sobre la ruta. No es desvío: es la primera parada del camino.</li>
             
@@ -1444,7 +1483,6 @@ body.ficha-abierta{overflow:hidden}
             <li class="llano"><strong>Svartifoss</strong>, en el camino de vuelta, si les sobra luz: una cascada rodeada de columnas de piedra negra.</li>
           </ul>
 
-          
           <div class="moon">
             <svg width="17" height="17" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="none" stroke="currentColor" stroke-opacity=".35"/><path d="M10,1 A9,9 0 0 1 10,19 A8.8,9 0 0 1 10,1 Z" fill="var(--moon-lit)"/></svg>
             
@@ -1463,7 +1501,6 @@ body.ficha-abierta{overflow:hidden}
           
           
           
-          
           <ul class="solo-fam">
             <li><strong>1 · Gullfoss</strong> — la cascada de dos saltos que cae dentro de un cañón. <em>Gull</em> es "oro" en islandés: de ahí el nombre de toda la ruta. Con viento del norte, empapa.</li>
             
@@ -1476,7 +1513,6 @@ body.ficha-abierta{overflow:hidden}
             
             <div class="flag llano"><b>Þingvellir queda afuera.</b> Es el tercer punto del Círculo Dorado: ahí se ve la grieta por donde se separan dos placas de la Tierra, y es el lugar donde los vikingos hacían sus asambleas allá por el año 930. Pero es el que menos impresiona a simple vista y el que más tiempo lleva: 50 minutos de manejo más una hora de visita. Sacándolo entran las termas sin estirar el día a más de once horas.</div>
           </div>
-          
           <div class="solo-fam">
             <div class="flag ok"><b>Esa noche no pierden auroras.</b> Es luna llena, la peor del viaje. Meterse en agua caliente es exactamente lo que hay que hacer con esa noche.</div>
           </div>
@@ -1534,7 +1570,7 @@ body.ficha-abierta{overflow:hidden}
             
             <li class="llano">Cenan en la plaza del <strong>Grassmarket</strong>, llena de bares viejos, justo abajo del peñón donde está el castillo.</li>
           </ul>
-          <div class="chips"><span class="chip fly solo-fam">ICELANDAIR FI434 · KEF 10:00 → EDI 13:20</span></div>
+          <div class="chips"><span class="chip fly solo-fam"><svg class="chip-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#iAvion"/></svg>ICELANDAIR FI434 · KEF 10:00 → EDI 13:20</span></div>
         </div>
       </div>
 
@@ -1649,7 +1685,7 @@ body.ficha-abierta{overflow:hidden}
             
             <li class="llano">También es el día de comprar la <strong>ropa típica</strong> — el vestido bávaro y el pantalón de cuero. No es un disfraz: durante la fiesta la gente anda así por toda la ciudad, y ayuda de verdad para que te hagan un lugar en la mesa.</li>
           </ul>
-          <div class="chips"><span class="chip fly solo-fam">LUFTHANSA LH2691 · EDI 10:30 → MUC 13:45</span></div>
+          <div class="chips"><span class="chip fly solo-fam"><svg class="chip-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#iAvion"/></svg>LUFTHANSA LH2691 · EDI 10:30 → MUC 13:45</span></div>
         </div>
       </div>
 
@@ -1700,7 +1736,7 @@ body.ficha-abierta{overflow:hidden}
           
           <p class="plan llano">El tren sale de la estación central de Múnich a las <strong>12:45</strong>. Los domingos la fiesta abre a las 09:00 y queda a ocho minutos del hotel: la mañana da justo para una última vuelta antes de agarrar las valijas.</p>
           
-          <div class="chips solo-fam"><span class="chip fly">ICE 626 · München 12:45 · 1ª clase</span></div>
+          <div class="chips solo-fam"><span class="chip fly"><svg class="chip-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#iTren"/></svg>ICE 626 · München 12:45 · 1ª clase</span></div>
         </div>
       </div>
     </div>
@@ -1755,7 +1791,7 @@ body.ficha-abierta{overflow:hidden}
             
             <li class="llano">Cerveza: en el <strong>Dulle Griet</strong>, para servirles la cerveza más grande les piden un zapato en garantía, y se los devuelven cuando entregan el vaso. Y la cervecería <strong>Gruut</strong> hace la cerveza con hierbas en lugar de lúpulo, como se hacía hace quinientos años.</li>
           </ul>
-          <div class="chips"><span class="chip fly solo-fam"><span class="tapadera">TREN · llegada a </span>Gante 14:49 · 1ª clase</span></div>
+          <div class="chips"><span class="chip fly solo-fam"><svg class="chip-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#iTren"/></svg><span class="tapadera">TREN · llegada a </span>Gante 14:49 · 1ª clase</span></div>
         </div>
       </div>
 
@@ -1775,7 +1811,7 @@ body.ficha-abierta{overflow:hidden}
             <li class="llano"><strong>Brujas de noche</strong> — cuando se van los micros de turistas, la ciudad es otra cosa: los canales quedan quietos y las calles, vacías. Les tocan dos noches seguidas.</li>
                       <li><strong>Para probar</strong> — los <strong>gofres</strong>, que no son todos iguales: el de Bruselas es liviano, rectangular y va con azúcar impalpable; el de Lieja es más chico y más pesado, y trae perlas de azúcar que se caramelizan al cocinarlo. El de Lieja se come caminando; el de Bruselas, sentado.</li>
 </ul>
-          <div class="chips"><span class="chip fly solo-fam">TREN Gante → Brujas · ~25 min · se compra en la estación</span></div>
+          <div class="chips"><span class="chip fly solo-fam"><svg class="chip-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#iTren"/></svg>TREN Gante → Brujas · ~25 min · se compra en la estación</span></div>
         </div>
       </div>
 
@@ -1801,7 +1837,7 @@ body.ficha-abierta{overflow:hidden}
             
             <li class="llano">Cerveza: la fábrica <strong>De Halve Maan</strong> manda la cerveza por un caño de tres kilómetros que pasa por debajo de la ciudad, hasta donde la embotellan. Y el bar <strong>'t Brugs Beertje</strong> tiene más de trescientas cervezas distintas y unos dueños que de verdad los aconsejan.</li>
           </ul>
-          <div class="chips solo-fam"><span class="chip fly">BICI · Brujas → Damme → Brujas · 17 km llanos</span></div>
+          <div class="chips solo-fam"><span class="chip fly"><svg class="chip-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#iBici"/></svg>BICI · Brujas → Damme → Brujas · 17 km llanos</span></div>
         </div>
       </div>
 
@@ -1853,7 +1889,7 @@ body.ficha-abierta{overflow:hidden}
           <h4>Bruselas → Barcelona</h4>
           <p class="plan">Mañana libre en Bruselas y vuelo a la tarde.</p>
           
-          <div class="chips solo-fam"><span class="chip fly">BRU → BCN · 18:30–20:30</span></div>
+          <div class="chips solo-fam"><span class="chip fly"><svg class="chip-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#iAvion"/></svg>BRU → BCN · 18:30–20:30</span></div>
         </div>
       </div>
 
@@ -1865,7 +1901,7 @@ body.ficha-abierta{overflow:hidden}
           
           <p class="plan llano">El vuelo sale de Barcelona a las 00:05 y llega a Santiago a las 09:35. De ahí toman el de Latam a Punta Arenas, al que la aerolínea le cambió el horario en agosto: ahora sale <strong>12:07</strong> y aterriza a las <strong>16:35</strong>. Veinticuatro días después.</p>
           
-          <div class="chips solo-fam"><span class="chip fly">LEVEL · BCN→SCL · 00:05–09:35</span><span class="chip fly">LATAM LA85 · SCL→PUQ · 12:07–16:35</span></div>
+          <div class="chips solo-fam"><span class="chip fly"><svg class="chip-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#iAvion"/></svg>LEVEL · BCN→SCL · 00:05–09:35</span><span class="chip fly"><svg class="chip-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#iAvion"/></svg>LATAM LA85 · SCL→PUQ · 12:07–16:35</span></div>
         </div>
       </div>
     </div>

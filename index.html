@@ -602,6 +602,21 @@ td.rub{white-space:nowrap;padding-right:6px}
   font-family:var(--mono);font-size:11px;color:var(--ink-3);
   letter-spacing:.04em;margin-top:10px;
 }
+/* Las horas que no se mueven -vuelos, trenes, el auto, lo ya reservado- se
+   quedan a la vista aunque la agenda se haya ido a la ficha: son las que si se
+   pasan arruinan el dia. Decision de Mauro del 6/9/2026. */
+.day-body > .fijas{margin-top:16px;max-width:var(--measure)}
+.day-body > .fijas span{
+  display:block;font-family:var(--mono);font-size:12.5px;line-height:1.85;color:var(--ink-2);
+}
+.day-body > .fijas b{color:var(--legc-ink);font-weight:700;margin-right:8px}
+
+/* La linea de luz tambien va suelta en el dia, fuera de la agenda: en un
+   viaje de auroras es el dato que se mira todos los dias. */
+.day-body > .luz{
+  font-family:var(--mono);font-size:11px;color:var(--ink-3);
+  letter-spacing:.04em;margin-top:16px;
+}
 @media print{.agenda{break-inside:avoid}}
 
 /* ─────────────────────────────  PANELES  ───────────────────────────── */
@@ -1242,6 +1257,10 @@ body.ficha-abierta{overflow:hidden}
           
           <p class="plan llano">Mañana libre en Barcelona, vuelo a media tarde y llegada a Reikiavik con luz todavía. <strong>El auto lo retiran recién el 21</strong>, así que del aeropuerto al centro tienen que ir por su cuenta: son 45 minutos en un micro que se llama <strong>Flybus</strong>, y conviene sacar el pasaje por internet antes, no en la ventanilla.</p>
           
+          
+          
+          
+          
           <ul class="solo-fam">
             
             <li class="llano">Primera noche: si el cielo está despejado, el <strong>faro de Grótta</strong> queda a quince minutos del centro. Mira al norte, no tiene nada que tape la vista y casi no hay luces alrededor. Es el lugar más fácil de todo el viaje para ver auroras.</li>
@@ -1265,6 +1284,8 @@ body.ficha-abierta{overflow:hidden}
           
           <p class="plan llano">Único día entero en la ciudad, y todavía sin auto. Conviene que todo quede a distancia de caminata o de una combi.</p>
 
+          
+          
           
           
           <ul class="solo-fam">
@@ -1294,6 +1315,10 @@ body.ficha-abierta{overflow:hidden}
           
           <p class="plan llano">Acá arranca la parte del viaje en auto. Lo retiran a las <strong>08:30 en Reikiavik</strong>: es una camioneta 4x4, automática. Entre los papeles y acomodar las valijas, salen a la ruta cerca de las 09:00.</p>
           
+          
+          
+          
+          
           <div class="solo-fam">
             
             <div class="flag ok llano"><b>La punta oeste pasó al martes.</b> Con las termas adentro, los dos lugares de la punta no entraban sin estirar el día a diez horas y media. El martes estaba casi libre, así que se reparten: los dos días quedan parejos y no se pierden nada.</div>
@@ -1314,6 +1339,9 @@ body.ficha-abierta{overflow:hidden}
           <h4>La punta de la península y Kirkjufell</h4>
           
           <p class="plan llano">Las dos noches duermen en el mismo pueblo, Grundarfjörður, así que este día salen y vuelven al mismo lugar. Son unas 8 horas en total saliendo a las 09:00, y casi todo el manejo es a la mañana.</p>
+          
+          
+          
           
           <ul class="solo-fam">
             
@@ -1340,6 +1368,9 @@ body.ficha-abierta{overflow:hidden}
           <h4 class="llano">Viaje a Vík por la costa sur <span style="color:var(--aurora);font-family:var(--mono);font-size:12px;letter-spacing:.08em">· EQUINOCCIO</span></h4>
           
           <p class="plan llano">330 km y unas 4 horas y cuarto de manejo. Las tres cascadas del día están sobre la ruta misma, así que no hay que desviarse. Saliendo a las 9:00 llegan a Vík cerca de las <strong>15:30</strong>, con toda la tarde por delante. Es el día del equinoccio: la noche y el día duran lo mismo, y de acá en más las noches se hacen más largas, que es justo lo que conviene para las auroras.</p>
+          
+          
+          
           
           <ul class="solo-fam">
             <li><strong>Seljalandsfoss</strong> — se camina por detrás de la cortina de agua. Lleven impermeable, no paraguas.</li>
@@ -1368,6 +1399,9 @@ body.ficha-abierta{overflow:hidden}
           
           <p class="plan llano">Este día no cambian de alojamiento y todo queda a menos de 30 minutos. En total manejan apenas una hora y media, repartida en tres viajes cortos.</p>
           
+          
+          
+          
           <ul class="solo-fam">
             
             <li class="llano"><strong>Sólheimasandur</strong> — los restos de un avión que cayó hace años, tirados en una playa de arena negra. Son 4 km caminando de ida y otros 4 de vuelta; también hay una combi que cobra y los acerca, si prefieren ahorrarse las dos horas y media. Conviene ir a la mañana.</li>
@@ -1395,6 +1429,9 @@ body.ficha-abierta{overflow:hidden}
           
           <p class="plan llano">Es el único hueco para llegar hasta la laguna glaciar, y vale el esfuerzo: son 2 horas y cuarto de ida desde Vík, y con las paradas se va el día entero.</p>
           
+          
+          
+          
           <ul class="solo-fam">
             <li><strong>Fjaðrárgljúfur</strong> — cañón serpenteante con sendero por el borde, a 1 h de Vík y justo sobre la ruta. No es desvío: es la primera parada del camino.</li>
             
@@ -1421,6 +1458,9 @@ body.ficha-abierta{overflow:hidden}
           <h4>Círculo Dorado y cierre en aguas termales</h4>
           
           <p class="plan llano">El día más largo de Islandia: unas 9 horas y media saliendo a las 09:00. Hacen dos paradas de la ruta más famosa del país, el Círculo Dorado, y las termas como final del recorrido.</p>
+          
+          
+          
           
           <ul class="solo-fam">
             <li><strong>1 · Gullfoss</strong> — la cascada de dos saltos que cae dentro de un cañón. <em>Gull</em> es "oro" en islandés: de ahí el nombre de toda la ruta. Con viento del norte, empapa.</li>
@@ -1599,6 +1639,8 @@ body.ficha-abierta{overflow:hidden}
             
             <li class="llano">La tarde es para conocer la ciudad, que es el único rato libre de los cuatro días: el mercado central, la plaza principal con la iglesia de las dos cúpulas, y la torre de la iglesia vieja de San Pedro — 300 escalones, y desde arriba se ve Múnich entera y los Alpes al fondo si el día está claro.</li>
             
+            <li class="llano">A las 17:00, en la plaza principal, suena el <strong>carillón</strong> del Ayuntamiento: cuarenta y tres campanas y treinta y dos muñecos del tamaño de una persona que salen a dar vueltas, con un torneo de caballeros a caballo y un baile. Esa función de las 17:00 <em>sólo la hacen de marzo a octubre</em> — les toca por dos días.</li>
+            
             <li class="llano">El sol se pone a las 18:53, así que suben a la torre justo con la última luz del día.</li>
             
             <li class="llano">La noche es en el <strong>Glockenbach</strong>, el barrio de bares de Múnich: cuadras enteras de bares chicos y restaurantes alrededor de una plaza. Se camina todo, y duermen a quince minutos de ahí.</li>
@@ -1645,7 +1687,6 @@ body.ficha-abierta{overflow:hidden}
             
             <li class="llano">Los jardines de afuera de todas las carpas son libres siempre: nadie los puede reservar.</li>
           </ul>
-          
         </div>
       </div>
 

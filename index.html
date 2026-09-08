@@ -667,6 +667,65 @@ td.n{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowra
 td.code{font-family:var(--mono);font-weight:600;letter-spacing:.02em;white-space:nowrap}
 tbody tr.tot td{background:var(--surface-2);font-weight:700;color:var(--ink)}
 
+/* Los cuatro números de arriba de La plata. Existían en el HTML desde el
+   principio pero nunca tuvieron CSS: caían como texto suelto apilado, y era
+   parte de por qué la sección se leía desordenada. */
+.stats{
+  display:flex;flex-wrap:wrap;margin-top:30px;
+  border:1px solid var(--line-soft);border-radius:4px;background:var(--surface);
+  box-shadow:var(--shadow);overflow:hidden;
+}
+.stat{
+  flex:1 1 0;min-width:0;padding:20px 22px;
+  border-right:1px solid var(--line-soft);display:flex;flex-direction:column;gap:5px;
+}
+.stat:last-child{border-right:0}
+.stat .v{font-family:var(--mono);font-size:26px;font-weight:600;letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums;color:var(--ink);line-height:1.1}
+.stat .k{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+
+/* La tabla única del viaje: todo junto, en orden de fecha. */
+table.gastos{min-width:640px}
+table.gastos td.paiscol{white-space:nowrap;color:var(--ink-2)}
+table.gastos td.paiscol.vago{color:var(--ink-3);font-size:12.5px;white-space:normal}
+.bandera-mini{
+  display:inline-block;width:18px;height:12px;border-radius:1px;margin-right:8px;
+  vertical-align:-1px;box-shadow:0 0 0 1px var(--line);
+}
+/* Lo que todavía no está cerrado se marca acá: la tabla ya no tiene columna de
+   estado y sin esto parecería que está todo reservado. */
+table.gastos .pordef{
+  display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--rust);margin-left:8px;white-space:nowrap;
+}
+table.gastos td.imp{text-align:right;font-weight:600;white-space:nowrap}
+table.gastos td.vago{color:var(--ink-3);font-size:12.5px;white-space:normal}
+table.gastos .sub{color:var(--ink-3);font-size:12.5px}
+table.gastos tr[hidden]{display:none}
+
+/* Los filtros por tipo de gasto. */
+.filtros{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:4px}
+.fchip{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
+  padding:7px 13px;border-radius:999px;border:1px solid var(--line);
+  background:var(--surface);color:var(--ink-3);cursor:pointer;line-height:1.3;
+  transition:border-color .2s var(--out),color .2s var(--out),background .2s var(--out);
+}
+.fchip:hover{border-color:var(--ink-3);color:var(--ink-2)}
+.fchip.on{background:var(--ink);border-color:var(--ink);color:var(--surface)}
+.fchip:focus-visible{outline:2px solid var(--legc);outline-offset:2px}
+/* Sin JS no hay filtro que valga: se esconden los botones y queda la tabla entera. */
+html:not(.js) .filtros{display:none}
+
+@media (max-width:640px){
+  table.gastos{min-width:0}
+  .fchip{font-size:10px;padding:6px 11px}
+}
+@media print{
+  .filtros{display:none}
+  table.gastos tr[hidden]{display:table-row !important}
+}
+
 .bars{display:flex;flex-direction:column;gap:22px;margin-top:28px}
 .bar-row{display:grid;grid-template-columns:1fr auto;gap:6px 16px;align-items:baseline}
 .bar-row .bl{font-size:14.5px}
@@ -690,7 +749,11 @@ footer .wrap{display:flex;gap:20px;flex-wrap:wrap;justify-content:space-between}
   .hero-in{padding:56px 20px 40px}
   .wrap,.topbar-in{padding:0 20px}
   .day-date .dd{font-size:16px}
-  .stat{flex-basis:50%;border-right:0;padding-right:12px}
+  /* En el teléfono los cuatro números van de a dos. */
+  .stat{flex:1 1 50%;min-width:50%;padding:15px 16px;border-bottom:1px solid var(--line-soft)}
+  .stat:nth-child(2n){border-right:0}
+  .stat:nth-last-child(-n+2){border-bottom:0}
+  .stat .v{font-size:21px}
   /* El nombre se va: son 175px que la lista de secciones necesita.
      El logo alcanza como marca, y el título está en la portada. */
   .brand-txt{display:none}
@@ -1146,7 +1209,6 @@ body.ficha-abierta{overflow:hidden}
       
       
       
-      
     </nav>
   </div>
 </header>
@@ -1280,6 +1342,8 @@ body.ficha-abierta{overflow:hidden}
           <h4>Día de descanso</h4>
           
           <p class="plan llano">Llegan a las 6 de la mañana, pero a la habitación recién pueden entrar al mediodía. Lo que conviene es dejar las valijas, desayunar sin apuro y pasar el día caminando, tranquilos.</p>
+          
+          
           
           <ul class="solo-fam">
             
@@ -1658,20 +1722,22 @@ body.ficha-abierta{overflow:hidden}
         <div class="day-date"><span class="dnum">día 14</span><span class="dd">30/09</span><span class="dw">miércoles</span></div>
         <div class="day-rail"><span class="node"></span></div>
         <div class="day-body">
-          <h4>Lallybroch, Dean Village y Stockbridge</h4>
+          <h4>Lallybroch, el Forth Bridge y Stockbridge</h4>
           
-          <p class="plan llano">Último día en Escocia, y es tranquilo a propósito: una salida corta a la mañana para ver la casa que en <strong>Outlander</strong> es Lallybroch, y la tarde entera en la Edimburgo que no sale en las postales.</p>
+          <p class="plan llano">Último día en Escocia, y es tranquilo a propósito: una salida a la mañana para ver la casa que en <strong>Outlander</strong> es Lallybroch y el pueblito de <strong>South Queensferry</strong>, que está justo abajo de un puente enorme, y la tarde entera en la Edimburgo que no sale en las postales.</p>
           
           
           
           
           <ul class="solo-fam">
             
-            <li class="llano"><strong>Midhope Castle</strong>, que en la serie <strong>Outlander</strong> es Lallybroch, la casa de la familia Fraser. Van y vuelven en taxi, se ve por afuera nomás, y son unos treinta minutos.</li>
+            <li class="llano"><strong>Midhope Castle</strong>, que en la serie <strong>Outlander</strong> es Lallybroch, la casa de la familia Fraser. Van en taxi, se ve por afuera nomás, y son unos tres cuartos de hora.</li>
+            
+            <li class="llano"><strong>South Queensferry</strong>, un pueblito de piedra al lado del agua, con <strong>tres puentes enormes</strong> uno al lado del otro: uno de 1890, otro de 1964 y otro de 2017. Almuerzan ahí y vuelven en tren.</li>
             
             <li class="llano"><strong>Dean Village</strong> y el camino que va siguiendo el arroyo — un antiguo pueblito de molinos que quedó metido adentro de la ciudad, a veinte minutos del centro.</li>
             
-            <li class="llano"><strong>Stockbridge</strong> para almorzar y para pasar la tarde: librerías de libros usados, anticuarios y bares de esquina. Es la única tarde del viaje sin nada anotado.</li>
+            <li class="llano"><strong>Stockbridge</strong> para pasar la tarde: librerías de libros usados, anticuarios y bares de esquina. Es la única tarde del viaje sin nada anotado.</li>
             
             <li class="llano">A la noche, la <strong>cena de despedida</strong> de Escocia en el Scran &amp; Scallie, que es la taberna de un cocinero escocés muy premiado.</li>
           </ul>
@@ -1832,6 +1898,8 @@ body.ficha-abierta{overflow:hidden}
           
           <p class="plan llano"><span class="tapadera">Llegan</span> a Gante a las <strong>14:49</strong>, cambiando de tren en Bruselas. Les queda media tarde y toda la noche en la ciudad, así que conviene aprovecharla bien.</p>
           
+          
+          
           <ul class="solo-fam">
             
             <li class="llano"><strong>Graslei y Korenlei</strong> — dos muelles antiguos, uno frente al otro, sobre el río. Al atardecer es el mejor rincón de esta zona de Bélgica, y les cae justo en el horario.</li>
@@ -1854,6 +1922,8 @@ body.ficha-abierta{overflow:hidden}
           
           <p class="plan llano">Traslado corto: veinticinco minutos de tren y al mediodía ya están en Brujas, con toda la tarde por delante. El paseo en bici quedó para mañana a la mañana, así que hoy es para la ciudad. Y les toca el atardecer, que es cuando Brujas está más linda.</p>
           
+          
+          
           <ul class="solo-fam">
             
             <li class="llano"><strong>La plaza Markt y su torre</strong>, el Belfort — son 366 escalones hasta arriba, con las campanas sonando encima de ustedes.</li>
@@ -1873,6 +1943,8 @@ body.ficha-abierta{overflow:hidden}
           <h4>Damme en bici · y la Brujas tranquila</h4>
           
           <p class="plan llano">Duermen sobre el canal, en el punto exacto de la postal. El día se parte en dos: a la mañana salen al campo, siete kilómetros en bici por el borde del canal hasta el pueblo de Damme. Y a la tarde, la Brujas de los museos.</p>
+          
+          
           
           <ul class="solo-fam">
             
@@ -1899,6 +1971,8 @@ body.ficha-abierta{overflow:hidden}
           <h4>Bruselas</h4>
           
           <p class="plan llano">Una hora de tren desde Brujas. Los trenes de acá no se reservan: el pasaje se compra en la estación el mismo día. Es la última parada de verdad del viaje.</p>
+          
+          
           
           <ul class="solo-fam">
             
@@ -1961,12 +2035,21 @@ body.ficha-abierta{overflow:hidden}
 
 
 <!-- ══════════════════════════  RESERVAS  ══════════════════════════ -->
+<!-- Una sola tabla con todo el viaje, en orden de fecha del viaje, con el
+     costo a la vista. Antes estaba partida en seis tablas por rubro —vuelos,
+     trenes, alojamientos, auto, excursiones, traslados— y los importes vivían
+     en otra sección: para saber qué costaba un día había que saltar entre
+     cuatro cuadros. Decisión de Mauro del 6/9/2026: todo junto, cronológico,
+     un chip por tipo de gasto y un filtro para mirar de a un rubro.
+     Sin detalles, sin asientos, sin plazos de cancelación. -->
 
 
-<!-- ══════════════════════════  PAGOS  ══════════════════════════ -->
-
-
-<!-- ══════════════════════════  PLATA  ══════════════════════════ -->
+<!-- ══════════════════════════  LA PLATA  ══════════════════════════ -->
+<!-- Una sola sección para todo el dinero. Antes había tres (Reservas con
+     importes, Pagos con cinco cajones por mecanismo, y Plata con barras):
+     la misma plata aparecía en las tres con cortes distintos y no cerraba.
+     Decisión de Mauro del 6/9/2026: un número, un lugar, y en orden de fecha.
+     Reservas quedó sólo con lo operativo — horarios, asientos, cancelaciones. -->
 
 
 </main>
@@ -2411,5 +2494,75 @@ body.ficha-abierta{overflow:hidden}
   document.addEventListener('keydown', function(e){
     if (e.key === 'Escape' && abierta) cerrar(false);
   });
+})();
+
+// ── El filtro por tipo de gasto ──
+// La tabla de Reservas trae todo el viaje junto. Los botones esconden filas y
+// el total de abajo se recalcula con lo que quedó a la vista, así el número
+// siempre corresponde a lo que se está mirando. El seguro no tiene precio
+// todavía: no lleva data-costo y por eso no suma.
+(function(){
+  var barra = document.getElementById('filtroGastos');
+  var tabla = document.getElementById('tablaGastos');
+  if (!barra || !tabla) return;
+
+  var totMonto = document.getElementById('totMonto');
+  var totQue = document.getElementById('totQue');
+  var totCuenta = document.getElementById('totCuenta');
+
+  var nombres = {
+    todos: 'Todo el viaje', vuelo: 'Vuelos', hotel: 'Alojamiento', tren: 'Trenes',
+    auton: 'Auto', exp: 'Experiencias', traslado: 'Traslados', tramite: 'Trámites'
+  };
+
+  var filas = [];
+  var cuerpo = tabla.tBodies[0];
+  for (var i = 0; i < cuerpo.rows.length; i++) {
+    var f = cuerpo.rows[i];
+    if (f.getAttribute('data-tipo')) filas.push(f);
+  }
+
+  function conPuntos(n){
+    var t = String(n), out = '', c = 0;
+    for (var i = t.length - 1; i >= 0; i--) {
+      out = t.charAt(i) + out;
+      if (++c % 3 === 0 && i > 0) out = '.' + out;
+    }
+    return out;
+  }
+
+  function aplicar(tipo){
+    var suma = 0, visibles = 0, aprox = false, sinPrecio = false;
+    for (var i = 0; i < filas.length; i++) {
+      var f = filas[i];
+      var entra = (tipo === 'todos' || f.getAttribute('data-tipo') === tipo);
+      f.hidden = !entra;
+      if (!entra) continue;
+      visibles++;
+      var v = f.getAttribute('data-costo');
+      if (v === null) { sinPrecio = true; continue; }
+      suma += parseInt(v, 10);
+      if (f.textContent.indexOf('~') !== -1) aprox = true;
+    }
+    if (totMonto) totMonto.textContent = (aprox ? '~' : '') + conPuntos(suma);
+    if (totQue) totQue.textContent = nombres[tipo] || nombres.todos;
+    if (totCuenta) {
+      totCuenta.textContent = '· ' + visibles + (visibles === 1 ? ' ítem' : ' ítems') +
+        (sinPrecio ? ', sin contar el seguro' : '');
+    }
+  }
+
+  var botones = barra.querySelectorAll('.fchip');
+  for (var b = 0; b < botones.length; b++) {
+    (function(btn){
+      btn.addEventListener('click', function(){
+        for (var k = 0; k < botones.length; k++) botones[k].classList.remove('on');
+        btn.classList.add('on');
+        aplicar(btn.getAttribute('data-f'));
+      });
+    })(botones[b]);
+  }
+
+  aplicar('todos');
 })();
 </script>

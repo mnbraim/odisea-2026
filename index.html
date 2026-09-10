@@ -1088,6 +1088,47 @@ body.ficha-abierta{overflow:hidden}
   color:var(--legc-ink);background:var(--legc-soft);
   padding:9px 13px;border-radius:4px;
 }
+
+/* ── un desplegable dentro de una parada ──────────────────────────
+   Para lo que sirve tener a mano pero no todo el tiempo a la vista: qué pedir
+   en un restaurante, por ejemplo. Es un <details> nativo A PROPÓSITO — sin
+   JavaScript se abre igual, el buscador del navegador lo encuentra estando
+   cerrado, y al imprimir se fuerza abierto acá abajo. La clase es genérica:
+   sirve en cualquier parada, no sólo en la del pub. */
+.mas{margin-top:11px;max-width:var(--measure)}
+.mas > summary{
+  display:inline-flex;align-items:center;gap:9px;cursor:pointer;list-style:none;
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--legc-ink);background:var(--surface);
+  border:1px solid color-mix(in srgb,var(--legc) 40%,var(--line));
+  border-radius:999px;padding:8px 16px;
+  transition:background .18s var(--out), border-color .18s var(--out);
+}
+.mas > summary::-webkit-details-marker{display:none}
+.mas > summary::after{
+  content:"";width:6px;height:6px;flex:none;
+  border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;
+  transform:translateY(-2px) rotate(45deg);
+  transition:transform .22s var(--out);
+}
+.mas[open] > summary::after{transform:translateY(1px) rotate(225deg)}
+@media (hover:hover) and (pointer:fine){
+  .mas > summary:hover{background:var(--legc-soft)}
+}
+.mas-cuerpo{
+  margin-top:12px;padding:15px 17px;border-radius:4px;
+  background:var(--surface);border:1px solid var(--line-soft);
+}
+.mas-cuerpo p{font-size:13.5px;color:var(--ink-2);line-height:1.68}
+.mas-cuerpo p + p{margin-top:10px}
+.mas-cuerpo b{color:var(--ink);font-weight:650}
+.mas-tit{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--ink-3);
+}
+.mas-cuerpo p + .mas-tit{margin-top:16px}
+.mas-tit + p{margin-top:7px}
+
 @media (max-width:640px){
   /* Es la puerta al dia entero: a ancho completo no hay que apuntarle. */
   .js .ver-ficha{width:100%;justify-content:center}
@@ -1095,12 +1136,16 @@ body.ficha-abierta{overflow:hidden}
   .p-hora{padding-top:0}
   .ficha-cuerpo{padding:24px 20px 56px}
   .ficha-tit{font-size:23px}
+  .mas > summary{width:100%;justify-content:center}
 }
 @media print{
   /* Al imprimir vuelve a ser un bloque del día: sin barra y sin botones. */
   .ficha{break-inside:auto}
   .ficha-barra,.ficha .volver,.ver-ficha{display:none !important}
   .parada{break-inside:avoid}
+  /* Nada plegado en papel: el botón se va y el contenido queda abierto. */
+  .mas > summary{display:none}
+  .mas > .mas-cuerpo{display:block !important;margin-top:0;border:0;padding:0;background:none}
 }
 @media (prefers-reduced-motion:reduce){
   .js .ver-ficha:active{transform:none}
@@ -1352,7 +1397,7 @@ body.ficha-abierta{overflow:hidden}
             <li class="llano">El mercado de la Boquería abre temprano. Es un buen lugar para arrancar el día, cuando todavía están medio dormidos.</li>
             
             <li class="llano">Si duermen la siesta, que sea corta y temprano. Viajando hacia el este el cuerpo tarda varios días en acomodarse al horario nuevo.</li>
-            <li>Cena temprano y a la cama: al día siguiente hay avión a media tarde.</li>
+            <li>Cena en el Raval y a la cama: al día siguiente hay avión a media tarde.</li>
                       <li><strong>Para probar</strong> — el <strong>pa amb tomàquet</strong> (se dice "pan am tumáquet"): pan tostado frotado con tomate, aceite de oliva y sal. En Cataluña acompaña todo. Con jamón cortado a mano, es el desayuno de la Boquería.</li>
 </ul>
         </div>
@@ -1500,7 +1545,7 @@ body.ficha-abierta{overflow:hidden}
           
           <h4 class="llano">Viaje a Vík por la costa sur <span style="color:var(--aurora);font-family:var(--mono);font-size:12px;letter-spacing:.08em">· EQUINOCCIO</span></h4>
           
-          <p class="plan llano">330 km y unas 4 horas y cuarto de manejo. Las cuatro cascadas del día están sobre la ruta misma, así que no hay que desviarse. Saliendo a las 9:00 llegan a Vík cerca de las <strong>16:15</strong>, con toda la tarde por delante. Es el día del equinoccio: la noche y el día duran lo mismo, y de acá en más las noches se hacen más largas, que es justo lo que conviene para las auroras.</p>
+          <p class="plan llano">352 km y 5 horas y cuarto de manejo. Las cuatro cascadas del día están sobre la ruta misma, así que no hay que desviarse. Saliendo a las 9:00 llegan a Vík cerca de las <strong>17:00</strong>, con toda la tarde por delante. Es el día del equinoccio: la noche y el día duran lo mismo, y de acá en más las noches se hacen más largas, que es justo lo que conviene para las auroras.</p>
           
           
           
@@ -1571,7 +1616,7 @@ body.ficha-abierta{overflow:hidden}
             
             <li class="llano">La <strong>playa de los diamantes</strong> — cruzando la ruta: los bloques de hielo quedan varados sobre la arena negra y brillan con el sol. Ver auroras desde acá es de lo mejor que tiene la isla.</li>
             
-            <li class="llano"><strong>Svartifoss</strong>, en el camino de vuelta, si les sobra luz: una cascada rodeada de columnas de piedra negra.</li>
+            <li class="llano"><strong>Svartifoss</strong> quedó afuera: era una cascada más, pero sumaba tres horas y media a la vuelta y los dejaba manejando de noche.</li>
           </ul>
 
           <div class="moon">
@@ -1586,9 +1631,9 @@ body.ficha-abierta{overflow:hidden}
         <div class="day-date"><span class="dnum">día 10</span><span class="dd">26/09</span><span class="dw">sábado</span></div>
         <div class="day-rail"><span class="node"></span></div>
         <div class="day-body">
-          <h4>Círculo Dorado y cierre en aguas termales</h4>
+          <h4>Círculo Dorado y cierre en Blue Lagoon</h4>
           
-          <p class="plan llano">El día más largo de Islandia: unas 9 horas y media saliendo a las 09:00. Hacen dos paradas de la ruta más famosa del país, el Círculo Dorado, y las termas como final del recorrido.</p>
+          <p class="plan llano">El día más largo de Islandia: salen a las 09:00 de Vík y llegan a las 20:10 al hotel de Keflavík. Hacen dos paradas de la ruta más famosa del país, el Círculo Dorado, y cierran en las termas de <b>Blue Lagoon</b>.</p>
           
           
           
@@ -1597,12 +1642,12 @@ body.ficha-abierta{overflow:hidden}
             
             <li class="llano"><strong>2 · Geysir</strong> — a 10 minutos. Es el chorro de agua hirviendo que le dio el nombre a todos los géiseres del mundo. Ese ya casi no salta, pero justo al lado el <strong>Strokkur</strong> tira agua a 15 o 20 metros de alto cada 5 o 10 minutos, sin fallar.</li>
             
-            <li class="llano"><strong>3 · Termas</strong> — todavía están decidiendo a cuál de las dos van.</li>
+            <li class="llano"><strong>3 · Blue Lagoon</strong> — las termas más conocidas de Islandia. Entran a las 17:15 y el sol se pone a las 19:17: van a estar en el agua caliente justo cuando cae la tarde.</li>
           </ul>
 
           <div class="solo-fam">
             
-            <div class="flag llano"><b>Þingvellir queda afuera.</b> Es el tercer punto del Círculo Dorado: ahí se ve la grieta por donde se separan dos placas de la Tierra, y es el lugar donde los vikingos hacían sus asambleas allá por el año 930. Pero es el que menos impresiona a simple vista y el que más tiempo lleva: 50 minutos de manejo más una hora de visita. Sacándolo entran las termas sin estirar el día a más de once horas.</div>
+            <div class="flag llano"><b>Þingvellir queda afuera.</b> Es el tercer punto del Círculo Dorado: ahí se ve la grieta por donde se separan dos placas de la Tierra, y es el lugar donde los vikingos hacían sus asambleas allá por el año 930. Pero es el que menos impresiona a simple vista y el que más tiempo lleva: pasar por ahí en vez de ir derecho suma <b>dos horas y media</b> entre el desvío y la visita. Sacándolo entran las termas.</div>
           </div>
           <div class="solo-fam">
             <div class="flag ok"><b>Esa noche no pierden auroras.</b> Es luna llena, la peor del viaje. Meterse en agua caliente es exactamente lo que hay que hacer con esa noche.</div>
@@ -2012,7 +2057,16 @@ body.ficha-abierta{overflow:hidden}
         <div class="day-rail"><span class="node"></span></div>
         <div class="day-body">
           <h4>Bruselas → Barcelona</h4>
-          <p class="plan">Mañana libre en Bruselas y vuelo a la tarde.</p>
+          
+          <p class="plan llano">Última mañana en Europa, y no hay nada con horario hasta el vuelo de las 18:30. Se va entera en el mercado de pulgas y en el barrio de las chocolaterías. El último almuerzo del viaje es en una pescadería con barra, a cuatro minutos del hotel.</p>
+          
+          
+          
+          <ul class="solo-fam">
+            <li>El mercado de pulgas del Jeu de Balle abre los 365 días del año desde 1873, y los viernes son de los mejores.</li>
+            <li>En el Sablon están las chocolaterías de verdad, las que fabrican el chocolate y no sólo lo venden. Es el mejor lugar del viaje para traer algo.</li>
+            <li>El último almuerzo es en una pescadería con barra: se pide en el mostrador y se come parado, con una copa.</li>
+          </ul>
           <div class="chips solo-fam"><span class="chip fly"><svg class="chip-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#iAvion"/></svg>BRU → BCN · 18:30–20:30</span></div>
         </div>
       </div>

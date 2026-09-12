@@ -1089,6 +1089,24 @@ body.ficha-abierta{overflow:hidden}
   padding:9px 13px;border-radius:4px;
 }
 
+/* ── el pin de Maps, al lado del nombre ────────────────────────────
+   Decisión de Mauro del 10/9/2026. Va absoluto a la derecha para no romper
+   el renglón del nombre, que puede traer íconos o marcas adentro. Sólo lo
+   llevan las paradas que son un lugar al que hay que ir —no los vuelos en el
+   aire ni las reglas del sábado—, y `con-mapa` le reserva el lugar. */
+.p-nom.con-mapa{position:relative;padding-right:48px;min-height:34px}
+.p-mapa{
+  position:absolute;top:-5px;right:0;
+  display:flex;align-items:center;justify-content:center;
+  width:38px;height:38px;border-radius:999px;
+  color:var(--legc-ink);background:var(--surface);
+  border:1px solid color-mix(in srgb,var(--legc) 40%,var(--line));
+  transition:background .18s var(--out), transform .18s var(--out);
+}
+.p-mapa svg{width:18px;height:18px;display:block}
+.p-mapa:active{transform:scale(.94)}
+@media (hover:hover) and (pointer:fine){ .p-mapa:hover{background:var(--legc-soft)} }
+
 /* ── un desplegable dentro de una parada ──────────────────────────
    Para lo que sirve tener a mano pero no todo el tiempo a la vista: qué pedir
    en un restaurante, por ejemplo. Es un <details> nativo A PROPÓSITO — sin
@@ -1143,10 +1161,34 @@ body.ficha-abierta{overflow:hidden}
   .ficha{break-inside:auto}
   .ficha-barra,.ficha .volver,.ver-ficha{display:none !important}
   .parada{break-inside:avoid}
+  .p-mapa{display:none}
+  .p-nom.con-mapa{padding-right:0;min-height:0}
   /* Nada plegado en papel: el botón se va y el contenido queda abierto. */
   .mas > summary{display:none}
   .mas > .mas-cuerpo{display:block !important;margin-top:0;border:0;padding:0;background:none}
 }
+/* ── el botón Hoy ──────────────────────────────────────────────────
+   Decisión de Mauro del 10/9/2026: flotante abajo a la derecha, a mano del
+   pulgar, y baja al día en la página (no abre la ficha). Antes de salir lleva
+   a la víspera; después del viaje no aparece. Sin JS no hace nada, así que
+   tampoco se muestra. Queda por debajo de la ficha (90) y de la bienvenida (100). */
+.hoy{display:none}
+.js .hoy.on{
+  display:inline-flex;align-items:center;gap:9px;cursor:pointer;
+  position:fixed;right:16px;bottom:calc(18px + env(safe-area-inset-bottom, 0px));z-index:80;
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;
+  color:#EAF4F0;background:#050D0C;
+  border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:12px 18px;
+  box-shadow:0 8px 24px -8px rgba(5,13,12,.55);
+  transition:transform .18s var(--out), filter .18s var(--out);
+}
+.hoy .punto{width:8px;height:8px;border-radius:50%;background:#5AD8A6;box-shadow:0 0 10px rgba(90,216,166,.8)}
+.js .hoy.on:active{transform:scale(.96)}
+@media (hover:hover) and (pointer:fine){ .js .hoy.on:hover{filter:brightness(1.25)} }
+/* Que el día no quede tapado por la barra de arriba al llegar. */
+.day{scroll-margin-top:68px}
+@media print{ .hoy{display:none !important} }
+
 @media (prefers-reduced-motion:reduce){
   .js .ver-ficha:active{transform:none}
 }
@@ -1204,6 +1246,9 @@ body.ficha-abierta{overflow:hidden}
   <symbol id="iAviso" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
     <path d="M12 3.4 22.2 20.6H1.8z"/><path d="M12 9.6v4.3M12 17.2h.01"/>
   </symbol>
+  <symbol id="iPin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 21.5s-6.5-6.2-6.5-11.3a6.5 6.5 0 0 1 13 0c0 5.1-6.5 11.3-6.5 11.3z"/><circle cx="12" cy="10.2" r="2.4"/>
+  </symbol>
   <symbol id="bEspana" viewBox="0 0 30 20">
     <rect width="30" height="20" fill="#AA151B"/>
     <rect y="5" width="30" height="10" fill="#F1BF00"/>
@@ -1238,6 +1283,7 @@ body.ficha-abierta{overflow:hidden}
 </svg>
 
 <div class="avance" id="avance" aria-hidden="true"></div>
+
 <header class="topbar" id="barraSup">
   <div class="topbar-in">
     <div class="brand">
@@ -1310,7 +1356,6 @@ body.ficha-abierta{overflow:hidden}
     <p class="hero-facts">
       <span><b>24</b> días de viaje</span>
       <span><b>5</b> países</span>
-      
       
       <span class="solo-fam"><b>2</b> personas</span>
     </p>
@@ -1390,6 +1435,7 @@ body.ficha-abierta{overflow:hidden}
           
           
           
+          
           <ul class="solo-fam">
             
             <li class="llano">Duermen en el casco antiguo (Ciutat Vella), al lado de la plaza principal. Los dos barrios más lindos para caminar, el Gótico y el Born, quedan a pocas cuadras.</li>
@@ -1397,7 +1443,7 @@ body.ficha-abierta{overflow:hidden}
             <li class="llano">El mercado de la Boquería abre temprano. Es un buen lugar para arrancar el día, cuando todavía están medio dormidos.</li>
             
             <li class="llano">Si duermen la siesta, que sea corta y temprano. Viajando hacia el este el cuerpo tarda varios días en acomodarse al horario nuevo.</li>
-            <li>Cena en el Raval y a la cama: al día siguiente hay avión a media tarde.</li>
+            <li>Cena tranquila y a la cama: al día siguiente hay avión a media tarde.</li>
                       <li><strong>Para probar</strong> — el <strong>pa amb tomàquet</strong> (se dice "pan am tumáquet"): pan tostado frotado con tomate, aceite de oliva y sal. En Cataluña acompaña todo. Con jamón cortado a mano, es el desayuno de la Boquería.</li>
 </ul>
         </div>
@@ -1545,7 +1591,7 @@ body.ficha-abierta{overflow:hidden}
           
           <h4 class="llano">Viaje a Vík por la costa sur <span style="color:var(--aurora);font-family:var(--mono);font-size:12px;letter-spacing:.08em">· EQUINOCCIO</span></h4>
           
-          <p class="plan llano">352 km y 5 horas y cuarto de manejo. Las cuatro cascadas del día están sobre la ruta misma, así que no hay que desviarse. Saliendo a las 9:00 llegan a Vík cerca de las <strong>17:00</strong>, con toda la tarde por delante. Es el día del equinoccio: la noche y el día duran lo mismo, y de acá en más las noches se hacen más largas, que es justo lo que conviene para las auroras.</p>
+          <p class="plan llano">352 km y 5 horas y cuarto de manejo. Las cuatro cascadas del día están sobre la ruta misma, así que no hay que desviarse. Saliendo a las 9:00 y parando a almorzar en Selfoss, llegan a Vík cerca de las <strong>17:45</strong>, con toda la tarde por delante. Es el día del equinoccio: la noche y el día duran lo mismo, y de acá en más las noches se hacen más largas, que es justo lo que conviene para las auroras.</p>
           
           
           
@@ -1840,7 +1886,7 @@ body.ficha-abierta{overflow:hidden}
             
             <li class="llano">El sol se pone a las 18:53, así que suben a la torre justo con la última luz del día.</li>
             
-            <li class="llano">La noche es en el <strong>Glockenbach</strong>, el barrio de bares de Múnich: cuadras enteras de bares chicos y restaurantes alrededor de una plaza. Se camina todo, y duermen a quince minutos de ahí.</li>
+            <li class="llano">La noche es en el <strong>Glockenbach</strong>, el barrio de bares de Múnich: cuadras enteras de bares chicos y restaurantes alrededor de una plaza. Se camina todo, y queda de camino al hotel.</li>
             
             <li class="llano">También es el día de comprar la <strong>ropa típica</strong> — el vestido bávaro y el pantalón de cuero. No es un disfraz: durante la fiesta la gente anda así por toda la ciudad, y ayuda de verdad para que te hagan un lugar en la mesa.</li>
           </ul>
@@ -1985,27 +2031,27 @@ body.ficha-abierta{overflow:hidden}
         <div class="day-date"><span class="dnum">día 21</span><span class="dd">7/10</span><span class="dw">miércoles</span></div>
         <div class="day-rail"><span class="node"></span></div>
         <div class="day-body">
-          <h4>Damme en bici · y la Brujas tranquila</h4>
+          <h4>El canal hasta Sluis, y el spa cervecero</h4>
           
-          <p class="plan llano">Duermen sobre el canal, en el punto exacto de la postal. El día se parte en dos: a la mañana salen al campo, siete kilómetros en bici por el borde del canal hasta el pueblo de Damme. Y a la tarde, la Brujas de los museos.</p>
+          <p class="plan llano">Duermen sobre el canal, en el punto exacto de la postal. Y el día es una sola cosa: salen en bici por el borde de un canal, todo llano, hasta un pueblo que ya es de Holanda (Sluis), y vuelven por la otra orilla. Son treinta y un kilómetros. A la tarde, se relajan en un spa cervecero.</p>
           
           
           
           <ul class="solo-fam">
             
-            <li class="llano"><strong>El canal hasta Damme</strong> — son siete kilómetros todos llanos por el borde del canal, con álamos a los dos lados, algunos de más de cien años. Ese canal lo mandó hacer Napoleón en 1810 para mover sus tropas, y nunca lo terminó. Salen bordeando las murallas de Brujas, pasando por delante de los molinos de viento.</li>
+            <li class="llano"><strong>El canal de Napoleón</strong> — un camino todo llano por el borde del canal, con álamos a los dos lados, algunos de más de cien años. Ese canal lo mandó hacer Napoleón en 1810 para mover sus tropas, y nunca lo terminó. Salen bordeando las murallas de Brujas, pasando por delante de los molinos de viento.</li>
             
             <li class="llano"><strong>Damme</strong> — era el puerto de Brujas, hasta que el mar se fue llenando de arena y las dos quedaron tierra adentro. Quedó un pueblo del siglo XV con su ayuntamiento antiguo. Y es el pueblo de los libros de la región: hay librerías de usado por todos lados.</li>
             
+            <li class="llano"><strong>La balsa y el pueblo holandés</strong> — cruzan el canal en una balsa sin balsero (el Kobus): uno mismo la mueve tirando de una manivela, con la bici arriba, si ese día está funcionando. Más adelante llegan a Sluis, un pueblo con murallas que ya es de Holanda. Pasan de un país al otro en bici, sin ningún control. Es la mitad del camino, y ahí almuerzan.</li>
+            
             <li class="llano"><strong>La vuelta, por la otra orilla</strong> — el canal tiene camino de los dos lados, así que vuelven por enfrente y no repiten el mismo paisaje.</li>
             
-            <li class="llano"><strong>Begijnhof y Minnewater</strong> — un patio antiguo rodeado de casitas blancas, donde vivían mujeres religiosas, y al lado el lago de los cisnes. Es la parte silenciosa de la ciudad.</li>
-            
-            <li class="llano"><strong>Museo Groeninge</strong> — los pintores flamencos antiguos, Van Eyck y Memling, en una sala chica y perfecta. Y en la Iglesia de Nuestra Señora está la <em>Madonna</em> de Miguel Ángel: es la única escultura suya que salió de Italia mientras él vivía.</li>
+            <li class="llano"><strong>El spa de la cerveza</strong> — a la vuelta se meten en una tina de madera con agua bien caliente y lúpulo, la planta que le da el gusto a la cerveza, y se toman una cerveza mientras se bañan. Es sólo para los dos. Después de treinta y un kilómetros en bici, es justo lo que hace falta.</li>
             
             <li class="llano">Cerveza: la fábrica <strong>De Halve Maan</strong> manda la cerveza por un caño de tres kilómetros que pasa por debajo de la ciudad, hasta donde la embotellan. Y el bar <strong>'t Brugs Beertje</strong> tiene más de trescientas cervezas distintas y unos dueños que de verdad los aconsejan.</li>
           </ul>
-          <div class="chips solo-fam"><span class="chip fly"><svg class="chip-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#iBici"/></svg>BICI · Brujas → Damme → Brujas · 17 km llanos</span></div>
+          <div class="chips solo-fam"><span class="chip fly"><svg class="chip-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#iBici"/></svg>BICI · Brujas → Sluis → Brujas · 31 km llanos</span></div>
         </div>
       </div>
 
@@ -2058,7 +2104,7 @@ body.ficha-abierta{overflow:hidden}
         <div class="day-body">
           <h4>Bruselas → Barcelona</h4>
           
-          <p class="plan llano">Última mañana en Europa, y no hay nada con horario hasta el vuelo de las 18:30. Se va entera en el mercado de pulgas y en el barrio de las chocolaterías. El último almuerzo del viaje es en una pescadería con barra, a cuatro minutos del hotel.</p>
+          <p class="plan llano">Última mañana en Europa, y no hay nada con horario hasta el vuelo de las 18:05. Se va entera en el mercado de pulgas y en el barrio de las chocolaterías. El último almuerzo del viaje es en una pescadería con barra, a cuatro minutos del hotel.</p>
           
           
           
@@ -2067,7 +2113,7 @@ body.ficha-abierta{overflow:hidden}
             <li>En el Sablon están las chocolaterías de verdad, las que fabrican el chocolate y no sólo lo venden. Es el mejor lugar del viaje para traer algo.</li>
             <li>El último almuerzo es en una pescadería con barra: se pide en el mostrador y se come parado, con una copa.</li>
           </ul>
-          <div class="chips solo-fam"><span class="chip fly"><svg class="chip-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#iAvion"/></svg>BRU → BCN · 18:30–20:30</span></div>
+          <div class="chips solo-fam"><span class="chip fly"><svg class="chip-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#iAvion"/></svg>Iberia · BRU → BCN · 18:05–20:15</span></div>
         </div>
       </div>
 
@@ -2116,7 +2162,7 @@ body.ficha-abierta{overflow:hidden}
         <span>Odisea Europea 2026</span>
       </div>
       El itinerario día por día del viaje de Mauro y Melisa por Islandia, Escocia, Alemania y Bélgica.<br></div>
-    <div class="num">Actualizado al 6/09/2026</div>
+    <div class="num">Actualizado al 12/09/2026</div>
   </div>
 </footer>
 
@@ -2547,6 +2593,49 @@ body.ficha-abierta{overflow:hidden}
   window.addEventListener('popstate', function(){ cerrar(true); });
   document.addEventListener('keydown', function(e){
     if (e.key === 'Escape' && abierta) cerrar(false);
+  });
+})();
+
+// ── El botón Hoy ──
+// Baja al día que corresponde a la fecha del teléfono. La fecha sale del mismo
+// rótulo que se ve en cada día ("18/09"), así no hay una lista aparte que
+// mantener. Si una fecha tiene dos bloques, hasta las 14:00 lleva al primero
+// y después al segundo. Antes de
+// salir lleva a la víspera; pasado el 10/10 el botón no aparece.
+(function(){
+  'use strict';
+  var b = document.getElementById('irHoy');
+  if (!b) return;
+  var dias = document.querySelectorAll('.day');
+
+  function destino(){
+    var n = new Date();
+    var hoy = new Date(n.getFullYear(), n.getMonth(), n.getDate());
+    var primero = null, deHoy = [];
+    for (var i = 0; i < dias.length; i++) {
+      var r = dias[i].querySelector('.dd');
+      if (!r) continue;
+      var p = r.textContent.trim().split('/');
+      var f = new Date(2026, +p[1] - 1, +p[0]);
+      if (!primero || f < primero.f) primero = { d: dias[i], f: f };
+      if (+f === +hoy) deHoy.push(dias[i]);
+    }
+    if (deHoy.length) return n.getHours() >= 14 ? deHoy[deHoy.length - 1] : deHoy[0];
+    if (primero && hoy < primero.f) return primero.d;
+    return null;
+  }
+
+  if (!destino()) return;
+  b.classList.add('on');
+  b.addEventListener('click', function(){
+    var d = destino();
+    if (!d) { b.classList.remove('on'); return; }
+    // Si el día todavía no entró en pantalla sigue invisible por la animación
+    // de entrada: se lo marca visible antes de llegar.
+    var sec = d.closest('.reveal');
+    if (sec) sec.classList.add('in');
+    d.classList.add('vis');
+    d.scrollIntoView({ block: 'start' });
   });
 })();
 

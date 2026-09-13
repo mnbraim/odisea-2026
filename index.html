@@ -1211,6 +1211,25 @@ body.ficha-abierta{overflow:hidden}
   .fotos::-webkit-scrollbar{display:none}
   .foto{flex:0 0 84%;scroll-snap-align:start}
 }
+/* Ventana de bienvenida durante el viaje: el dato curioso del día y los tres
+   mimos que la familia les manda. Los mimos llegan como aviso al celular
+   (ntfy) y sólo aparecen en la versión familiar. */
+.cd-dato{margin:12px 0 0;font-size:14px;line-height:1.55;color:var(--ink-2);text-wrap:pretty}
+.cd-dato b{color:var(--ink);font-weight:600}
+.cd-mimos{margin-top:20px}
+.cd-mimos-tit{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+.cd-quien{display:block;width:100%;margin:10px 0 0;padding:10px 14px;border:1px solid var(--line);border-radius:999px;
+  background:var(--surface);color:var(--ink);font:15px var(--body);text-align:center}
+.cd-quien:focus{outline:2px solid var(--aurora);outline-offset:1px}
+.cd-mimo-fila{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.cd-mimo{display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 6px 10px;cursor:pointer;
+  border:1px solid var(--line);border-radius:16px;background:var(--surface-2);color:var(--ink-2);
+  font:600 12px/1.25 var(--body);transition:transform 140ms var(--cd-out),background 160ms ease,border-color 160ms ease}
+.cd-mimo .e{font-size:30px;line-height:1}
+.cd-mimo:active{transform:scale(.95)}
+.cd-mimo.ok{background:var(--aurora-soft);border-color:color-mix(in srgb,var(--aurora) 45%,var(--line));color:var(--aurora-ink)}
+.cd-mimo:disabled{cursor:default}
+.cd-mimo-aviso{min-height:1.4em;margin-top:8px;font-size:13px;color:var(--ink-2)}
 </style>
 
 
@@ -4456,7 +4475,14 @@ body.ficha-abierta{overflow:hidden}
       <div class="cd-stagger">
         <div class="cd-frase" id="cdFrase">
           <p class="cd-wait" id="cdWait"></p>
+          <p class="cd-dato" id="cdDato" hidden></p>
           <div class="cd-pais" id="cdPais"></div>
+        </div>
+        <div class="cd-mimos solo-fam" id="cdMimos" hidden>
+          <div class="cd-mimos-tit">Mándenles algo para hoy</div>
+          <input class="cd-quien" id="cdQuien" type="text" maxlength="30" autocomplete="given-name" placeholder="¿Quién les manda? Tu nombre">
+          <div class="cd-mimo-fila" id="cdMimoFila"></div>
+          <div class="cd-mimo-aviso" id="cdMimoAviso" aria-live="polite"></div>
         </div>
       </div>
       <div class="cd-stagger">
@@ -4502,7 +4528,9 @@ body.ficha-abierta{overflow:hidden}
 
     // Ya salieron: el reloj deja lugar a dónde están.
     if (reloj) reloj.classList.add('llegamos');
-    var dia = Math.floor((Date.now() - PARTIDA) / 86400000) + 1;
+    // El número es el mismo del itinerario: 17/09 es el día 1, 10/10 el 24.
+    var ahora = new Date();
+    var dia = Math.max(1, Math.round((new Date(ahora.getFullYear(), ahora.getMonth(), ahora.getDate()) - new Date(2026, 8, 16)) / 86400000));
     if (Date.now() <= REGRESO_V) {
       uD.textContent = dia;
       if (pie) pie.textContent = 'd\u00eda ' + dia + ' de 24 · est\u00e1n de viaje';
@@ -4707,10 +4735,125 @@ body.ficha-abierta{overflow:hidden}
   };
 
 
+  /* Cada día del viaje: un saludo, un dato curioso de donde están y los tres
+     mimos que puede mandar la familia. Los días que no están acá muestran la
+     frase del país, como antes, y sin botones. */
+  var DIAS = {
+    '2026-09-16': { lugar:'Punta Arenas → Santiago', pais:'Chile',
+      saludo:'¡Hoy arranca la Odisea!',
+      dato:'El nombre no es casual: la <b>Odisea</b> es el viaje de Ulises, que tardó diez años en volver a casa. Ellos lo hacen en veinticuatro días y con pasaje de vuelta.',
+      mimos:[['✈️','Buen viaje'], ['🧳','Que no se pierda la valija'], ['🥹','Los vamos a extrañar']] },
+    '2026-09-17': { lugar:'Arriba del Atlántico', pais:'España',
+      saludo:'Hoy se cruza el océano.',
+      dato:'De Santiago a Barcelona hay más de <b>11.000 kilómetros</b> en línea recta: dos veces y media el largo de Chile. Aterrizan mañana a las seis, con el día ya cambiado.',
+      mimos:[['🍿','Una peli para el vuelo'], ['😴','Que duerman algo'], ['🌊','Saludos al Atlántico']] },
+    '2026-09-18': { lugar:'Barcelona', pais:'España',
+      saludo:'¡Bon dia desde Barcelona!',
+      dato:'La <b>Rambla</b> se llama así por el árabe <i>ramla</i>, arenal: antes de ser la calle más famosa de la ciudad era el cauce seco de un arroyo que corría junto a la muralla.',
+      mimos:[['🍫','Un suizo con melindros'], ['😴','Una siesta sagrada'], ['🍤','Tortillitas de camarones']] },
+    '2026-09-19': { lugar:'Barcelona → Reikiavik', pais:'Islandia',
+      saludo:'Hoy aterrizan en la isla del fuego y el hielo.',
+      dato:'En Islandia casi no hay apellidos de familia: cada uno lleva el nombre del padre o la madre más <i>son</i> (hijo) o <i>dóttir</i> (hija). Por eso la guía de teléfonos se ordena <b>por nombre de pila</b>.',
+      mimos:[['🧥','Abríguense'], ['🌌','Que aparezca la primera aurora'], ['🐟','Buen apetito con la trucha']] },
+    '2026-09-20': { lugar:'Reikiavik', pais:'Islandia',
+      saludo:'Góðan daginn, Reikiavik.',
+      dato:'La <b>Hallgrímskirkja</b>, la iglesia que se ve desde toda la ciudad, tardó 41 años en construirse: la empezaron en 1945 y la terminaron recién en 1986.',
+      mimos:[['🦈','Valor con el tiburón'], ['🌭','Un pancho con todo'], ['🌈','La foto en la calle arcoíris']] },
+    '2026-09-21': { lugar:'Snæfellsnes', pais:'Islandia',
+      saludo:'Hoy les dan las llaves del auto.',
+      dato:'En la punta de esta península está el glaciar <b>Snæfellsjökull</b>. Julio Verne lo eligió como la entrada de <i>Viaje al centro de la Tierra</i>: por el cráter bajan sus personajes.',
+      mimos:[['♨️','A remojo en las termas'], ['⛪','La iglesia negra'], ['🚗','Manejen con cuidado']] },
+    '2026-09-22': { lugar:'Kirkjufell · Snæfellsnes', pais:'Islandia',
+      saludo:'Hoy toca la montaña más fotografiada de Islandia.',
+      dato:'<b>Kirkjufell</b> quiere decir «montaña iglesia», por su forma. En <i>Game of Thrones</i> aparece como la montaña con forma de punta de flecha, del otro lado del Muro.',
+      mimos:[['📸','La foto de la montaña'], ['🌌','Aurora sobre Kirkjufell'], ['🍲','Una sopa de pescado']] },
+    '2026-09-23': { lugar:'La costa sur · equinoccio', pais:'Islandia',
+      saludo:'Día de cascadas, y noche de equinoccio.',
+      dato:'Alrededor de los <b>equinoccios</b> el campo magnético de la Tierra queda mejor orientado para recibir el viento solar. Por eso, estadísticamente, septiembre es de los mejores meses para ver auroras.',
+      mimos:[['💦','Impermeable para la cascada'], ['🌈','Arcoíris en Skógafoss'], ['🌌','Que sea la noche de las auroras']] },
+    '2026-09-24': { lugar:'Vík · la costa sur', pais:'Islandia',
+      saludo:'Góðan daginn desde la playa negra.',
+      dato:'Vík vive a los pies de <b>Katla</b>, un volcán dormido debajo del glaciar. El pueblo hace simulacros de evacuación, y el lugar a salvo es la iglesita del cerro: si el volcán despierta, el hielo derretido baja como un río hasta el mar, y todos suben ahí.',
+      mimos:[['🌌','Que salga la aurora'], ['🧣','Una bufanda'], ['🧌','Ojo con los trolls']] },
+    '2026-09-25': { lugar:'Jökulsárlón', pais:'Islandia',
+      saludo:'Hoy es el día grande de Islandia.',
+      dato:'El hielo de los icebergs de <b>Jökulsárlón</b> puede tener mil años: es nieve que cayó sobre el glaciar hace siglos y recién ahora se desprende. Y en la laguna suelen asomar focas.',
+      mimos:[['🧊','Un hielo para el whisky'], ['💎','Un diamante de la playa'], ['🦭','Saludos a las focas']] },
+    '2026-09-26': { lugar:'Círculo Dorado · Blue Lagoon', pais:'Islandia',
+      saludo:'Último día en Islandia, y con agua caliente.',
+      dato:'El agua de la <b>Blue Lagoon</b> sale de la central geotérmica de al lado: pasa por las turbinas y después llena la laguna. Ese celeste lechoso es por la sílice.',
+      mimos:[['🧖','Mascarilla de barro blanco'], ['⛲','Que erupcione el Strokkur'], ['🍅','Sopa de tomate del invernadero']] },
+    '2026-09-27': { lugar:'Edimburgo', pais:'Escocia',
+      saludo:'Hoy llegan a Escocia.',
+      dato:'El animal nacional de Escocia es el <b>unicornio</b>. En el escudo real aparece encadenado: según la leyenda, era tan salvaje que sólo así se lo podía sujetar.',
+      mimos:[['🦄','Saludos al unicornio'], ['👻','Coraje con los fantasmas'], ['🐟','Fish and chips']] },
+    '2026-09-28': { lugar:'Edimburgo · el castillo', pais:'Escocia',
+      saludo:'Hoy Edimburgo se recorre de arriba abajo.',
+      dato:'Al casco viejo le decían <b>Auld Reekie</b>, «la vieja humeante», por el humo de miles de chimeneas a carbón que tapaba la ciudad.',
+      mimos:[['💥','El cañonazo de la una'], ['👑','Las joyas de la corona'], ['🥃','Un whisky']] },
+    '2026-09-29': { lugar:'Las Highlands', pais:'Escocia',
+      saludo:'Hoy se van a las Tierras Altas.',
+      dato:'La foto más famosa del <b>monstruo del Lago Ness</b>, la de 1934, era trucha: sesenta años después se supo que era un submarino de juguete con una cabeza de masilla.',
+      mimos:[['🦕','Saludos a Nessie'], ['🐄','Abrazo a una vaca peluda'], ['☔','Que no llueva']] },
+    '2026-09-30': { lugar:'Lallybroch y el Forth Bridge', pais:'Escocia',
+      saludo:'Último día en Escocia, con Outlander.',
+      dato:'En Escocia se dice «es como pintar el <b>Forth Bridge</b>» de un trabajo que no se termina nunca: el puente es tan largo que, cuando acababan de pintarlo, había que volver a empezar.',
+      mimos:[['🏰','Saludos a Jamie Fraser'], ['🌉','La foto del puente'], ['🥧','Un steak pie']] },
+    '2026-10-01': { lugar:'Múnich', pais:'Alemania',
+      saludo:'¡Servus, Múnich!',
+      dato:'Múnich viene de <i>Mönche</i>, monjes: la ciudad nació alrededor de un monasterio. Por eso su símbolo es el <b>Münchner Kindl</b>, un monjecito con un libro en la mano.',
+      mimos:[['👗','Dirndl y Lederhose'], ['🥨','Un Brezn'], ['🔔','El Glockenspiel']] },
+    '2026-10-02': { lugar:'Múnich · Oktoberfest', pais:'Alemania',
+      saludo:'¡O\'zapft is! Primer día en la Wiesn.',
+      dato:'La Oktoberfest recibe unos <b>siete millones de visitantes</b> por edición, y se toman más o menos la misma cantidad de litros de cerveza.',
+      mimos:[['🍻','¡Prost!'], ['🎡','Una vuelta en la noria'], ['🐟','Un pescado en la vara']] },
+    '2026-10-03': { lugar:'Múnich · Oktoberfest', pais:'Alemania',
+      saludo:'¡Servus! Hoy es el día grande de la Wiesn.',
+      dato:'Todo empezó con un casamiento: en 1810 el príncipe Luis de Baviera se casó con la princesa <b>Teresa</b> e invitó a la ciudad entera a festejar en un prado. El prado todavía se llama como ella, Theresienwiese, y de ahí sale «la Wiesn».',
+      mimos:[['🍺','Un chop'], ['🫧','Un Uvasal'], ['🥴','Abrazo de borracho']] },
+    '2026-10-04': { lugar:'Múnich · el último día de la Wiesn', pais:'Alemania',
+      saludo:'Último día en Múnich, y tren al norte.',
+      dato:'La estatua de la <b>Bavaria</b>, que mira la Wiesn desde lo alto, es hueca: se sube por adentro hasta la cabeza, y por unas ventanitas se ve el predio entero.',
+      mimos:[['🚆','Buen viaje en tren'], ['🥨','El último Brezn'], ['💤','Una siesta en el tren']] },
+    '2026-10-05': { lugar:'Gante', pais:'Bélgica',
+      saludo:'¡Goeiemorgen! Hoy llegan a Bélgica.',
+      dato:'En la catedral de Gante está el <b>Cordero Místico</b>, el cuadro más robado de la historia. A uno de sus paneles se lo llevaron en 1934 y todavía no apareció.',
+      mimos:[['👞','Cuiden el zapato'], ['🏰','Saludos al castillo'], ['🍲','Un waterzooi']] },
+    '2026-10-06': { lugar:'Brujas', pais:'Bélgica',
+      saludo:'Hoy llegan a la ciudad de los canales.',
+      dato:'Cuenta la leyenda que los <b>cisnes de Brujas</b> son un castigo: la ciudad ejecutó a un consejero del emperador Maximiliano, y él la obligó a mantener cisnes en sus canales para siempre.',
+      mimos:[['🛶','Paseo en bote'], ['🍫','Chocolate belga'], ['🍺','Una trapense']] },
+    '2026-10-07': { lugar:'Brujas · en bici', pais:'Bélgica',
+      saludo:'Hoy el día es en bicicleta.',
+      dato:'Brujas tiene un <b>cerveceroducto</b>: desde 2016, un caño de tres kilómetros lleva la cerveza bajo las calles, desde la cervecería del centro hasta la planta de embotellado.',
+      mimos:[['🚲','Pedaleen fuerte'], ['🛁','Un baño de cerveza'], ['🦪','Mejillones con papas']] },
+    '2026-10-08': { lugar:'Bruselas', pais:'Bélgica',
+      saludo:'Último día en Bélgica, y el más cervecero.',
+      dato:'La <b>cultura cervecera belga</b> es Patrimonio de la Humanidad desde 2016: la UNESCO la puso en la misma lista que el tango.',
+      mimos:[['🧇','Un waffle'], ['🍟','Papas fritas belgas'], ['🍻','Salud en el Delirium']] },
+    '2026-10-09': { lugar:'Bruselas → Barcelona', pais:'Bélgica',
+      saludo:'Última mañana en Europa.',
+      dato:'Los belgas juran que las <b>papas fritas</b> son suyas, no francesas: dicen que el nombre <i>french fries</i> se lo pusieron soldados que las probaron en Bélgica y oían hablar francés.',
+      mimos:[['🍫','Chocolate para la familia'], ['🦪','Ostras de despedida'], ['✈️','Buen vuelo']] },
+    '2026-10-10': { lugar:'De vuelta a casa', pais:'Chile',
+      saludo:'Hoy vuelven.',
+      dato:'Entre aviones, trenes y ruta suman unos <b>35.000 kilómetros</b>: casi una vuelta al mundo entera en veinticuatro días.',
+      mimos:[['🏠','Bienvenidos a casa'], ['🎁','¿Y los regalos?'], ['🤗','Un abrazo grande']] }
+  };
+  // Los mimos llegan como aviso al celular de Mauro y Meli, por ntfy.sh.
+  var CANAL = 'odisea2026-87a0ae2656';
+
   var ov = document.getElementById('cdOv');
   if (!ov) return;
 
-  function hoy(){ var n = new Date(); return new Date(n.getFullYear(), n.getMonth(), n.getDate()); }
+  // ?hoy=2026-10-03 en la dirección simula ese día: sirve para probar la ventana.
+  var simulado = (location.search.match(/[?&]hoy=(\d{4}-\d{2}-\d{2})/) || [])[1];
+  function hoy(){
+    if (simulado) { var p = simulado.split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); }
+    var n = new Date(); return new Date(n.getFullYear(), n.getMonth(), n.getDate());
+  }
+  function dosC(n){ return (n < 10 ? '0' : '') + n; }
+  function clave(d){ return d.getFullYear() + '-' + dosC(d.getMonth() + 1) + '-' + dosC(d.getDate()); }
   function dias(a, b){ return Math.round((b - a) / 86400000); }
   function alAzar(a){ return a[Math.floor(Math.random() * a.length)]; }
   function fechaDe(s){ var p = s.split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); }
@@ -4734,6 +4877,67 @@ body.ficha-abierta{overflow:hidden}
   var wait = q('cdWait'), pais = q('cdPais');
   var frase;
 
+  /* ── La planilla ──
+     Mauro edita saludos, datos y mimos en la planilla «Odisea 2026 · Mimos del
+     día» (carpeta - INFO VIAJE), y la página la lee cada vez que se abre. Si no
+     llega —sin internet, planilla privada o el visor de claude.ai, que bloquea
+     pedidos afuera— queda lo que está escrito arriba en DIAS.
+     En la planilla, *entre asteriscos* va en negrita. */
+  var PLANILLA = 'https://docs.google.com/spreadsheets/d/1FkSS5cjrMADtBr9E24VCInPodcFN7V5faDHcEti7I1c/gviz/tq?tqx=out:csv&gid=0';
+  var familia = !document.querySelector('.solo-org');
+  var prohibido = new RegExp(decodeURIComponent(escape(atob('Y29sb25pYXxrW8O2b11sbnxjb2xvZ25lfHNsdWlzfGhvbGFuZGF8cGFbacOtXXNlcyBiYWpvcw=='))), 'i');
+
+  function leerCSV(t){
+    var filas = [], fila = [], campo = '', com = false;
+    for (var i = 0; i < t.length; i++) {
+      var c = t.charAt(i);
+      if (com) {
+        if (c === '"' && t.charAt(i + 1) === '"') { campo += '"'; i++; }
+        else if (c === '"') com = false;
+        else campo += c;
+      } else if (c === '"') com = true;
+      else if (c === ',') { fila.push(campo); campo = ''; }
+      else if (c === '\n' || c === '\r') {
+        if (c === '\r' && t.charAt(i + 1) === '\n') i++;
+        fila.push(campo); filas.push(fila); fila = []; campo = '';
+      } else campo += c;
+    }
+    if (campo || fila.length) { fila.push(campo); filas.push(fila); }
+    return filas;
+  }
+  function esc(x){ return String(x || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function negritas(x){ return esc(x).replace(/\*([^*]+)\*/g, '<b>$1</b>'); }
+
+  function sumarPlanilla(texto){
+    var filas = leerCSV(texto);
+    if (filas.length < 2) return;
+    var cab = filas[0].map(function(x){ return x.trim().toLowerCase(); });
+    function col(n){ return cab.indexOf(n); }
+    var cDia = col('día'), cLug = col('lugar'), cPais = col('país'), cSal = col('saludo'), cDato = col('dato curioso');
+    if (cDia < 0 || cSal < 0) return;
+    filas.slice(1).forEach(function(f){
+      var n = parseInt(f[cDia], 10);
+      if (isNaN(n) || !String(f[cSal] || '').trim()) return;
+      if (familia && prohibido.test(f.join(' '))) return;   // lo que la familia no puede leer
+      var fecha = new Date(SALIDA.getFullYear(), SALIDA.getMonth(), SALIDA.getDate() + n);
+      var k = clave(fecha), viejo = DIAS[k] || {};
+      var ms = [];
+      for (var j = 1; j <= 3; j++) {
+        var e = f[col('emoji ' + j)], t = f[col('mimo ' + j)];
+        if (e && e.trim() && t && t.trim()) ms.push([esc(e.trim()), esc(t.trim())]);
+      }
+      DIAS[k] = {
+        lugar: (f[cLug] || '').trim() || viejo.lugar || '',
+        pais: (f[cPais] || '').trim() || viejo.pais || '',
+        saludo: esc(f[cSal].trim()),
+        dato: cDato >= 0 && (f[cDato] || '').trim() ? negritas(f[cDato].trim()) : (viejo.dato || ''),
+        mimos: ms.length ? ms : (viejo.mimos || [])
+      };
+    });
+  }
+
+  function pintar(){
+
   // ── El número grande y su leyenda ──
   if (faltan > 0) {
     num.textContent = faltan;
@@ -4746,14 +4950,20 @@ body.ficha-abierta{overflow:hidden}
     num.className = 'cd-num short';
     unit.textContent = 'se termina la espera';
     when.textContent = 'Punta Arenas → Santiago · 18:30';
-    frase = alAzar(FRASES);
+    var vispera = DIAS[clave(h)];
+    frase = vispera ? { pais: vispera.pais, p: vispera.saludo, dato: vispera.dato } : alAzar(FRASES);
+    if (vispera) mimos(vispera, 0, clave(h));
 
   } else if (h <= REGRESO) {
-    num.textContent = dias(SALIDA, h) + 1;
+    var nDia = Math.max(1, dias(SALIDA, h));   // como en el itinerario: 17/09 es el día 1
+    num.textContent = nDia;
     unit.textContent = 'día de viaje, de 24';
-    when.textContent = 'Están adentro del viaje';
+    var hoyDia = DIAS[clave(h)];
+    when.textContent = hoyDia ? hoyDia.lugar : 'Están adentro del viaje';
     var donde = paisDelDia(h);
-    frase = donde ? frasePais(donde) : alAzar(FRASES);
+    frase = hoyDia ? { pais: hoyDia.pais, p: hoyDia.saludo, dato: hoyDia.dato }
+                   : (donde ? frasePais(donde) : alAzar(FRASES));
+    if (hoyDia) mimos(hoyDia, nDia, clave(h));
 
   } else {
     num.textContent = '24';
@@ -4769,6 +4979,45 @@ body.ficha-abierta{overflow:hidden}
   caja.style.setProperty('--accent', tinte.accent);
   wait.innerHTML = frase.p;
   pais.textContent = frase.pais;
+  if (frase.dato) { q('cdDato').innerHTML = frase.dato; q('cdDato').hidden = false; }
+  }
+
+  // ── Los mimos del día ──
+  // Sólo en la versión familiar: ahí el generador ya borró todo lo solo-org.
+  // Cada teléfono manda cada mimo una vez por día, y el nombre se pide una sola vez.
+  function mimos(d, nDia, fecha){
+    var caja = q('cdMimos'), fila = q('cdMimoFila'), aviso = q('cdMimoAviso'), quien = q('cdQuien');
+    if (!caja || document.querySelector('.solo-org')) return;
+    function leer(k){ try { return localStorage.getItem(k); } catch (e) { return null; } }
+    function guardar(k, v){ try { localStorage.setItem(k, v); } catch (e) {} }
+    quien.value = leer('odisea-quien') || '';
+    caja.hidden = false;
+    d.mimos.forEach(function(m, i){
+      var k = 'odisea-mimo-' + fecha + '-' + i;
+      var btn = document.createElement('button');
+      btn.type = 'button'; btn.className = 'cd-mimo';
+      btn.innerHTML = '<span class="e" aria-hidden="true">' + m[0] + '</span><span>' + m[1] + '</span>';
+      if (leer(k)) { btn.classList.add('ok'); btn.disabled = true; }
+      btn.addEventListener('click', function(){
+        var nombre = quien.value.trim();
+        if (!nombre) { aviso.textContent = 'Poné tu nombre así saben quién les manda.'; quien.focus(); return; }
+        guardar('odisea-quien', nombre);
+        btn.disabled = true; aviso.textContent = 'Mandando…';
+        fetch('https://ntfy.sh/', { method:'POST', body: JSON.stringify({
+          topic: CANAL, title: nombre + ' les mandó ' + m[0],
+          message: m[1] + ' · ' + (nDia ? 'día ' + nDia : 'víspera') + ', ' + d.lugar
+        })}).then(function(r){
+          if (!r.ok) throw 0;
+          guardar(k, '1'); btn.classList.add('ok');
+          aviso.textContent = '¡Listo! A Mauro y Meli ya les llegó ' + m[0];
+        }).catch(function(){
+          btn.disabled = false;
+          aviso.textContent = 'No salió: fijate que tengas internet y probá de nuevo.';
+        });
+      });
+      fila.appendChild(btn);
+    });
+  }
 
   // ── Abrir y cerrar ──
   var abierto = false;
@@ -4798,7 +5047,20 @@ body.ficha-abierta{overflow:hidden}
   ov.addEventListener('click', function(e){ if (e.target === ov) cerrar(); });
   document.addEventListener('keydown', function(e){ if (e.key === 'Escape') cerrar(); });
 
-  setTimeout(abrir, 250);
+  // Durante el viaje se espera la planilla, pero nunca más de dos segundos y medio.
+  if (faltan <= 0 && h <= REGRESO && window.fetch) {
+    var listo = false;
+    var seguir = function(){ if (listo) return; listo = true; pintar(); abrir(); };
+    fetch(PLANILLA, { cache: 'no-store' })
+      .then(function(r){ if (!r.ok) throw 0; return r.text(); })
+      .then(function(t){ if (!listo && t.indexOf('<') !== 0) sumarPlanilla(t); })
+      .catch(function(){})
+      .then(seguir);
+    setTimeout(seguir, 2500);
+  } else {
+    pintar();
+    setTimeout(abrir, 250);
+  }
 })();
 
 /* ─── La ficha del día ───────────────────────────────────────────────

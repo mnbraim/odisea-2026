@@ -1287,7 +1287,7 @@ body.ficha-abierta{overflow:hidden}
 </svg>
 
 <div class="avance" id="avance" aria-hidden="true"></div>
-
+<button class="hoy" id="irHoy" type="button"><span class="punto" aria-hidden="true"></span>Hoy</button>
 <header class="topbar" id="barraSup">
   <div class="topbar-in">
     <div class="brand">
@@ -1467,7 +1467,6 @@ body.ficha-abierta{overflow:hidden}
               <div class="p-cuerpo">
                 <div class="p-nom con-mapa">Valijas en el hotel</div>
                 <p class="p-que">La habitación es recién al mediodía, pero el equipaje lo guardan desde temprano. Se dejan las valijas y se sale liviano.</p>
-                <p class="p-dato"><b>Dónde</b>Carrer de Gravina 12 · 5 minutos desde Plaça de Catalunya</p>
               </div>
             </li>
             <li class="parada">
@@ -1588,7 +1587,7 @@ body.ficha-abierta{overflow:hidden}
             <div class="ficha-cuerpo">
               <div class="ficha-dia">día 3 · sábado 19/09</div>
               <div class="ficha-tit">Barcelona → Reikiavik</div>
-              <p class="ficha-lede">La mañana alcanza para dos cosas y no más: el desayuno en la barra de la Boquería y la última vista de la ciudad desde Montjuïc. Después es todo traslado — y del aeropuerto de Keflavík al centro van por su cuenta, porque el auto recién lo retiran el 21.</p>
+              <p class="ficha-lede">La mañana alcanza para dos cosas y no más: el jamón de pie en el mostrador de La Pineda y la última vista de la ciudad desde Montjuïc. Después es todo traslado — y del aeropuerto de Keflavík al centro van por su cuenta, porque el auto recién lo retiran el 21.</p>
               <div class="chips"><span class="chip sky"><svg class="chip-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#iAmanece"/></svg>07:02<svg class="chip-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#iAtardece"/></svg>19:39<svg class="chip-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#iNoche"/></svg>22:36</span></div>
               <ol class="paradas">
             <li class="parada">
@@ -1615,7 +1614,7 @@ body.ficha-abierta{overflow:hidden}
               <div class="p-hora">11:45</div>
               <div class="p-cuerpo">
                 <div class="p-nom con-mapa">Vuelta al hotel por las valijas</div>
-                <p class="p-que">De Montjuïc al centro son veinte minutos por el mismo camino. No hay almuerzo en la ciudad: con el vuelo a las 15:45 se come en la T2 o se aguanta hasta arriba del avión.</p>
+                <p class="p-que">De Montjuïc al centro son veinte minutos por el mismo camino.</p>
                 <p class="p-ojo">No hay almuerzo en la ciudad: con el vuelo a las 15:45 se come en la T2 o se aguanta hasta arriba del avión — y después del jamón de la mañana tampoco hace falta mucho.</p>
               </div>
             </li>
@@ -2733,9 +2732,8 @@ body.ficha-abierta{overflow:hidden}
             <li class="parada">
               <div class="p-hora">15:30</div>
               <div class="p-cuerpo">
-                <div class="p-nom con-mapa">El departamento, sobre el Grassmarket<a class="p-mapa" href="https://www.google.com/maps/search/?api=1&amp;query=8+Porteous+Pend%2C+Grassmarket%2C+Edinburgh+EH1+2HP" target="_blank" rel="noopener" aria-label="Ver en Google Maps: El departamento, sobre el Grassmarket" title="Ver en Google Maps: El departamento, sobre el Grassmarket"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#iPin"/></svg></a></div>
+                <div class="p-nom con-mapa">El departamento, sobre el Grassmarket</div>
                 <p class="p-que">Un <em>pend</em> es un pasaje cubierto que atraviesa un edificio: el acceso no es una puerta a la calle sino un túnel corto. Por eso la anfitriona insiste con leer las instrucciones antes de llegar y no buscar el número en la vereda.</p>
-                <p class="p-dato"><b>Dónde</b>Flat 5, 8 Porteous Pend (8/5), Grassmarket EH1 2HP</p>
                 <p class="p-dato"><b>Horario</b>Check-in <b>16:00 a 21:00</b> · las valijas se pueden dejar desde las <b>12:00</b> avisando antes</p>
               </div>
             </li>
@@ -2908,7 +2906,7 @@ body.ficha-abierta{overflow:hidden}
             <li class="parada">
               <div class="p-hora">19:30</div>
               <div class="p-cuerpo">
-                <div class="p-nom con-mapa">Vuelta al depto · ducha rápida<a class="p-mapa" href="https://www.google.com/maps/search/?api=1&amp;query=8+Porteous+Pend%2C+Grassmarket%2C+Edinburgh+EH1+2HP" target="_blank" rel="noopener" aria-label="Ver en Google Maps: Vuelta al depto · ducha rápida" title="Ver en Google Maps: Vuelta al depto · ducha rápida"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#iPin"/></svg></a></div>
+                <div class="p-nom con-mapa">Vuelta al depto · ducha rápida</div>
                 <p class="p-que">Está puesto a propósito. El día arrancó a las nueve y fueron más de nueve horas de pie. Antes eran sesenta minutos y ahora son cuarenta y cinco: las ostras se comen ese rato, y es lo único que cuestan.</p>
               </div>
             </li>
@@ -3183,7 +3181,7 @@ body.ficha-abierta{overflow:hidden}
             <li class="parada">
               <div class="p-hora">17:30</div>
               <div class="p-cuerpo">
-                <div class="p-nom con-mapa">Vuelta al depto<a class="p-mapa" href="https://www.google.com/maps/search/?api=1&amp;query=8+Porteous+Pend%2C+Grassmarket%2C+Edinburgh+EH1+2HP" target="_blank" rel="noopener" aria-label="Ver en Google Maps: Vuelta al depto" title="Ver en Google Maps: Vuelta al depto"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#iPin"/></svg></a></div>
+                <div class="p-nom con-mapa">Vuelta al depto</div>
                 <p class="p-que">Ducha, cambio de ropa y descanso — y armar la valija esta noche, porque mañana el vuelo sale 10:30 y hay que salir a las ocho.</p>
               </div>
             </li>
@@ -3961,8 +3959,8 @@ body.ficha-abierta{overflow:hidden}
         <div class="day-date"><span class="dnum">día 21</span><span class="dd">7/10</span><span class="dw">miércoles</span></div>
         <div class="day-rail"><span class="node"></span></div>
         <div class="day-body">
-          <h4>El canal hasta Sluis, y el spa cervecero</h4>
-          <div class="relato"><p class="relato-rot">Mañana</p><p class="plan">Hoy el día es en bicicleta. Salen de Brujas pasando junto a los molinos de las murallas y toman la orilla de la Damse Vaart, un canal que Napoleón mandó cavar y nunca terminó. Pasan por Damme y otros pueblitos de campo y, si la balsa Kobus está funcionando, cruzan el agua tirando ellos mismos de una manivela.</p><p class="relato-rot">Tarde</p><p class="plan">Casi sin darse cuenta cruzan la frontera: en Sluis, ya en Holanda, almuerzan un pannenkoek (panqueque holandés del tamaño del plato, con el relleno cocinado adentro). Treinta y un kilómetros después llega la recompensa: una tina de roble con agua caliente, lúpulo y cebada, y una cerveza en la mano.</p><p class="relato-rot">Noche</p><p class="plan">A la noche, moules-frites (mejillones en olla con papas fritas, el plato nacional belga), y la última ronda en De Garre, un bar escondido en un pasaje tan angosto que se pasa de largo, con su Tripel (cerveza rubia y fuerte que sólo sirven ahí).</p></div>
+          <h4>El canal <span class="solo-fam">en bici</span>, y el spa cervecero</h4>
+          <div class="relato"><p class="relato-rot">Mañana</p><p class="plan">Hoy el día es en bicicleta. Salen de Brujas pasando junto a los molinos de las murallas y toman la orilla de la Damse Vaart, un canal que Napoleón mandó cavar y nunca terminó. Pasan por Damme y otros pueblitos de campo y, si la balsa Kobus está funcionando, cruzan el agua tirando ellos mismos de una manivela.</p><p class="relato-rot">Tarde</p><p class="plan"><span class="solo-fam">A mitad de camino frenan a almorzar y emprenden la vuelta por la otra orilla. </span>Treinta y un kilómetros después llega la recompensa: una tina de roble con agua caliente, lúpulo y cebada, y una cerveza en la mano.</p><p class="relato-rot">Noche</p><p class="plan">A la noche, moules-frites (mejillones en olla con papas fritas, el plato nacional belga), y la última ronda en De Garre, un bar escondido en un pasaje tan angosto que se pasa de largo, con su Tripel (cerveza rubia y fuerte que sólo sirven ahí).</p></div>
           <button class="ver-ficha" type="button" data-ficha="ficha-d21">Ver el día en detalle →</button>
           <div class="ficha belgica" id="ficha-d21">
             <div class="ficha-barra">
@@ -3970,8 +3968,8 @@ body.ficha-abierta{overflow:hidden}
             </div>
             <div class="ficha-cuerpo">
               <div class="ficha-dia">día 21 · miércoles 7/10</div>
-              <div class="ficha-tit">El canal hasta Sluis, y el spa cervecero</div>
-              <p class="ficha-lede">El único día del viaje que es una sola cosa de punta a punta: subirse a una bici a las 10:00 y bajarse a las 16:15, treinta y un kilómetros después, habiendo cruzado a Países Bajos por un canal que Napoleón dejó sin terminar. Y después meterse en una tina de lúpulo caliente.</p>
+              <div class="ficha-tit">El canal en bici, y el spa cervecero</div>
+              <p class="ficha-lede">El único día del viaje que es una sola cosa de punta a punta: subirse a una bici a las 10:00 y bajarse a las 16:15, treinta y un kilómetros después, pedaleando junto a un canal que Napoleón dejó sin terminar. Y después meterse en una tina de lúpulo caliente.</p>
               <div class="chips"><span class="chip sky"><svg class="chip-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#iAmanece"/></svg>07:57<svg class="chip-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#iAtardece"/></svg>19:12<svg class="chip-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#iNoche"/></svg>21:02</span></div>
               <ol class="paradas">
 <li class="parada">
@@ -4006,7 +4004,7 @@ body.ficha-abierta{overflow:hidden}
                 <div class="p-nom con-mapa">Damme<a class="p-mapa" href="https://www.google.com/maps/search/?api=1&amp;query=Damme%2C+Belgium" target="_blank" rel="noopener" aria-label="Ver en Google Maps: Damme" title="Ver en Google Maps: Damme"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#iPin"/></svg></a></div>
                 <p class="p-que">Fue el <b>puerto de Brujas</b> hasta que el mar se llenó de arena y dejó a las dos tierra adentro. Quedó un pueblo del siglo XV con su ayuntamiento gótico intacto, el molino <b>Schellemolen</b> de 1867, y desde 1997 es el <b>pueblo de los libros</b> de Flandes: librerías de viejo a un paso una de otra.</p>
                 <p class="p-dato"><b>Km</b>7 de 31</p>
-                <p class="p-ojo">Buen lugar para el primer café. De acá en adelante ya no hay casi nada hasta Sluis.</p>
+                <p class="p-ojo">Buen lugar para el primer café. De acá en adelante ya no hay casi nada hasta la mitad del recorrido.</p>
               </div>
             </li>
             <li class="parada">
@@ -4026,48 +4024,7 @@ body.ficha-abierta{overflow:hidden}
                 <p class="p-ojo">⚠ Anda a diario, pero todo lo que se publica habla del verano y <b>no pude confirmar que funcione en octubre</b>. Si ese día no está, no cambia nada: se sigue por la misma orilla y el kilometraje es el mismo.</p>
               </div>
             </li>
-            <li class="parada">
-              <div class="p-hora">13:15</div>
-              <div class="p-cuerpo">
-                <div class="p-nom con-mapa">Sluis · Países Bajos<a class="p-mapa" href="https://www.google.com/maps/search/?api=1&amp;query=Sluis%2C+Netherlands" target="_blank" rel="noopener" aria-label="Ver en Google Maps: Sluis · Países Bajos" title="Ver en Google Maps: Sluis · Países Bajos"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#iPin"/></svg></a></div>
-                <p class="p-que"><b>Cruzan la frontera en bici</b>, sin control ni cartel: el canal simplemente deja de ser belga. Sluis es una ciudad amurallada con tres <b>puertas medievales</b> casi intactas, un molino y un belfort con vista sobre las murallas verdes. Y es <b>el pueblo de compras de los belgas</b>: las terrazas se llenan de gente de Brujas que cruza a almorzar.</p>
-                <p class="p-dato"><b>Km</b>15,5 de 31 · la mitad exacta</p>
-                <p class="p-ojo">Desde la Zuidpoort se ve bien el molino, y la Westpoort queda justo sobre el canal por el que llegaron.</p>
-              </div>
-            </li>
-            <li class="parada">
-              <div class="p-hora">13:30</div>
-              <div class="p-cuerpo">
-                <div class="p-nom con-mapa">Petrus &amp; Paulus · el panqueque holandés<a class="p-mapa" href="https://www.google.com/maps/search/?api=1&amp;query=Petrus+%26+Paulus%2C+Oude+Kerkstraat+11%2C+Sluis" target="_blank" rel="noopener" aria-label="Ver en Google Maps: Petrus &amp; Paulus · el panqueque holandés" title="Ver en Google Maps: Petrus &amp; Paulus · el panqueque holandés"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#iPin"/></svg></a></div>
-                <p class="p-que">Ya están en Países Bajos, así que el almuerzo es holandés: <b>pannenkoek</b>. Un salón de té del centro de Sluis que hace panqueques y waffles desde 1978, y que ganó tres años seguidos el premio al mejor waffle de Zelanda.</p>
-                <p class="p-dato"><b>Dónde</b>Oude Kerkstraat 11 · en el centro, a 5 min del molino</p>
-                <p class="p-dato"><b>Horario</b>Todos los días 8:30–18:00</p>
-                <p class="p-ojo">Liviano en la medida de lo posible: quedan quince kilómetros de vuelta, el spa, y a la noche los mejillones.</p>
-                <details class="mas">
-                  <summary>Qué comer acá</summary>
-                  <div class="mas-cuerpo">
-                    <p>El <b>pannenkoek</b> no es el panqueque argentino: es del tamaño del plato, un poco más grueso, viene abierto y no enrollado, y el relleno se cocina adentro de la masa. Al mediodía se come salado, como plato principal.</p>
-                    <div class="mas-tit">Qué pedir</div>
-                    <p>Uno <b>salado</b>: de <b>jamón y queso</b> o de <b>panceta</b>. El clásico holandés es ponerle arriba <b>almíbar oscuro</b> — <i>stroop</i> —, aunque sea salado. Pruébenlo.</p>
-                    <div class="mas-tit">Ojo con repetir</div>
-                    <p>Nada frito y nada de papas: esta noche los mejillones vienen con papas fritas.</p>
-                    <div class="mas-tit">El postre, en otro lado</div>
-                    <p>Los <b>poffertjes</b> —panqueques mini, esponjosos, con manteca y azúcar impalpable— van en el molino, que queda a cinco minutos. O un <b>bolus de Zelanda</b>, el rollo dulce de canela y azúcar negra de esta provincia, en la <b>Bakkerij St Paulus</b> (Nieuwe Weg 4, 7:00–18:30), para llevar en la bici.</p>
-                  </div>
-                </details>
-              </div>
-            </li>
-            <li class="parada">
-              <div class="p-hora">14:15</div>
-              <div class="p-cuerpo">
-                <div class="p-nom con-mapa">Molen De Brak · el molino<a class="p-mapa" href="https://www.google.com/maps/search/?api=1&amp;query=Molen+De+Brak%2C+Nieuwstraat+26%2C+Sluis" target="_blank" rel="noopener" aria-label="Ver en Google Maps: Molen De Brak · el molino" title="Ver en Google Maps: Molen De Brak · el molino"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#iPin"/></svg></a></div>
-                <p class="p-que">Un molino de <b>1739</b>, el primero de piedra de Sluis. Se quemó al final de la guerra, en 1944, lo reconstruyeron en 1950, y <b>todavía muele harina</b>. Tiene seis pisos y <b>se sube hasta el balcón de arriba</b>, desde donde se ve Sluis entero y el pólder alrededor.</p>
-                <p class="p-dato"><b>Dónde</b>Nieuwstraat 26 · 5 min a pie de Petrus &amp; Paulus</p>
-                <p class="p-dato"><b>Horario</b>Visitas 10:30–17:30 · en octubre cierra los viernes</p>
-                <p class="p-ojo">En la planta baja funciona un café desde 1964, y hacen panqueques y <b>poffertjes</b> con la harina del molino. Para almorzar no: las reseñas son malas. Para el postre, si tienen ganas, sí.</p>
-              </div>
-            </li>
-            <li class="parada">
+<li class="parada">
               <div class="p-hora">14:45</div>
               <div class="p-cuerpo">
                 <div class="p-nom">La vuelta, por la otra orilla</div>
@@ -4129,7 +4086,7 @@ body.ficha-abierta{overflow:hidden}
             </div>
           </div>
           <div class="chips"><span class="chip sky"><svg class="chip-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#iAmanece"/></svg>07:57<svg class="chip-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#iAtardece"/></svg>19:12<svg class="chip-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#iNoche"/></svg>21:02</span></div>
-          <div class="chips solo-fam"><span class="chip fly"><svg class="chip-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#iBici"/></svg>BICI · Brujas → Sluis → Brujas · 31 km llanos</span></div>
+          <div class="chips solo-fam"><span class="chip fly"><svg class="chip-ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#iBici"/></svg>BICI · 31 km llanos por el canal, ida y vuelta</span></div>
         </div>
       </div>
 

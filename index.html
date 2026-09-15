@@ -1041,6 +1041,11 @@ body.ficha-abierta{overflow:hidden}
 }
 .js .ver-ficha:hover{filter:brightness(1.12)}
 .js .ver-ficha:active{transform:scale(.975)}
+/* En la versión familiar el detalle de cada día se abre recién la víspera:
+   hasta entonces el botón queda gris, sin reaccionar, y dice desde cuándo. */
+.js .ver-ficha:disabled{cursor:default;color:var(--ink-2);background:var(--line-soft);box-shadow:none}
+.js .ver-ficha:disabled:hover{filter:none}
+.js .ver-ficha:disabled:active{transform:none}
 
 .ficha-barra{display:flex;align-items:center;padding:11px 20px;background:var(--legc);color:#fff}
 .js .ficha.on .ficha-barra{position:sticky;top:0;z-index:2}
@@ -5130,6 +5135,40 @@ body.ficha-abierta{overflow:hidden}
   document.addEventListener('keydown', function(e){
     if (e.key === 'Escape' && abierta) cerrar(false);
   });
+})();
+
+// ── El detalle se abre la víspera ──
+// Sólo en la versión familiar (ahí el generador ya borró todo lo solo-org):
+// el botón de detalle de cada día queda deshabilitado hasta el día anterior,
+// según la fecha del teléfono. La fecha sale del rótulo del día ("20/09").
+// Se vuelve a mirar al volver a la pestaña, por si la página quedó abierta
+// de un día para el otro.
+(function(){
+  'use strict';
+  if (document.querySelector('.solo-org')) return;
+  var botones = document.querySelectorAll('.ver-ficha[data-ficha]');
+  if (!botones.length) return;
+  function dos(n){ return ('0' + n).slice(-2); }
+  function revisar(){
+    var n = new Date();
+    var hoy = new Date(n.getFullYear(), n.getMonth(), n.getDate());
+    for (var i = 0; i < botones.length; i++) {
+      var b = botones[i], dia = b.closest('.day'), r = dia && dia.querySelector('.dd');
+      if (!r) continue;
+      if (!b.hasAttribute('data-texto')) b.setAttribute('data-texto', b.textContent);
+      var p = r.textContent.trim().split('/');
+      var desde = new Date(2026, +p[1] - 1, +p[0] - 1);
+      if (hoy < desde) {
+        b.disabled = true;
+        b.textContent = 'El detalle se abre el ' + dos(desde.getDate()) + '/' + dos(desde.getMonth() + 1);
+      } else {
+        b.disabled = false;
+        b.textContent = b.getAttribute('data-texto');
+      }
+    }
+  }
+  revisar();
+  document.addEventListener('visibilitychange', function(){ if (!document.hidden) revisar(); });
 })();
 
 // ── El botón Hoy ──
